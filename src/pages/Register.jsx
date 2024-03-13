@@ -1,10 +1,16 @@
-import React from "react";
+import  { useEffect}  from "react";
 import '../global.css'
 import './register.css'
 import Navbar from "../components/Navbar";
 import RegisterForm from "../components/Register/Registerform";
 
 function Register() {
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
     return(
         <>
         <Navbar/>
