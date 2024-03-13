@@ -6,15 +6,16 @@
 
 .NavBar{
     margin:  0 0;
-    height: 5vh;
+    height: 100%;
+    padding: 0.6rem 0;
     background-color: var(--color-lightblue);
     display: grid;
-    grid-template-columns: 20% 50% 20% 10%;
+    grid-template-columns: 20% 50% 20% 1fr;
     align-content: center;
 }
-.NavBar p {
+.NavBar h1 {
     margin: 0 1rem;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .link-btn{
@@ -33,6 +34,7 @@
     border-radius: 30px;
     padding: 0.3rem 1rem;
     transition: .2s;
+    font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .link-btn input:hover{
@@ -40,4 +42,30 @@
     color: var(--color-lightblue);
     scale: 1.1;
     transition: .2s;
+}
+
+.profile {
+    width: 100%;
+    text-align: end;
+}
+.profile input {
+    outline: none;
+    border-style: none;
+    color: var(--color-lightblue);
+    background-color: white;
+    border-radius: 30px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    padding: 0.4rem 2rem;
+    margin-right: 1rem;
+    transition: .2s;
+}
+.profile input:hover {
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.15);
+    background-color: var(--color-blue);
+    color: white;
+    scale: 1.03;
+    transition: .2s;
+    cursor: pointer;
 }
