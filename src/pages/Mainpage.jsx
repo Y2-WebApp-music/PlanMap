@@ -2,9 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import '../global.css';
 import './mainpage.css';
 import Navbar from "../components/Navbar";
+import Thumbnail from "../components/Mainpage/PlanThumbnail";
 import { AuthContext } from '../AuthContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear,faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 function Mainpage(){
     const { authContext } = useContext(AuthContext);
@@ -35,7 +34,7 @@ function Mainpage(){
                     </div>
                 </div>
                 <div className="content">
-                    <p>test</p>
+                    < Thumbnail />
                 </div>
             </div>
         </>
