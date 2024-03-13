@@ -4,6 +4,7 @@ import AuthProvider from './AuthContext';
 import Home from "./pages/Home.jsx"
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
+import Mainpage from './pages/Mainpage.jsx'
 
 function App() {
 
@@ -12,7 +13,8 @@ function App() {
     <AuthProvider>
       {/* <Home /> */}
       {/* <Register /> */}
-      <Login />
+      {/* <Login /> */}
+      <Mainpage />
     </AuthProvider>
     </>
   )

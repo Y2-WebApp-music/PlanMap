@@ -109,3 +109,56 @@
     width: 100%;
     border-radius: 50%;
 }
+
+.PopUPSetting {
+    position: absolute;
+    right: 0;
+    width: 13%;
+    margin-right: 10px;
+    margin-top: 3px;
+    background-color: rgba(255, 255, 255, 0.793);
+    backdrop-filter: blur(10px);
+    color: var(--color-text);
+    box-shadow: 0 0rem 0.3rem rgba(37, 19, 1, 0.25);
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    z-index: 10;
+}
+.PopUPSetting hr {
+    border-top: solid;
+    border-top-color: var(--color-subtext);
+    border-top-width: 1px;
+}
+.PopUp-btn {
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    justify-items: center;
+    align-items: center;
+    margin-top: 5px;
+    border-radius: 30px;
+    padding: 1rem 1rem;
+    transition: .2s;
+}
+.p-userName{
+    font-size: 25px;
+    margin: 0 0;
+    font-weight: 500;
+    color: var(--color-text);
+}
+.p-email{
+    font-size: 16px;
+    margin: 0 0;
+    color: var(--color-text);
+}
+.PopUp-btn p {
+    justify-self: start;
+    font-size: 17px;
+    margin: 0 0;
+    color: var(--color-text);
+}
+.PopUp-btn:hover {
+    background-color: var(--color-bg2);
+    box-shadow: 0 0rem 0.3rem rgba(37, 19, 1, 0.25);
+    scale: 1.02;
+    transition: .2s;
+}

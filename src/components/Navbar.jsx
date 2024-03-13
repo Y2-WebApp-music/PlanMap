@@ -1,9 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import '../global.css';
 import './navbar.css';
 import { AuthContext } from '../AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGear,faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 function Navbar(){
+    const { authContext } = useContext(AuthContext);
+    const [isPopUpOpen, setPopUpOpen] = useState(false);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (isPopUpOpen && !event.target.closest('.PopUPSetting')) {
+                setPopUpOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isPopUpOpen]);
+
+    const togglePopUp = () => {
+        setPopUpOpen(!isPopUpOpen);
+    };
 
     return(
         <>
@@ -14,22 +36,19 @@ function Navbar(){
                 <input type="button" value="แพลนของฉัน" />
                 <input type="button" value="สร้างแพลนใหม่" />
             </div>
-            <LoginChecker />
-            {/* <div className="profile">
-                <input type="button" value="เข้าสู่ระบบ" />
-            </div> */}
+            <LoginChecker togglePopUp={togglePopUp} authContext={authContext} />
         </div>
+        {isPopUpOpen && <PopUPSetting authContext={authContext} />}
         </>
     )
 }
 
-function LoginChecker(){
-    const { authContext } = useContext(AuthContext);
+function LoginChecker({togglePopUp , authContext }){
 
     const checkLogin = () => {
         if (authContext.isAuthenticated) {
             return (
-                <div className="profileImage">
+                <div className="profileImage" onClick={togglePopUp}>
                     <img src={"public/images/"+authContext.profileUrl} alt="Profile" />
                     <p>{authContext.userName}</p>
                 </div>
@@ -40,6 +59,27 @@ function LoginChecker(){
     };
 
     return checkLogin();
+}
+
+function PopUPSetting({authContext}) {
+
+    return(
+        <>
+        <div className="PopUPSetting">
+            <p className="p-userName">{authContext.userName}</p>
+            <p className="p-email">{authContext.email}</p>
+            <hr />
+            <div className="PopUp-btn">
+                <FontAwesomeIcon icon={faGear} size="lg" id="icon" />
+                <p> การตั้งค่า </p>
+            </div>
+            <div className="PopUp-btn">
+                <FontAwesomeIcon icon={faRightFromBracket} size="lg" id="icon" />
+                <p> ออกจากระบบ </p>
+            </div>
+        </div>
+        </>
+    )
 }
 
 export default Navbar;
