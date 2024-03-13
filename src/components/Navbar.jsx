@@ -28,18 +28,18 @@ function Navbar(){
     };
 
     return(
-        <>
-        <div className="NavBar">
-            <h1>เที่ยวหนายยย</h1>
-            <div></div>
-            <div className="link-btn">
-                <input type="button" value="แพลนของฉัน" />
-                <input type="button" value="สร้างแพลนใหม่" />
+        <div className="zIndex">
+            <div className="NavBar">
+                <h1>เที่ยวหนายยย</h1>
+                <div></div>
+                <div className="link-btn">
+                    <input type="button" value="แพลนของฉัน" />
+                    <input type="button" value="สร้างแพลนใหม่" />
+                </div>
+                <LoginChecker togglePopUp={togglePopUp} authContext={authContext} />
             </div>
-            <LoginChecker togglePopUp={togglePopUp} authContext={authContext} />
+            {isPopUpOpen && <PopUPSetting authContext={authContext} />}
         </div>
-        {isPopUpOpen && <PopUPSetting authContext={authContext} />}
-        </>
     )
 }
 

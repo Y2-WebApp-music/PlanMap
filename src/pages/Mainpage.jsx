@@ -27,7 +27,11 @@ function Mainpage(){
                     </div>
                     <div className="ComingPlan">
                         <p> แพลนที่จะถึงนี้ </p>
-                        <div></div>
+                        <NowPlan
+                            title = {"โอ้นุ่นดเสทิืยดเินยนทปาดเทืะูอยู่ที่ไหน้นั้นjkldfbkzd;fbl;zสผวก้ิสดเิสวปดเทืสวดผเื"}
+                            StartDate = {"23 มี.ค. 2567"}
+                            EndDate = {"29 มี.ค. 2567"}
+                        />
                     </div>
                 </div>
                 <div className="content">
@@ -35,6 +39,22 @@ function Mainpage(){
                 </div>
             </div>
         </>
+    )
+}
+
+function NowPlan({title, StartDate, EndDate}){
+    return(
+        <div className="NowPlan">
+            <h2>{title}</h2>
+            <div className="Date">
+                <span>วันที่ </span><span>{StartDate}</span><span> - </span><span>{EndDate}</span>
+            </div>
+            <p>สภาพอากาศล่วงหน้า</p>
+            <div className="Weather"> weather report here</div>
+            <p>เส้นทางการเดินทาง</p>
+            <div className="PathWay"> Path ways Here </div>
+            <input type="submit" value="ดูแพลน" />
+        </div>
     )
 }
 
