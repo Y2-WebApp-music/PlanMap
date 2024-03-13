@@ -10,12 +10,13 @@
     padding: 0.6rem 0;
     background-color: var(--color-lightblue);
     display: grid;
-    grid-template-columns: 20% 50% 20% 1fr;
+    grid-template-columns: 20% 1fr 20% 8% 1%;
     align-content: center;
 }
 .NavBar h1 {
     margin: 0 1rem;
     font-size: 1.5rem;
+    color: white;
 }
 
 .link-btn{
@@ -50,6 +51,7 @@
 }
 .profile input {
     outline: none;
+    width: 100%;
     border-style: none;
     color: var(--color-lightblue);
     background-color: white;
@@ -57,8 +59,8 @@
     font-size: 1.3rem;
     font-weight: 700;
     font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    padding: 0.4rem 2rem;
-    margin-right: 1rem;
+    padding: 0.4rem 0rem;
+    /* margin-right: 1rem; */
     transition: .2s;
 }
 .profile input:hover {
