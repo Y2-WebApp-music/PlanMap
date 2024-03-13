@@ -1,0 +1,17 @@
+:root{
+    /* Color list */
+    --color-bg : #FFFFFF;
+    --color-bg2 : #F9F9F9;
+    --color-notSelect : #EAEAEA;
+    --color-hoverBox : #F1F1F1;
+    --color-blue : #2E6FED;
+    --color-lightblue : #56BFEB;
+    --color-orange : #F4944E;
+    --color-green : #62D13B;
+    --color-red : #EC4D4D;
+
+    --color-text : #030231;
+    --color-subtext : #9C9C9C;
+
+    /* Font Size */
+}

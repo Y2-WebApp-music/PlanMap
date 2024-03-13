@@ -1,0 +1,72 @@
+:root{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+}
+
+.MainTitle {
+    color: #000;
+    width: 100%;
+    height: 99vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.MainTitle h1{
+    margin: 0 0;
+    color: var(--color-blue);
+    font-size: 8rem;
+}
+
+.MainTitle h3{
+    color: #075E83;
+    margin: 0 0;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+}
+.MainTitle input{
+    color: var(--color-bg);
+    margin: 0 0;
+    font-size: 1.5rem;
+    background-color: var(--color-orange);
+    padding: 1rem 4rem;
+    border-radius: 70px;
+    outline: none;
+    border-style: none;
+    transition: .3s;
+}
+
+.MainTitle input:Hover {
+    scale: 1.1;
+    transition: .3s;
+    cursor: pointer;
+    box-shadow: 0 0.2rem 0.4rem rgba(37, 19, 1, 0.35);
+}
+
+.MainTitle::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../public/images/bangkok-map.png");
+    opacity: 50%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+    z-index: -1;
+}
+
+.MainTitle::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.037); /* Black with 30% opacity */
+    z-index: -1;
+}
