@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import '/src/global.css'
 import './planthumbnail.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -131,6 +131,30 @@ function FilterBTN({text}) {
 }
 
 function ThumbnailElement({Title, StartDate, EndDate, From, To}){
+    const [showPopup, setShowPopup] = useState(false);
+
+    const togglePopup = () => {
+        setShowPopup(!showPopup);
+    };
+
+    const closePopup = () => {
+        setShowPopup(false);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (showPopup && !event.target.closest('.Plan-setting-popUp')) {
+                setShowPopup(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showPopup]);
+
     return(
         <div className="ThumbnailElement">
             <div className="grid-Thumbnail">
@@ -143,17 +167,19 @@ function ThumbnailElement({Title, StartDate, EndDate, From, To}){
                     <div className="Thumbnail-where"><span>ถึง : </span><span>{To}</span></div>
                 </div>
                 <div className="Plan-setting">
-                    <FontAwesomeIcon icon={faEllipsisVertical} size="lg" id="settingPlan-btn"/>
-                    <div className="Plan-setting-popUp">
-                        <div className="setting-popUp-content">
-                            <FontAwesomeIcon icon={faPencil} size="lg" id="faPencil"/>
-                            <p>แก้ไขแพลนนี้</p>
+                    <FontAwesomeIcon icon={faEllipsisVertical} size="lg" id="settingPlan-btn" onClick={togglePopup}/>
+                    {showPopup && (
+                        <div className="Plan-setting-popUp" id="planSettingPopup" onClick={closePopup}>
+                            <div className="setting-popUp-content">
+                                <FontAwesomeIcon icon={faPencil} size="lg" id="faPencil"/>
+                                <p>แก้ไขแพลนนี้</p>
+                            </div>
+                            <div className="setting-popUp-content">
+                                <FontAwesomeIcon icon={faTrash} size="lg" id="faTrash"/>
+                                <p>ลบแพลนนี้</p>
+                            </div>
                         </div>
-                        <div className="setting-popUp-content">
-                            <FontAwesomeIcon icon={faTrash} size="lg" id="faTrash"/>
-                            <p>ลบแพลนนี้</p>
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
             <div className="goToPlan">
