@@ -5,7 +5,9 @@ This project for Web ProgramingII
 Icon from : `https://fontawesome.com`
 
 
-** Example of Weather API call
+## Example of Weather API call
+Free plan can forecast 5 Days
+```
 {
     "coord": {
         "lon": -0.1257,
@@ -49,3 +51,5 @@ Icon from : `https://fontawesome.com`
     "name": "London",
     "cod": 200
 }
+```
+===========
