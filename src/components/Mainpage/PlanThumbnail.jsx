@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import '/src/global.css'
 import './planthumbnail.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faEllipsisVertical, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 function Thumbnail(){
     return(<>
@@ -11,7 +11,7 @@ function Thumbnail(){
             <div className="searchBox">
                 <label htmlFor="search" id="searchLabel">
                     <input type="text" placeholder="ค้นหาแพลน" id="search" />
-                    <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" id="icon" />
+                    <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" style={{ color: 'var(--color-text)' }}/>
                 </label>
             </div>
             <div className="BtnZone">
@@ -143,7 +143,17 @@ function ThumbnailElement({Title, StartDate, EndDate, From, To}){
                     <div className="Thumbnail-where"><span>ถึง : </span><span>{To}</span></div>
                 </div>
                 <div className="Plan-setting">
-                    <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
+                    <FontAwesomeIcon icon={faEllipsisVertical} size="lg" id="settingPlan-btn"/>
+                    <div className="Plan-setting-popUp">
+                        <div className="setting-popUp-content">
+                            <FontAwesomeIcon icon={faPencil} size="lg" id="faPencil"/>
+                            <p>แก้ไขแพลนนี้</p>
+                        </div>
+                        <div className="setting-popUp-content">
+                            <FontAwesomeIcon icon={faTrash} size="lg" id="faTrash"/>
+                            <p>ลบแพลนนี้</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className="goToPlan">

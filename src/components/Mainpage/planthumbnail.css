@@ -1,4 +1,5 @@
 .PlanThumbnail {
+    box-sizing: border-box;
     width: 100%;
     height: 94vh;
     display: grid;
@@ -91,24 +92,24 @@
 
 .Thumbnail-scroll{
     overflow: scroll;
-    width: 100%;
+    width: 98%;
     height: 85vh;
-    margin-top: 1rem;
-    margin-left: 1rem;
+    margin: 1rem 1rem;
 }
 .Thumbnail {
     margin: 0.2rem 0.2rem;
-    width: 97%;
+    width: 100%;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: calc(50% - 8px) calc(50% - 8px);
     justify-items: start;
     align-items: start;
-    gap: 15px;
+    box-sizing: border-box;
+    grid-gap: 15px;
 }
 
 
 .ThumbnailElement {
-    width: 98%;
+    width: 99%;
     height: 200px;
     background-color: var(--color-bg);
     border-radius: 20px;
@@ -118,6 +119,7 @@
     justify-items: center;
     align-items: center;
     grid-template-rows: 80% 20%;
+    box-sizing: border-box;
 }
 
 .ThumbnailElement:hover {
@@ -168,6 +170,74 @@
     margin-top: 0.3rem;
     display: flex;
     justify-content: center;
+    position: relative;
+}
+
+#settingPlan-btn{
+    color: var(--color-subtext);
+}
+
+#settingPlan-btn:hover {
+    color: var(--color-blue);
+}
+
+.Plan-setting-popUp{
+    background-color: var(--color-bg);
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.65);
+    padding: 0.7rem 0.7rem;
+    border-radius: 20px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 130px;
+    right: 0px;
+    top: 15px;
+}
+.setting-popUp-content{
+    width: 100%;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    justify-items: center;
+    align-items: center;
+    padding: 0.7rem 0.5rem;
+    border-radius: 15px;
+    transition: .1s;
+}
+
+.setting-popUp-content p {
+    margin: 0 0;
+    font-size: 1rem;
+}
+
+#faPencil {
+    color: var(--color-subtext);
+    transition: .1s;
+}
+
+.setting-popUp-content:hover #faPencil {
+    color: var(--color-orange);
+    transition: .1s;
+    scale: 1.2;
+}
+
+#faTrash {
+    color: var(--color-subtext);
+    transition: .1s;
+}
+
+.setting-popUp-content:hover #faTrash {
+    color: var(--color-red);
+    transition: .1s;
+    scale: 1.2;
+}
+
+.setting-popUp-content:hover {
+    background-color: var(--color-hoverBox);
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.35);
+    transition: .1s;
+    cursor: pointer;
 }
 
 .goToPlan{
@@ -199,4 +269,5 @@
     transition: .2s;
     background-color: var(--color-blue);
     box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.35);
+    cursor: pointer;
 }
