@@ -48,6 +48,7 @@
     overflow: scroll;
     margin-top: 1rem;
     margin-left: 1rem;
+    scrollbar-width: none;
 }
 .Weather {
     background-color: var(--color-bg);
@@ -64,6 +65,8 @@
     min-height: 10px;
     margin-left: 0.3rem;
     border-radius: 10px;
+    padding: 0.3rem 0;
+    margin-bottom: 2rem;
 }
 .NowPlan input{
     font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -80,4 +83,50 @@
     transition: .2s;
     background-color: var(--color-blue);
     box-shadow: 0rem 0rem 0.6rem rgba(37, 19, 1, 0.25);
+}
+
+
+
+.Point {
+    margin: 1rem 0.4rem;
+    width: 95%;
+    display: grid;
+    grid-template-columns: 8% 91%;
+    justify-items: center;
+    align-items: center;
+    gap: 2px;
+    box-sizing: border-box;
+}
+
+.Circle-Point {
+    position: relative;
+}
+
+.dot-connect{
+    position:absolute;
+    left: 4px;
+    top: 18px;
+    scale: 0.6;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.Direction {
+    box-sizing: border-box;
+    border: solid;
+    border-radius: 10px;
+    border-width: 1px;
+    border-color: var(--color-subtext);
+    padding: 0.4rem 0.3rem;
+    width: 100%;
+    justify-self: start;
+}
+
+.Direction p{
+    margin:  0 0;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow-x: scroll;
+    scrollbar-width: none;
 }

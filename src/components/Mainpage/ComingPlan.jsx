@@ -19,7 +19,34 @@ function ComingPlan({title, StartDate, EndDate}){
                 <p>เส้นทางการเดินทาง</p>
                 <div className="PathWay">
                     <Point
-                        Direction ={"Path way number 1"}
+                        Direction ={"Northgate Ratchayothin, 248 Ratchadaphisek Rd, Khwaeng Lat Yao, Khet Chatuchak, Krung Thep Maha Nakhon 10900"}
+                    />
+                    <Point
+                        Direction ={"Path way number 2"}
+                    />
+                    <Point
+                        Direction ={"Path way number 3"}
+                    />
+                    <Point
+                        Direction ={"Path way number 4"}
+                    />
+                    <Point
+                        Direction ={"Path way number 5"}
+                    />
+                    <Point
+                        Direction ={"Path way number 6"}
+                    />
+                    <Point
+                        Direction ={"Path way number 7"}
+                    />
+                    <Point
+                        Direction ={"Path way number 88"}
+                    />
+                    <Point
+                        Direction ={"Path way number 9"}
+                    />
+                    <Destination
+                        Direction ={"Path way number 100"}
                     />
                 </div>
             </div>
@@ -30,7 +57,31 @@ function ComingPlan({title, StartDate, EndDate}){
 
 function Point({Direction}){
     return(
-        <div>{Direction}</div>
+        <div className="Point">
+            <div className="Circle-Point">
+                <FontAwesomeIcon icon={regularCircle} size="lg" style={{color : 'var(--color-subtext)'}}/>
+                <div className="dot-connect">
+                    <FontAwesomeIcon icon={solidCircle} size="2xs" style={{color : 'var(--color-subtext)'}}/>
+                    <FontAwesomeIcon icon={solidCircle} size="2xs" style={{color : 'var(--color-subtext)'}}/>
+                    <FontAwesomeIcon icon={solidCircle} size="2xs" style={{color : 'var(--color-subtext)'}}/>
+                </div>
+            </div>
+            <div className="Direction">
+                <p>{Direction}</p>
+            </div>
+        </div>
+    )
+}
+function Destination({Direction}){
+    return(
+        <div className="Point">
+            <div className="Circle-Point">
+                <FontAwesomeIcon icon={faLocationDot} size="xl" style={{color : 'var(--color-red)'}}/>
+            </div>
+            <div className="Direction">
+                <p>{Direction}</p>
+            </div>
+        </div>
     )
 }
 
