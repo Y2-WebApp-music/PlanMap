@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import '/src/global.css';
 import './comingPlan.css'
+import WeatherAPI from '../WeatherAPI/WeatherAPI'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faCircle as solidCircle } from '@fortawesome/free-solid-svg-icons'
@@ -15,7 +16,11 @@ function ComingPlan({title, StartDate, EndDate}){
             </div>
             <div className="scrollDetail">
                 <p>สภาพอากาศล่วงหน้า</p>
-                <div className="Weather"> weather report here</div>
+                <div className="Weather">
+                    <WeatherAPI
+                        place = {"London"}
+                    />
+                </div>
                 <p>เส้นทางการเดินทาง</p>
                 <div className="PathWay">
                     <Point
