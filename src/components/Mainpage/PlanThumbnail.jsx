@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import '/src/global.css'
 import './planthumbnail.css'
-import { AuthContext } from '/src/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'
 
 function Thumbnail(){
     return(<>
@@ -24,27 +23,100 @@ function Thumbnail(){
             </div>
         </div>
 
-        <div className="Thumbnail">
-            < ThumbnailElement
-                title={"Test thumbnail 1"}
-                StartDate={"435 345 345"}
-                EndDate={"234 235 2235"}
-            />
-            < ThumbnailElement
-                title={"Test thumbnail 1"}
-                StartDate={"435 345 345"}
-                EndDate={"234 235 2235"}
-            />
-            < ThumbnailElement
-                title={"Test thumbnail 1"}
-                StartDate={"435 345 345"}
-                EndDate={"234 235 2235"}
-            />
-            < ThumbnailElement
-                title={"Test thumbnail 1"}
-                StartDate={"435 345 345"}
-                EndDate={"234 235 2235"}
-            />
+        <div className="Thumbnail-scroll">
+            <div className="Thumbnail">
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+                < ThumbnailElement
+                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
+                    StartDate ={"435 345 345"}
+                    EndDate ={"234 235 2235"}
+                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
+                />
+            </div>
         </div>
     </div>
     </>)
@@ -58,12 +130,24 @@ function FilterBTN({text}) {
     )
 }
 
-function ThumbnailElement({title, StartDate, EndDate}){
+function ThumbnailElement({Title, StartDate, EndDate, From, To}){
     return(
         <div className="ThumbnailElement">
-            <h2>{title}</h2>
-            <div className="Date">
-                <span>วันที่ </span><span>{StartDate}</span><span> - </span><span>{EndDate}</span>
+            <div className="grid-Thumbnail">
+                <div className="Thumbnail-content">
+                    <h2>{Title}</h2>
+                    <div className="Date">
+                        <span>วันที่ </span><span>{StartDate}</span><span> - </span><span>{EndDate}</span>
+                    </div>
+                    <div className="Thumbnail-where"><span>จาก : </span><span>{From}</span></div>
+                    <div className="Thumbnail-where"><span>ถึง : </span><span>{To}</span></div>
+                </div>
+                <div className="Plan-setting">
+                    <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
+                </div>
+            </div>
+            <div className="goToPlan">
+                <input type="submit" id="seePlan" value="ดูแพลน" />
             </div>
         </div>
     )
