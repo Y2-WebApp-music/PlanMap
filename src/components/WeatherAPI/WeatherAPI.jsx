@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import './weatherAPI.css'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLocationDot} from '@fortawesome/free-solid-svg-icons'
 
 const api = {
     key: "f691e7c3239c23d19b0ee9ae9972f6b8",
@@ -73,20 +77,33 @@ function WeatherAPI({place}){
     });
 
     return (
-        <div>
-        {weather && weather.main && (
-            <div>
-                <h2>Weather in {place}</h2>
-                <p>Temperature: {weather.main.temp} °C</p>
-                <p>
-                    <WeatherIcon
-                        description={weather.weather[0].description}
-                    />
-                </p>
-            </div>
-        )}
-        {!weather.main && <p>No weather data available</p>}
-    </div>
+        <div className="weatherReport">
+            {weather && weather.main && (
+                <div className="weatherReport-Grid">
+                    <p>
+                        <WeatherIcon
+                            description={weather.weather[0].description}
+                        />
+                    </p>
+                    <div className="WeatherDetail-Grid">
+                        <div>
+                            <div className="WeatherPlace">
+                                <FontAwesomeIcon icon={faLocationDot} size="lg" style={{color : 'var(--color-red)'}}/>
+                                <h2>{place}</h2>
+                            </div>
+                            <h1>{Math.round(weather.main.temp)} °C</h1>
+                            <p>วันที่ 23 มี.ค. 2567</p>
+                        </div>
+                        <div>
+                            <p>Weather : {weather.weather[0].main}</p>
+                            <span>{Math.round(weather.main.temp_min)}° / {Math.round(weather.main.temp_max)}°</span>
+                            <p>Feels like {Math.round(weather.main.feels_like)}°</p>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {!weather.main && <p>No weather data available</p>}
+        </div>
     );
 }
 

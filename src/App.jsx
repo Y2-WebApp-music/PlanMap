@@ -5,6 +5,7 @@ import Home from "./pages/Home.jsx"
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Mainpage from './pages/Mainpage.jsx'
+import CreatePlan from './pages/CreatePlan';
 
 function App() {
 
@@ -14,7 +15,8 @@ function App() {
       {/* <Home /> */}
       {/* <Register /> */}
       {/* <Login /> */}
-      <Mainpage />
+      {/* <Mainpage /> */}
+      <CreatePlan />
     </AuthProvider>
     </>
   )
