@@ -5,11 +5,6 @@ import Navbar from "../components/Navbar";
 import Map from "../components/GoogleMap/Map"
 import WeatherAPI from '/src/components/WeatherAPI/WeatherAPI.jsx'
 
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers-pro';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
-
 
 function CreatePlan() {
     useEffect(() => {
@@ -30,24 +25,6 @@ function CreatePlan() {
 }
 
 function FormInput(){
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-
-    const handleStartDateChange = (date) => {
-        setStartDate(date);
-    };
-
-    const handleEndDateChange = (date) => {
-        setEndDate(date);
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        // Do something with the selected dates
-        console.log("Start Date:", startDate);
-        console.log("End Date:", endDate);
-    };
 
     return(
         <>
@@ -61,11 +38,9 @@ function FormInput(){
                     <div className="PlanDate">
                         <p>วันที่เดินทาง</p>
                         <div className="calendar-Custom">
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={['DateRangePicker']}>
-                                    <DateRangePicker localeText={{ start: 'เริ่มเดินทาง', end: 'เดินทางกลับ' }} />
-                                </DemoContainer>
-                            </LocalizationProvider>
+                            <input type="date" id="startDate" name="start" placeholder="เริ่มการเดินทาง"/>
+                            <p>-</p>
+                            <input type="date" id="endDate" name="end" placeholder="สิ้นสุดการเดินทาง"/>
                         </div>
                     </div>
 

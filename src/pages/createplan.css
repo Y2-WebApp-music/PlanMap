@@ -48,7 +48,9 @@
     height: 97%;
     margin-top: 3px;
     display: grid;
-    grid-template-rows: max-content max-content 1fr 5%;
+    justify-items: center;
+    align-items: center;
+    grid-template-rows: 7% max-content 1fr 5%;
     gap: 5px;
 }
 
@@ -81,9 +83,65 @@
     padding: 0.5rem 1rem;
     border: none;
     border-width: 1px;
+    border-color: var(--color-blue);
+    border-radius: 7px;
+    box-shadow: 0rem 0rem 0.2rem rgba(37, 19, 1, 0.55);
+    transition: .2s;
+}
+#titlePlan:hover{
+    scale: 1.01;
+    transition: .2s;
+    border: solid;
+    border-color: var(--color-blue);
+    border-width: 1px;
+}
+
+.PlanDate{
+    width: 100%;
+}
+.calendar-Custom {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+.calendar-Custom p {
+    font-size: 2rem;
+    font-weight: 300;
+    margin: 0 0;
+}
+.calendar-Custom input[type="date"]{
+    background-color: var(--color-input);
+    width: max-content;
+    color: var(--color-text);
+    outline: none;
+    font-size: 1rem;
+    padding: 0.5rem 0.5rem;
+    border: none;
+    border-width: 1px;
     border-color: var(--color-subtext);
     border-radius: 7px;
     box-shadow: 0rem 0rem 0.2rem rgba(37, 19, 1, 0.55);
+}::-webkit-calendar-picker-indicator{
+    cursor: pointer;
+    filter: invert(1);
+    background-color: rgb(25, 25, 25);
+    box-shadow: 0rem 0rem 0.2rem rgba(255, 255, 255, 0.15);
+    padding: 0.4rem 0.4rem;
+    border-radius: 5px;
+    transition: .2s;
+}::-webkit-calendar-picker-indicator:hover{
+    scale: 1.1;
+    transition: .2s;
+    background-color: #593F21;
+}
+
+
+.sidebar-CreatePlan-scroll{
+    width: 100%;
+    height: 100%;
 }
 .weather{
     background-color: var(--color-bg);
@@ -98,6 +156,7 @@
 }
 
 .FormInput textarea{
+    font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     background-color: var(--color-input);
     /* appearance: none; */
     /* white-space: pre-wrap; */
@@ -111,16 +170,26 @@
     border-color: var(--color-subtext);
     border-radius: 7px;
     box-shadow: 0rem 0rem 0.2rem rgba(37, 19, 1, 0.55);
+    transition: .2s;
+}
+.FormInput textarea:hover{
+    scale: 1.01;
+    transition: .2s;
+    border: solid;
+    border-color: var(--color-blue);
+    border-width: 1px;
 }
 
 
 #submit-btn {
     background-color: var(--color-lightblue);
-    padding: 0.3rem 3rem;
+    width: fit-content;
+    height: fit-content;
+    padding: 0.3rem 1rem;
     border-style: none;
     border-radius: 30px;
     font-size: 1.5rem;
-    margin: 0.5rem 0;
+    margin: 0rem 0;
     transition: .2s;
 }
 
@@ -129,17 +198,4 @@
     transition: .2s;
     background-color: var(--color-blue);
     box-shadow: 0rem 0rem 0.6rem rgba(37, 19, 1, 0.25);
-}
-
-
-.calendar-Custom label {
-    width: 100%;
-    display: block;
-    font-style: normal;
-    font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-}
-.PlanDate p {
-    color: black;
-    margin: 0 0;
-    margin-top: 1rem;
 }
