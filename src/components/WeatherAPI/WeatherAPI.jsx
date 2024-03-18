@@ -7,23 +7,70 @@ const api = {
 
 function WeatherAPI({place}){
 
-    const [weather, setWeather] = useState({});
+    // const [weather, setWeather] = useState({});
 
-    useEffect(() => {
-        fetchWeatherData();
-    }, [place]);
+    // useEffect(() => {
+    //     fetchWeatherData();
+    // }, [place]);
 
-    const fetchWeatherData = () => {
-        console.log("Searching weather for:", place);
-        fetch(`${api.base}weather?q=${place}&units=metric&APPID=${api.key}`)
-            .then(res => res.json())
-            .then(result => {
-                setWeather(result);
-            })
-            .catch(error => {
-                console.error("Error fetching weather data:", error);
-            });
-    }
+    // const fetchWeatherData = () => {
+    //     console.log("Searching weather for:", place);
+    //     fetch(`${api.base}weather?q=${place}&units=metric&APPID=${api.key}`)
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             setWeather(result);
+    //         })
+    //         .catch(error => {
+    //             console.error("Error fetching weather data:", error);
+    //         });
+    // }
+
+    const [weather, setWeather] = useState({
+        "coord": {
+            "lon": 100.5167,
+            "lat": 13.75
+        },
+        "weather": [
+            {
+                "id": 800,
+                "main": "Clear",
+                "description": "clear sky",
+                "icon": "01d"
+            }
+        ],
+        "base": "stations",
+        "main": {
+            "temp": 34.44,
+            "feels_like": 41.44,
+            "temp_min": 33.28,
+            "temp_max": 39.39,
+            "pressure": 1009,
+            "humidity": 57,
+            "sea_level": 1009,
+            "grnd_level": 1008
+        },
+        "visibility": 10000,
+        "wind": {
+            "speed": 5.34,
+            "deg": 178,
+            "gust": 4.49
+        },
+        "clouds": {
+            "all": 3
+        },
+        "dt": 1710745025,
+        "sys": {
+            "type": 2,
+            "id": 2032756,
+            "country": "TH",
+            "sunrise": 1710717807,
+            "sunset": 1710761313
+        },
+        "timezone": 25200,
+        "id": 1609350,
+        "name": "Bangkok",
+        "cod": 200
+    });
 
     return (
         <div>
@@ -31,12 +78,101 @@ function WeatherAPI({place}){
             <div>
                 <h2>Weather in {place}</h2>
                 <p>Temperature: {weather.main.temp} °C</p>
-                <p>Description: {weather.weather[0].description}</p>
+                <p>
+                    <WeatherIcon
+                        description={weather.weather[0].description}
+                    />
+                </p>
             </div>
         )}
         {!weather.main && <p>No weather data available</p>}
     </div>
     );
+}
+
+function WeatherIcon({description}){
+
+    const getIconUrl = (description) => {
+        switch (description.toLowerCase()) {
+            case 'clear sky':
+                return '/public/icons/Clear.png';
+            case 'few clouds':
+                return '/public/icons/Partly-cloudy.png';
+            case 'scattered clouds':
+            case 'broken clouds':
+                return '/public/icons/Cloudy.png';
+            case 'shower rain':
+            case 'rain':
+            case 'light rain':
+            case 'moderate rain':
+            case 'light intensity shower rain':
+                return '/public/icons/Rain.png';
+            case 'extreme rain':
+            case 'heavy intensity rain':
+            case 'very heavy rain':
+            case 'heavy intensity shower rain':
+            case 'ragged shower rain':
+                return '/public/icons/Heavy-rain.png';
+            case 'thunderstorm':
+            case 'thunderstorm with light rain':
+            case 'thunderstorm with rain':
+            case 'thunderstorm with heavy rain':
+            case 'light thunderstorm':
+            case 'heavy thunderstorm':
+            case 'ragged thunderstorm':
+            case 'thunderstorm with light drizzle':
+            case 'thunderstorm with drizzle':
+            case 'thunderstorm with heavy drizzle':
+                return '/public/icons/Thunderstorm.png';
+            case 'snow':
+            case 'light snow':
+            case 'heavy snow':
+                return '/public/icons/Snow.png';
+            case 'sleet':
+            case 'light shower sleet':
+            case 'shower sleet':
+                return '/public/icons/Blizzard.png';
+            case 'freezing rain':
+            case 'light rain and snow':
+            case 'rain and snow':
+            case 'light shower snow':
+            case 'shower snow':
+            case 'heavy shower snow':
+                return '/public/icons/Freezing-rain.png';
+            case 'haze':
+            case 'mist':
+            case 'smoke':
+            case 'sand/dust whirls':
+            case 'sand':
+            case 'dust':
+            case 'volcanic ash':
+            case 'squalls':
+            case 'tornado':
+                return '/public/icons/Haze.png';
+            case 'fog':
+                return '/public/icons/Fog.png';
+            case 'light intensity drizzle':
+            case 'drizzle':
+            case 'heavy intensity drizzle':
+            case 'light intensity drizzle rain':
+            case 'drizzle rain':
+            case 'heavy intensity drizzle rain':
+            case 'shower rain and drizzle':
+            case 'heavy shower rain and drizzle':
+            case 'shower drizzle':
+                    return '/public/icons/Drizzle.png';
+            default:
+                return '';
+        }
+    };
+
+    const iconUrl = getIconUrl(description);
+
+    return(
+        <div>
+            {iconUrl && <img src={iconUrl} alt={description} style={{ maxWidth: '100px' }} />}
+        </div>
+    )
 }
 
 export default WeatherAPI
