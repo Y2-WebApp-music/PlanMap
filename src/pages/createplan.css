@@ -1,9 +1,143 @@
-.content{
+/* .content{
     color: var(--color-text);
     width: 100%;
     height: 95vh;
     background-color: blanchedalmond;
     margin: 0 0;
     display: grid;
-    grid-template-columns: 20% 80%;
+    grid-template-columns: 22% 78%;
+} */
+
+
+.CreatePlan-content {
+    color: var(--color-text);
+    width: 100%;
+    height: 95vh;
+    display: grid;
+    grid-template-columns: 25% 1fr;
+    z-index: -6;
+    box-sizing: border-box;
+}
+.CreatePlan-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../public/images/bangkok-map.png");
+    opacity: 30%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+    z-index: -3;
+}
+
+.CreatePlan-content::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.061);
+    z-index: -2;
+}
+
+.sidebar{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.465);
+    backdrop-filter: blur(10px);
+    box-shadow: 0rem 0rem 0.4rem rgba(37, 19, 1, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.FormInput{
+    width: 95%;
+    height: 97%;
+    margin-top: 3px;
+    display: grid;
+    grid-template-rows: max-content auto auto auto;
+    gap: 5px;
+}
+
+.FormInput label{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.FormInput input{
+    font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.FormInput p{
+    color: var(--color-text);
+    margin: 0 0;
+    font-size: 1rem;
+    align-self: flex-start;
+}
+
+#titlePlan {
+    background-color: var(--color-input);
+    width: 90%;
+    color: var(--color-text);
+    outline: none;
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-width: 1px;
+    border-color: var(--color-subtext);
+    border-radius: 7px;
+    box-shadow: 0rem 0rem 0.2rem rgba(37, 19, 1, 0.55);
+}
+.weather{
+    background-color: var(--color-bg);
+    box-shadow: 0rem 0rem 0.4rem rgba(37, 19, 1, 0.25);
+    width: 98%;
+    /* min-height: 130px; */
+    border-radius: 10px;
+    margin-left: 0.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.FormInput textarea{
+    background-color: var(--color-input);
+    /* appearance: none; */
+    /* white-space: pre-wrap; */
+    width: 90%;
+    color: var(--color-text);
+    outline: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-width: 1px;
+    border-color: var(--color-subtext);
+    border-radius: 7px;
+    box-shadow: 0rem 0rem 0.2rem rgba(37, 19, 1, 0.55);
+}
+
+
+#submit-btn {
+    background-color: var(--color-lightblue);
+    padding: 0.3rem 3rem;
+    border-style: none;
+    border-radius: 30px;
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    transition: .2s;
+}
+
+#submit-btn:hover{
+    scale: 1.03;
+    transition: .2s;
+    background-color: var(--color-blue);
+    box-shadow: 0rem 0rem 0.6rem rgba(37, 19, 1, 0.25);
 }

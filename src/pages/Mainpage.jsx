@@ -34,7 +34,7 @@ function Mainpage(){
                         />
                     </div>
                 </div>
-                <div className="content">
+                <div className="Thumbnail-container">
                     < Thumbnail />
                 </div>
             </div>

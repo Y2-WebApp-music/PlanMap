@@ -4,13 +4,21 @@ import './createplan.css'
 import Navbar from "../components/Navbar";
 import Map from "../components/GoogleMap/Map"
 import { AuthContext } from '../AuthContext';
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import WeatherAPI from '/src/components/WeatherAPI/WeatherAPI.jsx'
+// import { DateRangePicker } from 'node_modules/@mui/x-date-pickers-pro/DateRangePicker';
 
 function CreatePlan() {
+    const { authContext } = useContext(AuthContext);
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
     return(
         <>
             <Navbar/>
-            <div className="content">
+            <div className="CreatePlan-content">
                 <FormInput/>
                 <Map/>
             </div>
@@ -21,14 +29,38 @@ function CreatePlan() {
 function FormInput(){
     return(
         <>
-            <div>
-                <input type="text" name="" id="" placeholder="ชื่อแพลน"/>
-                <div> <DateRangePicker calendars={1} /> </div>
-                <div> weather report </div>
-                <div> place direction </div>
-                <form action="">
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
-                    <input type="submit" value="บันทึกแพลน" />
+            <div className="sidebar">
+                <form action="" className="FormInput">
+                    <label htmlFor="titlePlan">
+                        <p>ชื่อแพลน</p>
+                        <input type="text" name="titlePlan" id="titlePlan" placeholder="ชื่อแพลน"/>
+                    </label>
+
+                    <div className="PlanDate">
+                        <p>วันที่เดินทาง</p>
+                        <p>test Date</p>
+                    </div>
+
+                    <div>
+                        <p>สภาพอากาศล่วงหน้า</p>
+                        <div className="weather">
+                            <WeatherAPI
+                                place = {"London"}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="Pathway">
+                        <p>สถานที่ในการเดินทาง</p>
+                        <p>zdfknlbnzdfklbn</p>
+                    </div>
+
+                    <label htmlFor="">
+                        <p>บันทึกเพิ่มเติม</p>
+                        <textarea name="addition" id="" cols="30" rows="10"></textarea>
+                    </label>
+
+                    <input type="submit" value="บันทึกแพลน" id="submit-btn"/>
                 </form>
             </div>
         </>
