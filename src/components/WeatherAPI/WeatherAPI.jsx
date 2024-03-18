@@ -80,11 +80,9 @@ function WeatherAPI({place}){
         <div className="weatherReport">
             {weather && weather.main && (
                 <div className="weatherReport-Grid">
-                    <p>
                         <WeatherIcon
                             description={weather.weather[0].description}
                         />
-                    </p>
                     <div className="WeatherDetail-Grid">
                         <div>
                             <div className="WeatherPlace">
