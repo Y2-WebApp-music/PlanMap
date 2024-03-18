@@ -147,7 +147,6 @@
     background-color: var(--color-bg);
     box-shadow: 0rem 0rem 0.4rem rgba(37, 19, 1, 0.25);
     width: 98%;
-    /* min-height: 130px; */
     border-radius: 10px;
     margin-left: 0.3rem;
     display: flex;
