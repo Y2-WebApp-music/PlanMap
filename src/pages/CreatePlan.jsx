@@ -3,7 +3,6 @@ import '../global.css';
 import './createplan.css'
 import Navbar from "../components/Navbar";
 import Map from "../components/GoogleMap/Map"
-import WeatherAPI from '/src/components/WeatherAPI/WeatherAPI.jsx'
 
 
 function CreatePlan() {
@@ -45,14 +44,6 @@ function FormInput(){
                     </div>
 
                     <div className="sidebar-CreatePlan-scroll">
-                        <div>
-                            <p>สภาพอากาศล่วงหน้า</p>
-                            <div className="weather">
-                                <WeatherAPI
-                                    place = {"London"}
-                                />
-                            </div>
-                        </div>
 
                         <div className="Pathway">
                             <p>สถานที่ในการเดินทาง</p>
