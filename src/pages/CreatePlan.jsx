@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import '../global.css';
 import './createplan.css'
 import Navbar from "../components/Navbar";
-import Map from "../components/GoogleMap/Map"
+import Map from "../components/GoogleMap/Testerfile"
 
 
 function CreatePlan() {

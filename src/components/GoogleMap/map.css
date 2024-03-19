@@ -1,6 +1,93 @@
 .Map-container {
+    position: relative;
     width: 100%;
     height: 100%;
     background-color: brown;
     outline: none;
+}
+
+.SearchArea{
+    position: absolute;
+    width: 100%;
+    height: 4vh;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: start;
+    align-items: center;
+    background: linear-gradient(0deg, rgba(255,255,255,0) 26%, rgba(0,0,0,0.2) 100%);
+    padding-top: 10px;
+    padding-left: 20px;
+    z-index: 8;
+}
+
+.google-searchBox {
+    height: 90%;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.google-searchBox #google-searchLabel{
+    background-color: var(--color-bg);
+    border-radius: 30px;
+    padding: 0.1rem 1rem;
+    height: 80%;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.15);
+    transition: .25s;
+}
+
+.google-searchBox #google-searchLabel:hover{
+    scale: 1.03;
+    transition: .25s;
+}
+
+.google-searchBox #google-searchLabel #google-search {
+    font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    width: 100%;
+    height: 100%;
+    justify-self: center;
+    background: none ;
+    color: var(--color-text);
+    border: none;
+    text-decoration: none;
+    outline: none;
+    font-size: 1.2rem;
+}
+
+.FilterBTN-class{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}
+#GoogleFilterBTN{
+    font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    background-color: var(--color-notSelect);
+    color: var(--color-subtext);
+    outline: none;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.3rem;
+    font-weight: 400;
+    padding: 0.2rem 1.2rem;
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.15);
+    transition: .2s;
+}
+
+#GoogleFilterBTN:hover {
+    scale: 1.04;
+    transition: .2s;
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.35);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    cursor: pointer;
 }
