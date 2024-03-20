@@ -29,7 +29,7 @@
     align-items: center;
 }
 .google-searchBox #google-searchLabel{
-    background-color: var(--color-bg);
+    background-color: var(--color-notSelect);
     border-radius: 30px;
     padding: 0.1rem 1rem;
     height: 80%;
@@ -43,8 +43,9 @@
 }
 
 .google-searchBox #google-searchLabel:hover{
-    scale: 1.03;
+    scale: 1.01;
     transition: .25s;
+    background-color: var(--color-bg);
 }
 
 .google-searchBox #google-searchLabel #google-search {
@@ -69,12 +70,13 @@
     align-items: center;
     gap: 10px;
 }
-#GoogleFilterBTN{
+.GoogleFilterBTN{
     font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     background-color: var(--color-notSelect);
     color: var(--color-subtext);
     outline: none;
     border: none;
+    opacity: 50%;
     border-radius: 30px;
     font-size: 1.3rem;
     font-weight: 400;
@@ -83,7 +85,8 @@
     transition: .2s;
 }
 
-#GoogleFilterBTN:hover {
+.GoogleFilterBTN:hover {
+    opacity: 100%;
     scale: 1.04;
     transition: .2s;
     box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.35);

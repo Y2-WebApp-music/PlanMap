@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import '/src/global.css';
 import './map.css';
-
-const MapAPIkey = "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE";
+// AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE
+const MapAPIkey = "";
 
 
 function Map() {
@@ -18,6 +18,7 @@ function Map() {
                 center: { lat: 13.7734, lng: 100.5202 },
                 zoom: 10,
                 mapTypeControl: false,
+                disableDefaultUI: true,
                 }
             );
             const card = document.getElementById("pac-card");
