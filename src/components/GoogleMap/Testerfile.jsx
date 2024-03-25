@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '/src/global.css';
 import './map.css';
-// AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE
+// API KEY -> AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE
 const MapAPIkey = "";
 
 
