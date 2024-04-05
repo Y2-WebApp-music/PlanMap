@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import '/src/global.css';
 import './map.css';
 import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from "@vis.gl/react-google-maps";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faMagnifyingGlass as searchICON} from '@fortawesome/free-solid-svg-icons'
 
 const MapAPIkey = "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE";
