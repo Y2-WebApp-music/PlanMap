@@ -76,7 +76,8 @@
     color: var(--color-subtext);
     outline: none;
     border: none;
-    opacity: 50%;
+    filter: grayscale(80%);
+    opacity: 60%;
     border-radius: 30px;
     font-size: 1.3rem;
     font-weight: 400;
@@ -87,6 +88,7 @@
 
 .GoogleFilterBTN:hover {
     opacity: 100%;
+    filter: grayscale(0%);
     scale: 1.04;
     transition: .2s;
     box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.35);

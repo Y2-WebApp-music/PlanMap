@@ -225,6 +225,7 @@
     border-color: var(--color-blue);
 }
 .Pathway-List button{
+    font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     background-color: var(--color-input);
     color: var(--color-subtext);
     border: none;

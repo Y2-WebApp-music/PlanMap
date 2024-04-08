@@ -31,7 +31,7 @@ function registerForm() {
     return(
         <>
         <div className="register">
-            <BackBTN link={""}/>
+            <BackBTN />
             <h2>สร้างบัญชีผู้ใช้</h2>
             <form className="form-register" onSubmit={handleSubmit}>
                 <label htmlFor="email"> อีเมล </label>
@@ -49,10 +49,10 @@ function registerForm() {
     )
 }
 
-function BackBTN(link) {
+function BackBTN() {
     return (
         <>
-        <a className="back" href={link}>
+        <a className="back" href="/login">
             <FontAwesomeIcon icon={faAngleLeft} size="lg" id="icon" />
             <p>ย้อนกลับ</p>
         </a>
