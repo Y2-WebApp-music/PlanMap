@@ -19,7 +19,7 @@ function loginform() {
 
         try{
             await signInWithEmailAndPassword(auth, email, password)
-            navigate("/chat")
+            navigate("/mainpage")
         }catch(err){setSourceMapRange(true)}
     }
 

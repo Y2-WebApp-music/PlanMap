@@ -21,7 +21,7 @@ function registerForm() {
         try {
             const res = await createUserWithEmailAndPassword(auth, email, password);
             await updateProfile(res.user, { displayName });
-            navigate("/login");
+            navigate("/mainpage");
         } catch (error) {
             console.error('Registration error:', error);
             setErr(true);
@@ -43,8 +43,8 @@ function registerForm() {
                 <input type="submit" id="submit" value="ลงทะเบียน"/>
             </form>
             {err && <span>Something wrong please try again</span>}
+            <Auth />
         </div>
-        <Auth />
         </>
     )
 }
