@@ -10,7 +10,7 @@ function Home(){
         <div className="MainTitle">
             <h1>เที่ยวหนายยย</h1>
             <h3>เว็บจัดการวางแผนการเดินทาง</h3>
-            <input type="button" value="เริ่มสร้างแพลน" />
+            <a href="/createPlan">เริ่มสร้างแพลน</a>
             <div className="gr-color"> <p></p></div>
         </div>
         < BandageLeft

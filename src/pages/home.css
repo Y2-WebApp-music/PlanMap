@@ -28,10 +28,11 @@
     font-size: 1.6rem;
     transform: translateY(-50px);
 }
-.MainTitle input{
+.MainTitle a{
     color: var(--color-bg);
     margin: 0 0;
     font-size: 1.5rem;
+    text-decoration: none;
     background-color: var(--color-orange);
     padding: 1rem 4rem;
     border-radius: 70px;
@@ -42,7 +43,7 @@
     font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
-.MainTitle input:Hover {
+.MainTitle a:Hover {
     scale: 1.1;
     transition: .3s;
     cursor: pointer;

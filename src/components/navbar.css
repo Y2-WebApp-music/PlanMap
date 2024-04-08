@@ -18,12 +18,13 @@
     align-content: center;
     justify-items: center;
 }
-.NavBar h1 {
+.HomeLinkTitle {
     margin: 0 1rem;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: white;
     justify-self: start;
     align-self: center;
+    text-decoration: none;
 }
 
 .link-btn{
@@ -32,12 +33,13 @@
     justify-content: end;
 }
 
-.link-btn input {
+.link-btn a {
     margin: 0 0 ;
     margin-right: 1rem;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     background-color: var(--color-lightblue);
     color: var(--color-bg);
+    text-decoration: none;
     border-style: none;
     border-radius: 30px;
     padding: 0.3rem 1rem;
@@ -45,7 +47,7 @@
     font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
-.link-btn input:hover{
+.link-btn a:hover{
     background-color: var(--color-bg);
     color: var(--color-lightblue);
     scale: 1.1;

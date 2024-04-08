@@ -49,11 +49,11 @@ function Navbar(){
     return(
         <div className="zIndex">
             <div className="NavBar">
-                <h1>เที่ยวหนายยย</h1>
+                <a href="/" className="HomeLinkTitle">เที่ยวหนายยย</a>
                 <div></div>
                 <div className="link-btn">
-                    <input type="button" value="แพลนของฉัน" />
-                    <input type="button" value="สร้างแพลนใหม่" />
+                    <a href="/mainpage">แพลนของฉัน</a>
+                    <a href="/createPlan">สร้างแพลนใหม่</a>
                 </div>
                 <LoginChecker togglePopUp={togglePopUp} username={username} userPhoto={userPhoto} />
             </div>
