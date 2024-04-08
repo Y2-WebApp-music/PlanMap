@@ -22,9 +22,9 @@ function Mainpage(){
                 setUserPhoto(null);
             }
         });
-
         return () => unsubscribe();
     }, []);
+
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         return () => {

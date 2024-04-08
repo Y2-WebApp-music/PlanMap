@@ -7,6 +7,7 @@ import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Mainpage from './pages/Mainpage.jsx'
 import CreatePlan from './pages/CreatePlan';
+import Setting from './pages/Setting';
 
 function App() {
   const {currentUser} = useContext(AuthContext)
@@ -27,11 +28,18 @@ function App() {
           <Route path='mainpage' element={
             <ProtectedRoute>
               <Mainpage/>
-            </ProtectedRoute>}/>
+            </ProtectedRoute>}
+          />
           <Route path='createPlan' element={
             <ProtectedRoute>
               <CreatePlan/>
-            </ProtectedRoute>}/>
+            </ProtectedRoute>}
+          />
+          <Route path='setting' element={
+            <ProtectedRoute>
+              <Setting/>
+            </ProtectedRoute>}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

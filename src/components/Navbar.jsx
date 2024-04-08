@@ -3,6 +3,7 @@ import '../global.css';
 import './navbar.css';
 import { auth } from '/src/DB/Firebase-Config.js'
 import { signOut } from "firebase/auth";
+import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear,faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
@@ -81,7 +82,10 @@ function LoginChecker({togglePopUp, username, userPhoto }){
 }
 
 function PopUPSetting({username , email}) {
-
+    const navigate = useNavigate();
+    const handleSetting = ()=>{
+        navigate("/setting")
+    }
 
     return(
         <>
@@ -89,7 +93,7 @@ function PopUPSetting({username , email}) {
             <p className="p-userName">{username}</p>
             <p className="p-email">{email}</p>
             <hr />
-            <div className="PopUp-btn">
+            <div className="PopUp-btn" onClick={handleSetting}>
                 <FontAwesomeIcon icon={faGear} size="lg" id="icon" />
                 <p> การตั้งค่า </p>
             </div>
