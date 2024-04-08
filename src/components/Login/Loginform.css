@@ -88,6 +88,7 @@
 
 .googleLogin {
     background-color: var(--color-bg2);
+    border: solid;
     width: 50%;
     padding: 0.3rem 0.3rem;
     display: grid;

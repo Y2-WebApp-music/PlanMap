@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import AuthProvider from './AuthContext';
+import react, {useState, useEffect, useContext} from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthContext } from './DB/AuthContext';
 
 import Home from "./pages/Home.jsx"
 import Login from './pages/Login.jsx'
@@ -8,17 +9,32 @@ import Mainpage from './pages/Mainpage.jsx'
 import CreatePlan from './pages/CreatePlan';
 
 function App() {
+  const {currentUser} = useContext(AuthContext)
+
+  const ProtectedRoute = ({children}) => {
+    if(!currentUser){
+      return <Navigate to="/login"/>
+    }else {return children;}
+  }
 
   return (
-    <>
-    <AuthProvider>
-      {/* <Home /> */}
-      {/* <Register /> */}
-      {/* <Login /> */}
-      {/* <Mainpage /> */}
-      <CreatePlan />
-    </AuthProvider>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/'>
+          <Route index element={<Home/>}/>
+          <Route path='login' element={<Login/>}/>
+          <Route path='register' element={<Register/>}/>
+          <Route path='mainpage' element={
+            <ProtectedRoute>
+              <Mainpage/>
+            </ProtectedRoute>}/>
+          <Route path='createPlan' element={
+            <ProtectedRoute>
+              <CreatePlan/>
+            </ProtectedRoute>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
