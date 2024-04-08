@@ -3,6 +3,9 @@ import '../global.css';
 import './createplan.css'
 import Navbar from "../components/Navbar";
 import Map from "../components/GoogleMap/Testerfile"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
+import { faLocationDot, faCircle, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 
 
 function CreatePlan() {
@@ -44,16 +47,37 @@ function FormInput(){
                     </div>
 
                     <div className="sidebar-CreatePlan-scroll">
+                        <div className="sidebar-CreatePlan">
+                            <div className="Pathway">
+                                <p>สถานที่ในการเดินทาง</p>
+                                <div className="Pathway-List">
+                                    <div className="TimePrediction">
+                                        <span>เวลาโดยประมาณ</span><span id="TimeCurrent"> 2 ชั่วโมง 45 นาที</span><span> ด้วยรถยนต์</span>
+                                    </div>
+                                    <div htmlFor="" className="Path-Point">
+                                        <div className="icon-Path-Point">
+                                            <FontAwesomeIcon icon={holdCircle} size="sm" id="holdCircle"/>
+                                            <div className="dot-connectPath">
+                                                <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
+                                                <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
+                                                <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
+                                            </div>
+                                        </div>
+                                        <input type="text" placeholder="เลือกจุดหมาย"/>
+                                    </div>
+                                    <div htmlFor="" className="Path-Destination">
+                                        <FontAwesomeIcon icon={faLocationDot} size="lg" id="faLocationDot"/>
+                                        <input type="text" placeholder="เลือกปลายทาง"/>
+                                    </div>
+                                    <button><FontAwesomeIcon icon={faCirclePlus} size="lg" id="faCirclePlus"/> เพิ่มจุดหมาย</button>
+                                </div>
+                            </div>
 
-                        <div className="Pathway">
-                            <p>สถานที่ในการเดินทาง</p>
-                            <p>zdfknlbnzdfklbn</p>
+                            <label htmlFor="">
+                                <p>บันทึกเพิ่มเติม</p>
+                                <textarea name="addition" id="" cols="30" rows="10"></textarea>
+                            </label>
                         </div>
-
-                        <label htmlFor="">
-                            <p>บันทึกเพิ่มเติม</p>
-                            <textarea name="addition" id="" cols="30" rows="10"></textarea>
-                        </label>
                     </div>
 
                     <input type="submit" value="บันทึกแพลน" id="submit-btn"/>
