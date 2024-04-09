@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import '../global.css';
 import './createplan.css'
 import Navbar from "../components/Navbar";
-import Map from "../components/GoogleMap/Testerfile"
-import FormInput from "../components/GoogleMap/FormInput";
+import Map from "../components/CreatePlan/Testerfile"
+import FormInput from "../components/CreatePlan/FormInput";
 
 
 function CreatePlan() {
