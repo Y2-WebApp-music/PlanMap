@@ -4,7 +4,7 @@ This project for Web ProgramingII
 
 Icon from : `https://fontawesome.com`
 
-## โยง DB ใช้ UID ได้เลบเด้อ
+## โยง DB ใช้ UID ได้เลยเด้อ
 ```js
 import { auth } from '/src/DB/Firebase-Config.js'
 useEffect(() => {
