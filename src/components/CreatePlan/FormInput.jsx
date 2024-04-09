@@ -4,6 +4,8 @@ import './FormInput.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faCircle, faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+import { Reorder, useDragControls } from "framer-motion";
+
 
 function FormInput(){
     const [pathway, setPathway] = useState([
@@ -12,7 +14,8 @@ function FormInput(){
         {id:3, displayName:"testPoint3", lat:21.2346, lng:12.15345}
     ])
     const [ListLength, setListLength] = useState(pathway.length)
-    console.log(pathway)
+    const controls = useDragControls()
+
     const addPathDestination = () => {
         const newId = ListLength + 1;
         const newPoint = { id: newId, displayName: ``, lat: 0, lng: 0 };
@@ -47,11 +50,17 @@ function FormInput(){
                                     <div className="TimePrediction">
                                         <span>เวลาโดยประมาณ</span><span id="TimeCurrent"> 2 ชั่วโมง 45 นาที</span><span> ด้วยรถยนต์</span>
                                     </div>
-                                    {pathway.map((pathway, index) => (
-                                        index === ListLength - 1
-                                            ? <PathDestination key={pathway.id} displayName={pathway.displayName}/>
-                                            : <PathPoint key={pathway.id} displayName={pathway.displayName} />
-                                    ))}
+                                    <Reorder.Group axis="y" values={pathway} onReorder={setPathway}>
+                                        {pathway.map((pathway, index) => (
+                                            <Reorder.Item value={pathway} key={pathway.id}>
+                                                {index === ListLength - 1 ? (
+                                                    <PathDestination key={pathway.id} id={pathway.id} displayName={pathway.displayName}/>
+                                                ) : (
+                                                    <PathPoint key={pathway.id} id={pathway.id} displayName={pathway.displayName} />
+                                                )}
+                                            </Reorder.Item>
+                                        ))}
+                                    </Reorder.Group>
                                     <div className="AddPoint" onClick={addPathDestination}><FontAwesomeIcon icon={faCirclePlus} size="lg" id="faCirclePlus"/> เพิ่มจุดหมาย</div>
                                 </div>
                             </div>
@@ -70,7 +79,7 @@ function FormInput(){
     )
 }
 
-function PathPoint({displayName}){
+function PathPoint({id, displayName}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
     return(
         <div className="Path-Point" >
@@ -82,17 +91,17 @@ function PathPoint({displayName}){
                     <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
                 </div>
             </div>
-            <input type="text" value={placeName} placeholder="เลือกจุดหมาย" name="PathPoint" onChange={(e) => setPlaceName(e.target.value)} draggable/>
+            <input type="text" value={placeName} placeholder="เลือกจุดหมาย" name="PathPoint" onChange={(e) => setPlaceName(e.target.value)} />
             <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
         </div>
     )
 }
-function PathDestination({displayName}){
+function PathDestination({id, displayName}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
     return(
-        <div className="Path-Destination">
+        <div className="Path-Destination" >
             <FontAwesomeIcon icon={faLocationDot} size="lg" id="faLocationDot"/>
-            <input type="text" value={placeName} placeholder="เลือกปลายทาง" onChange={(e) => setPlaceName(e.target.value)} draggable/>
+            <input type="text" value={placeName} placeholder="เลือกปลายทาง" onChange={(e) => setPlaceName(e.target.value)} />
             <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
         </div>
     )

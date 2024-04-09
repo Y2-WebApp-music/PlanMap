@@ -154,7 +154,7 @@
     gap: 10px;
 }
 .Path-Point{
-    width: 95%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -213,7 +213,7 @@
     gap: 5px;
 }
 .Path-Destination{
-    width: 95%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -292,4 +292,15 @@
     transition: .2s;
     background-color: var(--color-blue);
     box-shadow: 0rem 0rem 0.6rem rgba(37, 19, 1, 0.25);
+}
+
+ul {
+    list-style: none;
+    width: 90%;
+    margin: 0 0;
+    padding: 0 0;
+    padding-left: 0.3rem;
+}
+li {
+    margin: 1rem 0;
 }
