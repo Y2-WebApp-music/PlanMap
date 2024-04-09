@@ -10,13 +10,9 @@ import { auth } from '/src/DB/Firebase-Config.js'
 useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             if (user) {
-                setUsername(user.displayName);
-                setEmail(user.email);
-                setUserPhoto(user.photoURL);
+                setUserId(user.uid);
             } else {
-                setUsername(null);
-                setEmail(null);
-                setUserPhoto(null);
+                setUserId(null);
             }
         });
         return () => unsubscribe();
