@@ -30,7 +30,7 @@ npm i --save @fortawesome/free-regular-svg-icons
 npm i --save @fortawesome/free-brands-svg-icons
 npm i --save @fortawesome/react-fontawesome@latest
 npm i react-router-dom
-npm install @dnd-kit/core
+npm i framer-motion
 npm i firebase
 npm i @firebase/firestore
 ```
