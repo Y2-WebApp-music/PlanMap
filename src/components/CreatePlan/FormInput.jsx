@@ -1,11 +1,25 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import '/src/global.css';
 import './FormInput.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
-import { faLocationDot, faCircle, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { faLocationDot, faCircle, faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 
 function FormInput(){
+    const [pathway, setPathway] = useState([
+        {id:1, displayName:"testPoint1", lat:21.2346, lng:12.15345},
+        {id:2, displayName:"testPoint2", lat:21.2346, lng:12.15345},
+        {id:3, displayName:"testPoint3", lat:21.2346, lng:12.15345}
+    ])
+    const [ListLength, setListLength] = useState(pathway.length)
+    console.log(pathway)
+    const addPathDestination = () => {
+        const newId = ListLength + 1;
+        const newPoint = { id: newId, displayName: ``, lat: 0, lng: 0 };
+        setPathway([...pathway, newPoint]);
+        setListLength(newId)
+        console.log('ListLength : ',ListLength)
+    };
 
     return(
         <>
@@ -33,22 +47,12 @@ function FormInput(){
                                     <div className="TimePrediction">
                                         <span>เวลาโดยประมาณ</span><span id="TimeCurrent"> 2 ชั่วโมง 45 นาที</span><span> ด้วยรถยนต์</span>
                                     </div>
-                                    <div htmlFor="" className="Path-Point">
-                                        <div className="icon-Path-Point">
-                                            <FontAwesomeIcon icon={holdCircle} size="sm" id="holdCircle"/>
-                                            <div className="dot-connectPath">
-                                                <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
-                                                <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
-                                                <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
-                                            </div>
-                                        </div>
-                                        <input type="text" placeholder="เลือกจุดหมาย"/>
-                                    </div>
-                                    <div htmlFor="" className="Path-Destination">
-                                        <FontAwesomeIcon icon={faLocationDot} size="lg" id="faLocationDot"/>
-                                        <input type="text" placeholder="เลือกปลายทาง"/>
-                                    </div>
-                                    <button><FontAwesomeIcon icon={faCirclePlus} size="lg" id="faCirclePlus"/> เพิ่มจุดหมาย</button>
+                                    {pathway.map((pathway, index) => (
+                                        index === ListLength - 1
+                                            ? <PathDestination key={pathway.id} displayName={pathway.displayName}/>
+                                            : <PathPoint key={pathway.id} displayName={pathway.displayName} />
+                                    ))}
+                                    <div className="AddPoint" onClick={addPathDestination}><FontAwesomeIcon icon={faCirclePlus} size="lg" id="faCirclePlus"/> เพิ่มจุดหมาย</div>
                                 </div>
                             </div>
 
@@ -63,6 +67,34 @@ function FormInput(){
                 </form>
             </div>
         </>
+    )
+}
+
+function PathPoint({displayName}){
+    const [placeName, setPlaceName] = useState(`${displayName}`);
+    return(
+        <div className="Path-Point" >
+            <div className="icon-Path-Point">
+                <FontAwesomeIcon icon={holdCircle} size="sm" id="holdCircle"/>
+                <div className="dot-connectPath">
+                    <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
+                    <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
+                    <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
+                </div>
+            </div>
+            <input type="text" value={placeName} placeholder="เลือกจุดหมาย" name="PathPoint" onChange={(e) => setPlaceName(e.target.value)} draggable/>
+            <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
+        </div>
+    )
+}
+function PathDestination({displayName}){
+    const [placeName, setPlaceName] = useState(`${displayName}`);
+    return(
+        <div className="Path-Destination">
+            <FontAwesomeIcon icon={faLocationDot} size="lg" id="faLocationDot"/>
+            <input type="text" value={placeName} placeholder="เลือกปลายทาง" onChange={(e) => setPlaceName(e.target.value)} draggable/>
+            <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
+        </div>
     )
 }
 
