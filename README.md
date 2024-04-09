@@ -4,10 +4,27 @@ This project for Web ProgramingII
 
 Icon from : `https://fontawesome.com`
 
-
-## Example of Weather API call
-Free plan can forecast 5 Days
+## โยง DB ใช้ UID ได้เลบเด้อ
+```js
+import { auth } from '/src/DB/Firebase-Config.js'
+useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                setUsername(user.displayName);
+                setEmail(user.email);
+                setUserPhoto(user.photoURL);
+            } else {
+                setUsername(null);
+                setEmail(null);
+                setUserPhoto(null);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
 ```
+### Example of Weather API call
+Free plan can forecast 5 Days
+```json
 {
     "coord": {
         "lon": -0.1257,
