@@ -54,9 +54,9 @@ function FormInput(){
                                         {pathway.map((pathway, index) => (
                                             <Reorder.Item value={pathway} key={pathway.id}>
                                                 {index === ListLength - 1 ? (
-                                                    <PathDestination key={pathway.id} id={pathway.id} displayName={pathway.displayName}/>
+                                                    <PathDestination key={pathway.id} displayName={pathway.displayName}/>
                                                 ) : (
-                                                    <PathPoint key={pathway.id} id={pathway.id} displayName={pathway.displayName} />
+                                                    <PathPoint key={pathway.id} displayName={pathway.displayName} />
                                                 )}
                                             </Reorder.Item>
                                         ))}
@@ -79,7 +79,7 @@ function FormInput(){
     )
 }
 
-function PathPoint({id, displayName}){
+function PathPoint({ displayName}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
     return(
         <div className="Path-Point" >
@@ -96,7 +96,7 @@ function PathPoint({id, displayName}){
         </div>
     )
 }
-function PathDestination({id, displayName}){
+function PathDestination({ displayName}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
     return(
         <div className="Path-Destination" >
