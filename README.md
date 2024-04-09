@@ -22,6 +22,17 @@ useEffect(() => {
         return () => unsubscribe();
     }, []);
 ```
+### Package install
+``` c
+npm i --save @fortawesome/fontawesome-svg-core
+npm i --save @fortawesome/free-solid-svg-icons
+npm i --save @fortawesome/free-regular-svg-icons
+npm i --save @fortawesome/free-brands-svg-icons
+npm i --save @fortawesome/react-fontawesome@latest
+npm i react-router-dom
+npm i firebase
+npm i @firebase/firestore
+```
 ### Example of Weather API call
 Free plan can forecast 5 Days
 ```json
