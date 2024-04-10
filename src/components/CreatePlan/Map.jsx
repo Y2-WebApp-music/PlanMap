@@ -8,6 +8,7 @@ import { loadGoogleMapsScript } from '/src/components/MapLoader.js'
 function Map({pathway}) {
     useEffect(() => {
         console.log('pathway',pathway)
+
         const input = document.getElementById("google-search");
             input.addEventListener("click", () => {
             input.select();
@@ -15,6 +16,33 @@ function Map({pathway}) {
         async function initMap() {
             const { Map } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer();
+
+            const start = { lat: pathway[0].lat, lng: pathway[0].lng };
+            const end = { lat: pathway[pathway.length - 1].lat, lng: pathway[pathway.length - 1].lng };
+            const waypoints = [];
+            for (let i = 1; i < pathway.length - 1; i++) {
+                waypoints.push({
+                    location: new window.google.maps.LatLng(pathway[i].lat, pathway[i].lng),
+                    stopover: true,
+                });
+            }
+
+            directionsService.route({
+                origin: new window.google.maps.LatLng(start.lat, start.lng),
+                destination: new window.google.maps.LatLng(end.lat, end.lng),
+                waypoints: waypoints,
+                optimizeWaypoints: true,
+                travelMode: window.google.maps.TravelMode.DRIVING,
+                }, (response, status) => {
+                if (status === 'OK') {
+                    directionsRenderer.setDirections(response);
+                } else {
+                window.alert("Directions request failed due to " + status);
+                }
+            });
+
             const map = new Map(document.getElementById("map"), {
                 center: { lat: 13.7734, lng: 100.5202 },
                 zoom: 10,
@@ -22,10 +50,9 @@ function Map({pathway}) {
                 mapTypeControl: false,
                 disableDefaultUI: true,
             });
-            // const marker = new AdvancedMarkerElement({
-            //     map,
-            //     position: { lat: 37.4239163, lng: -122.0947209 },
-            // });
+
+            directionsRenderer.setMap(map);
+
             pathway.forEach((pathway)=>{
                 const marker = new AdvancedMarkerElement({
                     map,
