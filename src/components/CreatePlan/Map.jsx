@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import '/src/global.css';
 import './map.css';
 
@@ -17,15 +17,23 @@ function Map({pathway}) {
             const { Map } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
             const directionsService = new google.maps.DirectionsService();
-            const directionsRenderer = new google.maps.DirectionsRenderer();
+            const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: 'blue' } });
 
-            const start = { lat: pathway[0].lat, lng: pathway[0].lng };
-            const end = { lat: pathway[pathway.length - 1].lat, lng: pathway[pathway.length - 1].lng };
+            const filteredPathway = pathway.filter(point => point.lat !== null && point.lng !== null);
+
+            if (filteredPathway.length < 2) {
+                window.alert("Insufficient valid points to calculate route");
+                return;
+            }
+
+            const start = { lat: filteredPathway[0].lat, lng: filteredPathway[0].lng };
+            const end = { lat: filteredPathway[filteredPathway.length - 1].lat, lng: filteredPathway[filteredPathway.length - 1].lng };
             const waypoints = [];
-            for (let i = 1; i < pathway.length - 1; i++) {
+
+            for (let i = 1; i < filteredPathway.length - 1; i++) {
                 waypoints.push({
-                    location: new window.google.maps.LatLng(pathway[i].lat, pathway[i].lng),
-                    stopover: true,
+                location: new window.google.maps.LatLng(filteredPathway[i].lat, filteredPathway[i].lng),
+                stopover: true,
                 });
             }
 
@@ -53,12 +61,12 @@ function Map({pathway}) {
 
             directionsRenderer.setMap(map);
 
-            pathway.forEach((pathway)=>{
-                const marker = new AdvancedMarkerElement({
-                    map,
-                    position: { lat: pathway.lat, lng: pathway.lng },
-                });
-            })
+            // pathway.forEach((pathway)=>{
+            //     const marker = new AdvancedMarkerElement({
+            //         map,
+            //         position: { lat: pathway.lat, lng: pathway.lng },
+            //     });
+            // })
         }
         loadGoogleMapsScript(initMap);
     }, [pathway]);
