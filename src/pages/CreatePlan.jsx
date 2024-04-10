@@ -18,7 +18,7 @@ function CreatePlan() {
             <Navbar/>
             <div className="CreatePlan-content">
                 <FormInput/>
-                <Map/>
+                {/* <Map/> */}
             </div>
         </>
     )

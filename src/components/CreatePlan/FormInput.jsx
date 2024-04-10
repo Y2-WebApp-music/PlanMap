@@ -4,21 +4,21 @@ import './FormInput.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faCircle, faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
-import { Reorder, useDragControls } from "framer-motion";
+import { Reorder } from "framer-motion";
+import { loadGoogleMapsScript } from '/src/components/MapLoader.js';
 
 
 function FormInput(){
     const [pathway, setPathway] = useState([
-        {id:1, displayName:"testPoint1", lat:21.2346, lng:12.15345},
-        {id:2, displayName:"testPoint2", lat:21.2346, lng:12.15345},
-        {id:3, displayName:"testPoint3", lat:21.2346, lng:12.15345}
+        {id: 3, displayName: 'centralwOrld', lat: 13.7465337, lng: 100.5391488},
+        {id: 1, displayName: 'King Mongkut’s University of Technology Thonburi (KMUTT)', lat: 13.6512522, lng: 100.4964428},
+        {id: 2, displayName: 'Don Mueang International Airport', lat: 13.9199052, lng: 100.6019304}
     ])
     const [ListLength, setListLength] = useState(pathway.length)
-    const controls = useDragControls()
 
     const addPathDestination = () => {
         const newId = ListLength + 1;
-        const newPoint = { id: newId, displayName: ``, lat: 0, lng: 0 };
+        const newPoint = { id: newId, displayName: '', lat: 0, lng: 0 };
         setPathway([...pathway, newPoint]);
         setListLength(newId)
         console.log('ListLength : ',ListLength)
@@ -51,12 +51,12 @@ function FormInput(){
                                         <span>เวลาโดยประมาณ</span><span id="TimeCurrent"> 2 ชั่วโมง 45 นาที</span><span> ด้วยรถยนต์</span>
                                     </div>
                                     <Reorder.Group axis="y" values={pathway} onReorder={setPathway}>
-                                        {pathway.map((pathway, index) => (
-                                            <Reorder.Item value={pathway} key={pathway.id}>
+                                        {pathway.map((point, index) => (
+                                            <Reorder.Item value={point} key={point.id}>
                                                 {index === ListLength - 1 ? (
-                                                    <PathDestination key={pathway.id} displayName={pathway.displayName}/>
+                                                    <PathDestination key={point.id} id={point.id} displayName={point.displayName} setPathway={setPathway} pathway={pathway}/>
                                                 ) : (
-                                                    <PathPoint key={pathway.id} displayName={pathway.displayName} />
+                                                    <PathPoint key={point.id} id={point.id} displayName={point.displayName} setPathway={setPathway} pathway={pathway}/>
                                                 )}
                                             </Reorder.Item>
                                         ))}
@@ -79,8 +79,35 @@ function FormInput(){
     )
 }
 
-function PathPoint({ displayName}){
+function PathPoint({id, displayName, pathway, setPathway}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
+    console.log(pathway)
+
+    useEffect(() => {
+        function SearchPlace(){
+            const input = document.getElementById(`pathpoint-input-${id}`);
+            const autocomplete = new window.google.maps.places.Autocomplete(input, {
+                fields: ["formatted_address", "geometry", "name"],
+                strictBounds: false,
+            });
+            autocomplete.addListener("place_changed", () => {
+                const place = autocomplete.getPlace();
+                if (place.geometry && place.geometry.location) {
+                    let newLat = place.geometry.location.lat();
+                    let newLng = place.geometry.location.lng();
+                    setPlaceName(place.name);
+                    let updatedPathway = pathway.map(item =>
+                        item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng } : item
+                    );
+                    setPathway(updatedPathway);
+                }
+            });
+            return () => {
+            };
+        }
+        loadGoogleMapsScript(SearchPlace);
+    }, [id, setPlaceName]);
+
     return(
         <div className="Path-Point" >
             <div className="icon-Path-Point">
@@ -91,17 +118,42 @@ function PathPoint({ displayName}){
                     <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
                 </div>
             </div>
-            <input type="text" value={placeName} placeholder="เลือกจุดหมาย" name="PathPoint" onChange={(e) => setPlaceName(e.target.value)} />
+            <input type="text" value={placeName} placeholder="เลือกจุดหมาย" name="PathPoint" id={`pathpoint-input-${id}`} onChange={(e) => setPlaceName(e.target.value)} />
             <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
         </div>
     )
 }
-function PathDestination({ displayName}){
+function PathDestination({id, displayName, pathway, setPathway}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
+
+    useEffect(() => {
+        function SearchPlace(){
+            const input = document.getElementById(`PathDestination-input-${id}`);
+            const autocomplete = new window.google.maps.places.Autocomplete(input, {
+                fields: ["formatted_address", "geometry", "name"],
+                strictBounds: false,
+            });
+            autocomplete.addListener("place_changed", () => {
+                const place = autocomplete.getPlace();
+                if (place.geometry && place.geometry.location) {
+                    let newLat = place.geometry.location.lat();
+                    let newLng = place.geometry.location.lng();
+                    setPlaceName(place.name);
+                    let updatedPathway = pathway.map(item =>
+                        item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng } : item
+                    );
+                    setPathway(updatedPathway);
+                }
+            });
+            return () => {
+            };
+        }
+        loadGoogleMapsScript(SearchPlace);
+    }, [id, setPlaceName]);
     return(
         <div className="Path-Destination" >
             <FontAwesomeIcon icon={faLocationDot} size="lg" id="faLocationDot"/>
-            <input type="text" value={placeName} placeholder="เลือกปลายทาง" onChange={(e) => setPlaceName(e.target.value)} />
+            <input type="text" value={placeName} placeholder="เลือกปลายทาง" id={`PathDestination-input-${id}`} onChange={(e) => setPlaceName(e.target.value)} />
             <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
         </div>
     )

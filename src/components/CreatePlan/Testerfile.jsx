@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import '/src/global.css';
 import './map.css';
-// API KEY -> AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE
-const MapAPIkey = "";
+
+import { loadGoogleMapsScript } from '/src/components/MapLoader.js'
 
 
 function Map() {
@@ -69,16 +69,7 @@ function Map() {
                 marker.setVisible(true);
             });
         }
-
-        if (!window.google) {
-            const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${MapAPIkey}&libraries=places`;
-            script.async = true;
-            script.onload = initMap;
-            document.body.appendChild(script);
-        } else {
-            initMap();
-        }
+        loadGoogleMapsScript(initMap);
     }, []);
 
     return (

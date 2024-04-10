@@ -1,114 +1,111 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useEffect } from 'react';
 import '/src/global.css';
 import './map.css';
-import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from "@vis.gl/react-google-maps";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faMagnifyingGlass as searchICON} from '@fortawesome/free-solid-svg-icons'
 
-const MapAPIkey = "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE";
+import { loadGoogleMapsScript } from '/src/components/MapLoader.js'
 
-const loadScript = (url, callback)=> {
-    let script = document.createElement('script')
-    script.type= 'text/javascript'
-    script.async = true;
-    script.onload = callback;
-    if(script.readState){
-        script.onreadystatechange = function(){
-            if(script.readyState === 'loaded' || script.readyState === 'complete'){
-                script.onreadystatechange = null
-                callback()
-            }
-        }
-    }else {
-        script.onload = ()=> callback();
-    }
-    script.src = url
-    document.getElementsByTagName('head')[0].appendChild(script)
-}
 
-let autoComplete;
-
-function GoogleMap(){
-
-    const [mapCenter, setMapCenter] = useState({ lat: 13.7734, lng: 100.5202 });
-
-    const [query, setQuery] = useState("")
-    const autoCompleteRef = useRef()
-
-    // Handle Search query (address, town, country , cities)
-    const handleScriptLoad =(updateQuery, autoCompleteRef)=>{
-        autoComplete = new window.google.maps.places.Autocomplete(
-            autoCompleteRef.current,
-            {types: ['establishment']}
-        )
-        autoComplete.addListener('place_changed', ()=>{
-            handlePlaceSelect(updateQuery, setMapCenter);
-        })
-    }
-
-    const handlePlaceSelect = async (updateQuery, setMapCenter) =>{
-        const addressObject = await autoComplete.getPlace()
-        const query = addressObject.formatted_address
-        updateQuery(query)
-        const latLng = {
-            lat: addressObject?.geometry?.location?.lat(),
-            lng: addressObject?.geometry?.location?.lng()
-        }
-        setMapCenter(latLng);
-        console.log('latLng',latLng)
-    }
-
-    useEffect(()=>{
-        loadScript(
-            `https://maps.googleapis.com/maps/api/js?key=${MapAPIkey}&libraries=places`,
-            () => handleScriptLoad(setQuery, autoCompleteRef)
-        )
-    }, [])
-
+function Map() {
     useEffect(() => {
-        console.log("Updated map center:", mapCenter);
-    }, [mapCenter]);
+        const input = document.getElementById("google-search");
+            input.addEventListener("click", () => {
+            input.select();
+        });
+        function initMap() {
+            const map = new window.google.maps.Map(
+                document.getElementById("map"),
+                {
+                center: { lat: 13.7734, lng: 100.5202 },
+                zoom: 10,
+                mapTypeControl: false,
+                disableDefaultUI: true,
+                }
+            );
+            const card = document.getElementById("pac-card");
+            const input = document.getElementById("google-search");
+            const options = {
+                fields: ["formatted_address", "geometry", "name"],
+                strictBounds: false,
+            };
 
-    return(
+            map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
+
+            const autocomplete = new window.google.maps.places.Autocomplete(
+                input,
+                options
+            );
+
+            autocomplete.bindTo("bounds", map);
+
+            const marker = new window.google.maps.Marker({
+                map,
+                anchorPoint: new window.google.maps.Point(0, -29),
+            });
+
+            autocomplete.addListener("place_changed", () => {
+                marker.setVisible(false);
+
+                const place = autocomplete.getPlace();
+
+                if (!place.geometry || !place.geometry.location) {
+                    window.alert(
+                        "No details available for input: '" + place.name + "'"
+                );
+                    return;
+                }
+
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+
+
+                map.panTo(place.geometry.location);
+                map.setZoom(17);
+
+                marker.setPosition(place.geometry.location);
+                marker.setVisible(true);
+            });
+        }
+        loadGoogleMapsScript(initMap);
+    }, []);
+
+    return (
         <div className="Map-container">
             <div className="SearchArea">
                 <div className="google-searchBox">
                     <label htmlFor="google-search" id="google-searchLabel">
                         <input type="text"
                                 placeholder="ค้นหาใน google map"
-                                id="google-search"
-                                onChange={(event) => setQuery(event.target.value)}
-                                value={query}
-                                ref={autoCompleteRef}/>
+                                id="google-search"/>
                         {/* <FontAwesomeIcon icon={searchICON} size="lg" style={{ color: 'var(--color-text)' }}/> */}
                     </label>
                 </div>
                 <div className="FilterBTN-class">
-                    <GoogleFilterBTN text={"🏬 โรงแรม"}/>
-                    <GoogleFilterBTN text={"⛽️ สถานีน้ำมัน"}/>
-                    <GoogleFilterBTN text={"🍽️ ร้านอาหาร"}/>
-                    <GoogleFilterBTN text={"☕️ ร้านกาแฟ"}/>
+                    <GoogleFilterBTN text={"🏬 โรงแรม"} category="hotels" />
+                    <GoogleFilterBTN text={"⛽️ สถานีน้ำมัน"} category="gasStations" />
+                    <GoogleFilterBTN text={"🍽️ ร้านอาหาร"} category="restaurants" />
+                    <GoogleFilterBTN text={"☕️ ร้านกาแฟ"} category="coffeeShops" />
                 </div>
             </div>
-            <APIProvider apiKey={MapAPIkey}>
-                <Map
-                    defaultZoom={10}
-                    defaultCenter={mapCenter}
-                    mapId={"db5fd8712a8218b5"}
-                    gestureHandling={'greedy'}
-                    disableDefaultUI={true}
-                >
-                </Map>
-            </APIProvider>
+
+            <div id="map" style={{ height: '100%', width: '100%' }}></div>
         </div>
-    )
+    );
 }
-function GoogleFilterBTN({text}) {
+function GoogleFilterBTN({ text, category }) {
     return(
         <div>
-            <input type="submit" value={text} id="GoogleFilterBTN" />
+            <input
+                type="button"
+                className="GoogleFilterBTN"
+                value={text}
+                data-category={category}
+            />
         </div>
     )
 }
 
-export default GoogleMap
+export default Map;
