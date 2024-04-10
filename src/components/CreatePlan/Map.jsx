@@ -5,72 +5,36 @@ import './map.css';
 import { loadGoogleMapsScript } from '/src/components/MapLoader.js'
 
 
-function Map() {
+function Map({pathway}) {
     useEffect(() => {
+        console.log('pathway',pathway)
         const input = document.getElementById("google-search");
             input.addEventListener("click", () => {
             input.select();
         });
-        function initMap() {
-            const map = new window.google.maps.Map(
-                document.getElementById("map"),
-                {
+        async function initMap() {
+            const { Map } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+            const map = new Map(document.getElementById("map"), {
                 center: { lat: 13.7734, lng: 100.5202 },
                 zoom: 10,
+                mapId: "4504f8b37365c3d0",
                 mapTypeControl: false,
                 disableDefaultUI: true,
-                }
-            );
-            const card = document.getElementById("pac-card");
-            const input = document.getElementById("google-search");
-            const options = {
-                fields: ["formatted_address", "geometry", "name"],
-                strictBounds: false,
-            };
-
-            map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
-
-            const autocomplete = new window.google.maps.places.Autocomplete(
-                input,
-                options
-            );
-
-            autocomplete.bindTo("bounds", map);
-
-            const marker = new window.google.maps.Marker({
-                map,
-                anchorPoint: new window.google.maps.Point(0, -29),
             });
-
-            autocomplete.addListener("place_changed", () => {
-                marker.setVisible(false);
-
-                const place = autocomplete.getPlace();
-
-                if (!place.geometry || !place.geometry.location) {
-                    window.alert(
-                        "No details available for input: '" + place.name + "'"
-                );
-                    return;
-                }
-
-                if (place.geometry.viewport) {
-                    map.fitBounds(place.geometry.viewport);
-                } else {
-                    map.setCenter(place.geometry.location);
-                    map.setZoom(17);
-                }
-
-
-                map.panTo(place.geometry.location);
-                map.setZoom(17);
-
-                marker.setPosition(place.geometry.location);
-                marker.setVisible(true);
-            });
+            // const marker = new AdvancedMarkerElement({
+            //     map,
+            //     position: { lat: 37.4239163, lng: -122.0947209 },
+            // });
+            pathway.forEach((pathway)=>{
+                const marker = new AdvancedMarkerElement({
+                    map,
+                    position: { lat: pathway.lat, lng: pathway.lng },
+                });
+            })
         }
         loadGoogleMapsScript(initMap);
-    }, []);
+    }, [pathway]);
 
     return (
         <div className="Map-container">

@@ -7,21 +7,14 @@ import { faLocationDot, faCircle, faCirclePlus, faCircleXmark } from '@fortaweso
 import { Reorder } from "framer-motion";
 import { loadGoogleMapsScript } from '/src/components/MapLoader.js';
 
-
-function FormInput(){
-    const [pathway, setPathway] = useState([
-        {id: 3, displayName: 'centralwOrld', lat: 13.7465337, lng: 100.5391488},
-        {id: 1, displayName: 'King Mongkut’s University of Technology Thonburi (KMUTT)', lat: 13.6512522, lng: 100.4964428},
-        {id: 2, displayName: 'Don Mueang International Airport', lat: 13.9199052, lng: 100.6019304}
-    ])
+function FormInput({pathway, setPathway}){
     const [ListLength, setListLength] = useState(pathway.length)
 
     const addPathDestination = () => {
         const newId = ListLength + 1;
-        const newPoint = { id: newId, displayName: '', lat: 0, lng: 0 };
+        const newPoint = { id: newId, displayName: '', lat: null, lng: null };
         setPathway([...pathway, newPoint]);
         setListLength(newId)
-        console.log('ListLength : ',ListLength)
     };
 
     return(
@@ -81,7 +74,6 @@ function FormInput(){
 
 function PathPoint({id, displayName, pathway, setPathway}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
-    console.log(pathway)
 
     useEffect(() => {
         function SearchPlace(){
