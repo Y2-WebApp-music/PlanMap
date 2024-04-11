@@ -7,8 +7,10 @@ import { faLocationDot, faCircle, faCirclePlus, faCircleXmark } from '@fortaweso
 import { Reorder } from "framer-motion";
 import { loadGoogleMapsScript } from '/src/components/MapLoader.js';
 
-function FormInput({pathway, setPathway}){
+function FormInput({pathway, setPathway, duration, distance}){
     const [ListLength, setListLength] = useState(pathway.length)
+    const hours = Math.floor(duration / 60);
+    const minutes = Math.round(duration % 60);
 
     const addPathDestination = () => {
         const newId = ListLength + 1;
@@ -17,10 +19,14 @@ function FormInput({pathway, setPathway}){
         setListLength(newId)
     };
 
+    const handleSubmit = async (e)=>{
+        console.log(e.target.value)
+    }
+
     return(
         <>
             <div className="sidebar">
-                <form action="" className="FormInput">
+                <form className="FormInput" onSubmit={handleSubmit}>
                     <label htmlFor="titlePlan">
                         <p>ชื่อแพลน</p>
                         <input type="text" name="titlePlan" id="titlePlan" placeholder="ชื่อแพลน"/>
@@ -41,7 +47,7 @@ function FormInput({pathway, setPathway}){
                                 <p>สถานที่ในการเดินทาง</p>
                                 <div className="Pathway-List">
                                     <div className="TimePrediction">
-                                        <span>เวลาโดยประมาณ</span><span id="TimeCurrent"> 2 ชั่วโมง 45 นาที</span><span> ด้วยรถยนต์</span>
+                                        <span>เวลาโดยประมาณ</span><span id="TimeCurrent"> {hours} ชั่วโมง {minutes} นาที</span><span> ด้วยรถยนต์</span>
                                     </div>
                                     <Reorder.Group axis="y" values={pathway} onReorder={setPathway}>
                                         {pathway.map((point, index) => (
@@ -74,6 +80,7 @@ function FormInput({pathway, setPathway}){
 
 function PathPoint({id, displayName, pathway, setPathway}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
+    console.log('PathPoint ID: ',id)
 
     useEffect(() => {
         function SearchPlace(){
@@ -117,6 +124,7 @@ function PathPoint({id, displayName, pathway, setPathway}){
 }
 function PathDestination({id, displayName, pathway, setPathway}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
+    console.log('PathDestination ID:',id)
 
     useEffect(() => {
         function SearchPlace(){

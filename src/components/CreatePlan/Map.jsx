@@ -5,9 +5,9 @@ import './map.css';
 import { loadGoogleMapsScript } from '/src/components/MapLoader.js'
 
 
-function Map({pathway}) {
+function Map({pathway, setDuration, setDistance}) {
     useEffect(() => {
-        console.log('pathway',pathway)
+        console.log(pathway)
 
         const input = document.getElementById("google-search");
             input.addEventListener("click", () => {
@@ -15,14 +15,22 @@ function Map({pathway}) {
         });
         async function initMap() {
             const { Map } = await google.maps.importLibrary("maps");
+            const map = new Map(document.getElementById("map"), {
+                center: { lat: 13.7734, lng: 100.5202 },
+                zoom: 10,
+                mapId: "4504f8b37365c3d0",
+                mapTypeControl: false,
+                disableDefaultUI: true,
+            });
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
             const directionsService = new google.maps.DirectionsService();
-            const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: 'blue' } });
+            const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });
 
             const filteredPathway = pathway.filter(point => point.lat !== null && point.lng !== null);
+            console.log(filteredPathway)
 
             if (filteredPathway.length < 2) {
-                window.alert("Insufficient valid points to calculate route");
+                map.setCenter({ lat: filteredPathway[0].lat, lng: filteredPathway[0].lng });
                 return;
             }
 
@@ -46,27 +54,17 @@ function Map({pathway}) {
                 }, (response, status) => {
                 if (status === 'OK') {
                     directionsRenderer.setDirections(response);
+                    const route = response.routes[0];
+                    let distance = route.legs.reduce((acc, leg) => acc + leg.distance.value, 0);
+                    let duration = route.legs.reduce((acc, leg) => acc + leg.duration.value, 0);
+                    setDistance(distance/1000)
+                    setDuration(duration/60)
+
                 } else {
                 window.alert("Directions request failed due to " + status);
                 }
             });
-
-            const map = new Map(document.getElementById("map"), {
-                center: { lat: 13.7734, lng: 100.5202 },
-                zoom: 10,
-                mapId: "4504f8b37365c3d0",
-                mapTypeControl: false,
-                disableDefaultUI: true,
-            });
-
             directionsRenderer.setMap(map);
-
-            // pathway.forEach((pathway)=>{
-            //     const marker = new AdvancedMarkerElement({
-            //         map,
-            //         position: { lat: pathway.lat, lng: pathway.lng },
-            //     });
-            // })
         }
         loadGoogleMapsScript(initMap);
     }, [pathway]);
@@ -94,6 +92,7 @@ function Map({pathway}) {
         </div>
     );
 }
+
 function GoogleFilterBTN({ text, category }) {
     return(
         <div>
