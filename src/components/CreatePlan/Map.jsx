@@ -13,15 +13,15 @@ function Map({pathway, setDuration, setDistance}) {
             input.select();
         });
         async function initMap() {
-            const { Map } = await google.maps.importLibrary("maps");
+            const { Map,InfoWindow } = await google.maps.importLibrary("maps");
             const map = new Map(document.getElementById("map"), {
                 center: { lat: 13.7734, lng: 100.5202 },
                 zoom: 10,
-                mapId: "4504f8b37365c3d0",
+                mapId: "981d73a7e46f15d2",
                 mapTypeControl: false,
                 disableDefaultUI: true,
             });
-            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+            const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
 
             const card = document.getElementById("pac-card");
             const input = document.getElementById("google-search");
@@ -29,6 +29,7 @@ function Map({pathway, setDuration, setDistance}) {
                 fields: ["formatted_address", "geometry", "name"],
                 strictBounds: false,
             };
+            const infoWindow = new InfoWindow();
 
             map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
 
@@ -63,7 +64,11 @@ function Map({pathway, setDuration, setDistance}) {
                 const marker = new AdvancedMarkerElement({
                     map,
                     position: place.geometry.location,
+                    title: "Hello from marker"
                 });
+                infoWindow.close();
+                infoWindow.setContent(marker.title);
+                infoWindow.open(marker.map, marker);
             });
 
             const directionsService = new google.maps.DirectionsService();
