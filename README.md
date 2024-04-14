@@ -35,6 +35,7 @@ npm i mongodb
 ### Example DB document
 ``` js
 const newDocumentId = await createDocument({
+  uid : 3bUGF&48fg23gfr248rf
   title: 'Test Title Name',
   StartDate: new Date('2024-04-04'),
   EndDate: new Date('2024-04-17'),
