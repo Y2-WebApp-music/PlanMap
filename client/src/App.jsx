@@ -8,6 +8,7 @@ import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Mainpage from './pages/Mainpage.jsx'
 import CreatePlan from './pages/CreatePlan';
+import PlanView from './pages/Planview';
 import Setting from './pages/Setting';
 
 function App() {
@@ -41,6 +42,11 @@ function App() {
           <Route path='setting' element={
             <ProtectedRoute>
               <Setting/>
+            </ProtectedRoute>}
+          />
+          <Route path='plan/:id' element={
+            <ProtectedRoute>
+              <PlanView/>
             </ProtectedRoute>}
           />
         </Route>
