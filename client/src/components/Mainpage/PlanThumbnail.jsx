@@ -3,8 +3,15 @@ import '/src/global.css'
 import './planthumbnail.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsisVertical, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios'
 
 function Thumbnail(){
+    const [planList,setPlanList] = useState([])
+    useEffect(()=>{
+        axios.get('http://localhost:3000/mainpage')
+        .then(plan => setPlanList(plan.data))
+    })
+
     return(<>
     <div className="PlanThumbnail">
         <div className="FilterArea">
@@ -17,98 +24,14 @@ function Thumbnail(){
             <div className="BtnZone">
                 <FilterBTN text={"ล่าสุด"}/>
                 <FilterBTN text={"เก่าที่สุด"}/>
-                <FilterBTN text={"เก่าที่สุด"}/>
-                <FilterBTN text={"เก่าที่สุด"}/>
-                <FilterBTN text={"เก่าที่สุด"}/>
             </div>
         </div>
 
         <div className="Thumbnail-scroll">
             <div className="Thumbnail">
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
+                {planList.map((planList)=>(
+                    <ThumbnailElement key={planList._id} Title={planList.tilte} StartDate={planList.StartDate} EndDate={planList.EndDate} From={planList.Route[0].displayName} To={planList.Route[planList.Route.length - 1].displayName}/>
+                ))}
                 < ThumbnailElement
                     Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
                     StartDate ={"435 345 345"}

@@ -7,14 +7,14 @@ const client = new MongoClient(url);
 let db;
 let collection;
 
-export async function connect() {
+async function connect() {
   await client.connect();
   console.log("Connected to MongoDB");
-  db = client.db("PlanMap");
+  db = client.db("Plan");
   collection = db.collection("Plans");
 }
 
-export async function close() {
+async function close() {
   await client.close();
   console.log("Closed connection to MongoDB");
 }
@@ -31,11 +31,23 @@ export async function readDocument(uid, documentId) {
   return document;
 }
 
-export async function readAllDocuments(uid, sortField = "CreateAt", sortOrder = 1) {
-  const sortQuery = { [sortField]: sortOrder };
-  const documents = await collection.find({ uid }).sort(sortQuery).toArray();
-  console.log("All documents read and sorted");
-  return documents;
+// export async function readAllDocuments(uid, sortField = "CreateAt", sortOrder = 1) {
+//   const sortQuery = { [sortField]: sortOrder };
+//   const documents = await collection.find({ uid }).sort(sortQuery).toArray();
+//   console.log("All documents read and sorted");
+//   return documents;
+// }
+
+export async function readAllDocuments() {
+  try {
+    await connect();
+    const documents = await collection.find({}).toArray();
+    console.log("All documents read and sorted");
+    return documents;
+  } catch (error) {
+    console.error("Error reading documents:", error);
+    throw error;
+  }
 }
 
 export async function updateDocument(uid, documentId, update) {
