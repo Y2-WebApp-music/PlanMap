@@ -29,6 +29,22 @@ npm i react-router-dom
 npm i framer-motion
 npm i firebase
 npm i @firebase/firestore
+npm i mongodb
+```
+
+### Example DB document
+``` js
+const newDocumentId = await createDocument({
+  title: 'Test Title Name',
+  StartDate: new Date('2024-04-04'),
+  EndDate: new Date('2024-04-17'),
+  Route: [
+    { id: 1, displayName: "centralwOrld", lat: 13.7465337, lng: 100.5391488 },
+    { id: 2, displayName: "PlaceNumber2", lat: 13.6435337, lng: 100.2391488 }
+  ],
+  Addition: 'ในแพลนนี้เราจะเที่ยวกันภายในงบ 15000 บาท เดี๋ยวจองโรงแรมไว้ที่เชียงราย',
+  CreateAt: { $currentDate: { type: "date" } }
+});
 ```
 ### Example of Weather API call
 Free plan can forecast 5 Days
