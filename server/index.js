@@ -23,6 +23,15 @@ app.get('/comingplan', (req, res)=>{
     .then(data => res.json(data))
     .catch(err => res.json(err))
 })
+
+app.get('/plan', (req, res)=>{
+    const uid = req.query.uid;
+    const id = req.query.id;
+    readDocument(uid,id)
+    .then(data => res.json(data))
+    .catch(err => res.json(err))
+})
+
 app.listen(3000, () =>{
     console.log("server is running")
 })

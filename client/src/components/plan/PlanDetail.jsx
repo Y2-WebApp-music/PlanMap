@@ -12,17 +12,6 @@ function FormInput({pathway, setPathway, duration, distance}){
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
 
-    const addPathDestination = () => {
-        const newId = ListLength + 1;
-        const newPoint = { id: newId, displayName: '', lat: null, lng: null };
-        setPathway([...pathway, newPoint]);
-        setListLength(newId)
-    };
-
-    const handleSubmit = async (e)=>{
-        console.log(e.target.value)
-    }
-
     return(
         <>
             <div className="sidebar">
@@ -73,7 +62,6 @@ function FormInput({pathway, setPathway, duration, distance}){
 
 function PathPoint({id, displayName}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
-    console.log('PathPoint ID: ',id)
 
     return(
         <div className="Path-Point" >

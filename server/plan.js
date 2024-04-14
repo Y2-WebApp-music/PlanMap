@@ -27,7 +27,7 @@ export async function readAllDocuments(uid, sortField = "CreateAt", sortOrder = 
     close()
     return documents;
   } catch (error) {
-    console.error("Error reading documents:", error);
+    console.error("Error readAllDocuments documents:", error);
     throw error;
   }
 }
@@ -49,6 +49,18 @@ export async function findOneNearestToDate(uid) {
 
     return document;
   } catch (error) {
+    console.error("Error findOneNearestToDate documents:", error);
+    throw error;
+  }
+}
+export async function readDocument(uid, documentId) {
+  try {
+    await connect();
+    const document = await collection.findOne({ _id: new ObjectId(documentId), uid });
+    console.log(`Document read with _id: ${documentId}`);
+    close();
+    return document;
+  } catch (error) {
     console.error("Error reading documents:", error);
     throw error;
   }
@@ -67,11 +79,6 @@ export async function createDocument(uid, document) {
   return result.insertedId;
 }
 
-export async function readDocument(uid, documentId) {
-  const document = await collection.findOne({ _id: ObjectId(documentId), uid });
-  console.log(`Document read with _id: ${documentId}`);
-  return document;
-}
 
 export async function updateDocument(uid, documentId, update) {
   const result = await collection.updateOne(
