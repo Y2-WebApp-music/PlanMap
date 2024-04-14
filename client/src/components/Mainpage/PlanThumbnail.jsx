@@ -3,27 +3,55 @@ import '/src/global.css'
 import './planthumbnail.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsisVertical, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios'
+import { auth } from '/src/DB/Firebase-Config.js'
 
 function Thumbnail(){
     const [planList,setPlanList] = useState([])
-    useEffect(()=>{
-        axios.get('http://localhost:3000/mainpage')
-        .then(plan => setPlanList(plan.data))
-    })
+    const [userId, setUserId] = useState(null)
+    const [planOrder, setPlanOrder] = useState(-1)
+    const [clickedButton, setClickedButton] = useState("ล่าสุด");
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleOrderSelection = (selectedOrder) => {
+        setClickedButton(selectedOrder);
+        if (selectedOrder === "ล่าสุด") {
+            setPlanOrder(-1);
+        } else if (selectedOrder === "เก่าที่สุด") {
+            setPlanOrder(1);
+        }
+    };
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                setUserId(user.uid);
+                fetch(`http://localhost:3000/mainpage?uid=${user.uid}&planOrder=${planOrder}`)
+                .then(response => response.json())
+                .then(plan => setPlanList(plan))
+                .catch(error => console.error('Error fetching plan:', error));
+            } else {
+                setUserId(null);
+            }
+        });
+        return () => unsubscribe();
+    }, [planOrder]);
+    const handleSearchInputChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
 
     return(<>
     <div className="PlanThumbnail">
         <div className="FilterArea">
             <div className="searchBox">
                 <label htmlFor="search" id="searchLabel">
-                    <input type="text" placeholder="ค้นหาแพลน" id="search" />
+                    <input type="text" placeholder="ค้นหาแพลน" id="search" value={searchQuery} onChange={handleSearchInputChange} />
                     <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" style={{ color: 'var(--color-text)' }}/>
                 </label>
             </div>
             <div className="BtnZone">
-                <FilterBTN text={"ล่าสุด"}/>
-                <FilterBTN text={"เก่าที่สุด"}/>
+                <FilterBTN text={"ล่าสุด"} onClick={handleOrderSelection} clicked={clickedButton === "ล่าสุด"} />
+                <FilterBTN text={"เก่าที่สุด"} onClick={handleOrderSelection} clicked={clickedButton === "เก่าที่สุด"} />
             </div>
         </div>
 
@@ -32,25 +60,18 @@ function Thumbnail(){
                 {planList.map((planList)=>(
                     <ThumbnailElement key={planList._id} Title={planList.tilte} StartDate={planList.StartDate} EndDate={planList.EndDate} From={planList.Route[0].displayName} To={planList.Route[planList.Route.length - 1].displayName}/>
                 ))}
-                < ThumbnailElement
-                    Title ={"I want to wrap a text within only two lines inside div of specific width. If text goes beyond the length of two lines then I want to show ellipses. Is there a way to do that using CSS?"}
-                    StartDate ={"435 345 345"}
-                    EndDate ={"234 235 2235"}
-                    From = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                    To = {"nkfldvnzdlkvnzldknvdkldsvmz"}
-                />
             </div>
         </div>
     </div>
     </>)
 }
 
-function FilterBTN({text}) {
-    return(
+function FilterBTN({ text, onClick, clicked }) {
+    return (
         <div>
-            <input type="submit" value={text} id="FilterBTN" />
+            <button id="FilterBTN" className={clicked ? 'clicked' : ''} onClick={() => onClick(text)}>{text}</button>
         </div>
-    )
+    );
 }
 
 function ThumbnailElement({Title, StartDate, EndDate, From, To}){
@@ -106,7 +127,7 @@ function ThumbnailElement({Title, StartDate, EndDate, From, To}){
                 </div>
             </div>
             <div className="goToPlan">
-                <input type="submit" id="seePlan" value="ดูแพลน" />
+                <button id="seePlan">ดูแพลน</button>
             </div>
         </div>
     )

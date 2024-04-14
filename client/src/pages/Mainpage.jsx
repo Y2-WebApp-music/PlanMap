@@ -44,11 +44,7 @@ function Mainpage(){
                     </div>
                     <div className="ComingPlan">
                         <p> แพลนที่จะถึงนี้ </p>
-                        <ComingPlan
-                            title = {"ที่อยู่ไหน I want to wrap a text within "}
-                            StartDate = {"23 มี.ค. 2567"}
-                            EndDate = {"29 มี.ค. 2567"}
-                        />
+                        <ComingPlan/>
                     </div>
                 </div>
                 <div className="Thumbnail-container">

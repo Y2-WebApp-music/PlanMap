@@ -2,17 +2,48 @@ import React, { useContext, useState, useEffect } from "react";
 import '/src/global.css';
 import './comingPlan.css'
 import WeatherAPI from '../WeatherAPI/WeatherAPI'
+import { auth } from '/src/DB/Firebase-Config.js'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faCircle as solidCircle } from '@fortawesome/free-solid-svg-icons'
 import { faCircle as regularCircle } from '@fortawesome/free-regular-svg-icons'
 
-function ComingPlan({title, StartDate, EndDate}){
+function ComingPlan(){
+    const [comingPlan,setComingPlan] = useState([])
+    const [userId, setUserId] = useState(null)
+    const [ListLength, setListLength] = useState(null)
+    const [route, setRoute] = useState([])
+    // console.log(comingPlan.Route.length)
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                setUserId(user.uid);
+                fetch(`http://localhost:3000/comingplan?uid=${user.uid}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(plan => {
+                    setComingPlan(plan);
+                    setListLength(plan.Route.length);
+                    setRoute(plan.Route)
+                })
+                .catch(error => console.error('Error fetching or parsing plan:', error));
+            } else {
+                setUserId(null);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
     return(
         <div className="NowPlan">
-            <div className="NowPlan-title"> <h2>{title}</h2> </div>
+            <div className="NowPlan-title"> <h2>{comingPlan.tilte}</h2> </div>
             <div className="Date">
-                <span>วันที่ </span><span>{StartDate}</span><span> - </span><span>{EndDate}</span>
+                <span>วันที่ </span><span>{comingPlan.StartDate}</span><span> - </span><span>{comingPlan.EndDate}</span>
             </div>
             <div className="scrollDetail">
                 <p>สภาพอากาศล่วงหน้า</p>
@@ -23,36 +54,13 @@ function ComingPlan({title, StartDate, EndDate}){
                 </div>
                 <p>เส้นทางการเดินทาง</p>
                 <div className="PathWay">
-                    <Point
-                        Direction ={"Northgate Ratchayothin, 248 Ratchadaphisek Rd, Khwaeng Lat Yao, Khet Chatuchak, Krung Thep Maha Nakhon 10900"}
-                    />
-                    <Point
-                        Direction ={"Path way number 2"}
-                    />
-                    <Point
-                        Direction ={"Path way number 3"}
-                    />
-                    <Point
-                        Direction ={"Path way number 4"}
-                    />
-                    <Point
-                        Direction ={"Path way number 5"}
-                    />
-                    <Point
-                        Direction ={"Path way number 6"}
-                    />
-                    <Point
-                        Direction ={"Path way number 7"}
-                    />
-                    <Point
-                        Direction ={"Path way number 88"}
-                    />
-                    <Point
-                        Direction ={"Path way number 9"}
-                    />
-                    <Destination
-                        Direction ={"Path way number 100"}
-                    />
+                    {route.map((route, index) => (
+                        index === ListLength - 1 ? (
+                            <Destination key={route.id} Direction={route.displayName}/>
+                                ) : (
+                            <Point key={route.id} Direction={route.displayName}/>
+                            )
+                        ))}
                 </div>
             </div>
             <input type="submit" value="ดูแพลน" />

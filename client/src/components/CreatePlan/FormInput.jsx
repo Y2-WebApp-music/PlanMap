@@ -35,7 +35,7 @@ function FormInput({pathway, setPathway, duration, distance}){
                     <div className="PlanDate">
                         <p>วันที่เดินทาง</p>
                         <div className="calendar-Custom">
-                            <input type="date" id="startDate" name="start" placeholder="เริ่มการเดินทาง"/>
+                            <input type="date" id="startDate" name="start" value={"2018-07-22"} placeholder="เริ่มการเดินทาง"/>
                             <p>-</p>
                             <input type="date" id="endDate" name="end" placeholder="สิ้นสุดการเดินทาง"/>
                         </div>

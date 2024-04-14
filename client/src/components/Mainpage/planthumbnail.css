@@ -90,6 +90,14 @@
     color: var(--color-text);
     cursor: pointer;
 }
+#FilterBTN.clicked {
+    scale: 1.04;
+    transition: .2s;
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.35);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    cursor: pointer;
+}
 
 .Thumbnail-scroll{
     overflow: scroll;
