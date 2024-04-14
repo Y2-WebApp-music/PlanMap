@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import '../global.css';
 import './mainpage.css';
 import { auth } from '/src/DB/Firebase-Config.js'
-import Navbar from "../components/Navbar";
 import Thumbnail from "../components/Mainpage/PlanThumbnail";
 import ComingPlan from "../components/Mainpage/ComingPlan";
 
@@ -34,7 +33,6 @@ function Mainpage(){
 
     return(
         <>
-            <Navbar />
             <div className="mainPage">
                 <div className="sideBar">
                     <div className="personalInfo">

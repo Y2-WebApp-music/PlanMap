@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import '../global.css';
 import './Setting.css';
-import Navbar from "../components/Navbar";
 import { auth } from '/src/DB/Firebase-Config.js'
 import { updatePassword } from "firebase/auth";
 
@@ -42,7 +41,6 @@ function Setting(){
     console.log(currentUser)
     return(
         <>
-            <Navbar/>
             <div className="Setting-Container">
                 <h2>แก้ไขโปรไฟล์</h2>
                 <form onSubmit={handleSubmit}>

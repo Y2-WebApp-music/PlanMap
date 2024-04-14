@@ -12,6 +12,7 @@ function Navbar(){
     const [username, setUsername] = useState(null);
     const [userPhoto, setUserPhoto] = useState(null);
     const [email, setEmail] = useState(null);
+    const [activeLink, setActiveLink] = useState(window.location.pathname);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -53,8 +54,8 @@ function Navbar(){
                 <a href="/" className="HomeLinkTitle">เที่ยวหนายยย</a>
                 <div></div>
                 <div className="link-btn">
-                    <a href="/mainpage">แพลนของฉัน</a>
-                    <a href="/createPlan">สร้างแพลนใหม่</a>
+                    <a href="/mainpage" className={activeLink === "/mainpage" ? "active" : ""} >แพลนของฉัน</a>
+                    <a href="/createPlan" className={activeLink === "/createPlan" ? "active" : ""} >สร้างแพลนใหม่</a>
                 </div>
                 <LoginChecker togglePopUp={togglePopUp} username={username} userPhoto={userPhoto} />
             </div>

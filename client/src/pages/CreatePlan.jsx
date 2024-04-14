@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import '../global.css';
 import './createplan.css'
-import Navbar from "../components/Navbar";
 import Map from "../components/CreatePlan/Map"
 import FormInput from "../components/CreatePlan/FormInput";
 
@@ -28,7 +27,6 @@ function CreatePlan() {
     }, []);
     return(
         <>
-            <Navbar/>
             <div className="CreatePlan-content">
                 <FormInput pathway={pathway} setPathway={setPathway} duration={duration} distance={distance}/>
                 <Map pathway={pathway} setDuration={setDuration} setDistance={setDistance}/>

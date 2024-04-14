@@ -2,6 +2,7 @@ import react, {useState, useEffect, useContext} from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from './DB/AuthContext';
 
+import Navbar from "/src/components/Navbar.jsx";
 import Home from "./pages/Home.jsx"
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
@@ -19,6 +20,8 @@ function App() {
   }
 
   return (
+    <>
+    <Navbar/>
     <BrowserRouter>
       <Routes>
         <Route path='/'>
@@ -43,6 +46,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </>
   )
 }
 
