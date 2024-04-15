@@ -4,8 +4,11 @@ import { loadGoogleMapsScript } from '/src/components/MapLoader.js'
 
 
 function MapPlan({pathway, setDuration, setDistance}) {
+    if (pathway === null) {
+        return null;
+    }
+    console.log('Google Map')
     useEffect(() => {
-
         async function initMap() {
             const { Map } = await google.maps.importLibrary("maps");
             const map = new Map(document.getElementById("map"), {

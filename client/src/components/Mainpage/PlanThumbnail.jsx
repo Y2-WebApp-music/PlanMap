@@ -59,7 +59,7 @@ function Thumbnail(){
         <div className="Thumbnail-scroll">
             <div className="Thumbnail">
                 {planList.map((planList)=>(
-                    <ThumbnailElement key={planList._id} id={planList._id} Title={planList.tilte} StartDate={planList.StartDate} EndDate={planList.EndDate} From={planList.Route[0].displayName} To={planList.Route[planList.Route.length - 1].displayName}/>
+                    <ThumbnailElement key={planList._id} id={planList._id} Title={planList.title} StartDate={planList.StartDate} EndDate={planList.EndDate} From={planList.Route[0].displayName} To={planList.Route[planList.Route.length - 1].displayName}/>
                 ))}
             </div>
         </div>
