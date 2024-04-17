@@ -1,0 +1,247 @@
+.sidebar{
+    width: 100%;
+    height: 94vh;
+    background-color: rgba(255, 255, 255, 0.465);
+    backdrop-filter: blur(10px);
+    box-shadow: 0rem 0rem 0.4rem rgba(37, 19, 1, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.PlanDetailView{
+    width: 95%;
+    height: 95%;
+    margin-top: 1rem;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-rows: 7% max-content 1fr 5%;
+    gap: 5px;
+}
+
+.PlanDetailView p{
+    color: var(--color-text);
+    margin: 0 0;
+    font-size: 1rem;
+    align-self: flex-start;
+}
+
+#titlePlan {
+    background-color: var(--color-input);
+    width: 90%;
+    color: var(--color-text);
+    outline: none;
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-width: 1px;
+    border-color: var(--color-blue);
+    border-radius: 7px;
+    box-shadow: 0rem 0rem 0.2rem rgba(37, 19, 1, 0.55);
+    transition: .2s;
+}
+
+.PlanDate{
+    width: 100%;
+}
+
+
+.sidebar-CreatePlan-scroll{
+    /* background-color: rgb(89, 162, 225); */
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+.sidebar-CreatePlan{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.TimePrediction{
+    background-color: rgb(245, 245, 245);
+    width: 100%;
+    height: 100%;
+    border-radius: 10px 10px 0 0 ;
+    padding: 0.8rem 0;
+    font-size: 0.9rem;
+    text-align: center;
+}
+#TimeCurrent{
+    font-size: 1.3rem;
+    color: var(--color-blue);
+    font-weight: 600;
+}
+.Pathway{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.Pathway-List{
+    background-color: var(--color-bg);
+    box-shadow: 0rem 0rem 0.2rem rgba(37, 19, 1, 0.55);
+    border-radius: 10px;
+    padding: 0 0 1rem 0;
+    width: 98%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+.View-Path-Point{
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.View-placeName{
+    width: 100%;
+    background-color: white;
+    border: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: rgb(98, 98, 98);
+    padding: 0.5rem 0.3rem;
+    font-size: 1.1rem;
+    color: var(--color-text);
+    outline: none;
+    position: relative;
+    white-space: nowrap;
+    overflow-x: scroll;
+    scrollbar-width: none;
+}
+
+.icon-Path-Point{
+    position: relative;
+}
+#holdCircle{
+    width: 15px;
+    height: 15px;
+    color: var(--color-text);
+}
+#faCircle{
+    color: rgb(150, 150, 150);
+    width: 4px;
+    height: 4px;
+}
+#faLocationDot{
+    color: var(--color-red);
+}
+#faCircleXmark{
+    /* position: absolute; */
+    right: 30px;
+    color: var(--color-subtext);
+}
+#faCircleXmark:hover{
+    color: var(--color-blue);
+    scale: 1.03;
+    cursor: pointer;
+}
+.dot-connectPath{
+    position: absolute;
+    left: 5px;
+    top: 23px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.Path-Destination{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.Path-Destination input{
+    width: 100%;
+    background-color: white;
+    border: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: rgb(98, 98, 98);
+    padding: 0.5rem 0.3rem;
+    font-size: 1.1rem;
+    color: var(--color-text);
+    outline: none;
+}
+.Path-Destination input:hover{
+    border-color: var(--color-blue);
+}
+.AddPoint{
+    background-color: var(--color-bg2);
+    color: var(--color-subtext);
+    border: solid;
+    border-color: var(--color-notSelect);
+    border-radius: 30px;
+    border-width: 1px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.9rem;
+    transition: .2s;
+}
+.AddPoint:hover{
+    color: var(--color-blue);
+    border-color: var(--color-blue);
+    cursor: pointer;
+    transition: .2s;
+    scale: 1.02;
+}
+.FormInput textarea{
+    font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    background-color: var(--color-input);
+    /* appearance: none; */
+    /* white-space: pre-wrap; */
+    width: 90%;
+    color: var(--color-text);
+    outline: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border: solid;
+    border-width: 1px;
+    border-color: var(--color-input);
+    border-radius: 7px;
+    box-shadow: 0rem 0rem 0.2rem rgba(37, 19, 1, 0.55);
+    margin-bottom: 1rem;
+    resize: none;
+}
+.FormInput textarea:hover{
+    border: solid;
+    border-color: var(--color-blue);
+    border-width: 1px;
+}
+#submit-btn {
+    background-color: var(--color-lightblue);
+    width: fit-content;
+    height: fit-content;
+    padding: 0.3rem 1rem;
+    border-style: none;
+    border-radius: 30px;
+    font-size: 1.5rem;
+    margin: 0rem 0;
+    transition: .2s;
+}
+#submit-btn:hover{
+    scale: 1.03;
+    transition: .2s;
+    background-color: var(--color-blue);
+    box-shadow: 0rem 0rem 0.6rem rgba(37, 19, 1, 0.25);
+}
+
+ul {
+    list-style: none;
+    width: 90%;
+    margin: 0 0;
+    padding: 0 0;
+    padding-left: 0.3rem;
+}
+li {
+    margin: 1rem 0;
+}
