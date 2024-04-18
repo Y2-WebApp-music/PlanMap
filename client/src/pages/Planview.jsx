@@ -9,35 +9,32 @@ import { useParams } from "react-router-dom";
 
 function PlanView() {
     const { id } = useParams()
-    const [userId,setUserId] = useState(null)
+    const [currentPlan,setCurrentPlan] = useState(null)
     const [pathway, setPathway] = useState([])
-    const [ListLength, setListLength] = useState(null)
-    const [title, setTitle] = useState(null)
-    const [start, setStart] = useState(null)
-    const [end, setEnd] = useState(null)
-    const [addi, setAddi] = useState(null)
     const [duration,setDuration] = useState(null)
     const [distance,setDistance] = useState(null)
+    console.log('currentPlan',currentPlan)
+    console.log('pathway',pathway)
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             if (user) {
-                setUserId(user.uid);
-                fetch(`http://localhost:3000/plan?uid=${user.uid}&id=${id}`)
+                try {
+                    fetch(`http://localhost:3000/plan?uid=${user.uid}&id=${id}`)
                     .then(response => response.json())
                     .then(planData => {
-                        setTitle(planData.title);
-                        setStart(planData.StartDate);
-                        setEnd(planData.EndDate);
-                        setAddi(planData.Addition);
                         if (planData && planData.Route) {
                             setPathway(planData.Route);
-                            setListLength(planData.Route.length);
+                            setCurrentPlan(planData);
                         }
                     })
                     .catch(error => console.error('Error fetching plan:', error));
+                } catch (error) {
+                    console.error("Error reading documents:", error);
+                    throw error;
+                }
             } else {
-                setUserId(null);
+                return ;
             }
         });
         return () => unsubscribe();
@@ -50,14 +47,18 @@ function PlanView() {
         };
     }, []);
 
-    // if (plan === null) {
-    //     return null;
-    // }
     return(
         <>
             <div className="PlanView-content">
-                <PlanDetail title={title} start={start} end={end} addition={addi} pathway={pathway} length={ListLength} duration={duration} distance={distance}/>
-                <MapPlan pathway={pathway} setDuration={setDuration} setDistance={setDistance}/>
+                {currentPlan != null && pathway != null ?(
+                    <>
+                        <PlanDetail currentPlan={currentPlan} pathway={pathway} duration={duration} distance={distance}/>
+                        <MapPlan pathway={pathway} setDuration={setDuration} setDistance={setDistance}/>
+                    </>
+                )
+                :
+                (<> <h1>Loading .... </h1> </>)
+                }
             </div>
         </>
     )

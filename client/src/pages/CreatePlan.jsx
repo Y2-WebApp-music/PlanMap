@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import '../global.css';
 import './createplan.css'
-import Map from "../components/CreatePlan/Map"
+import Map from "../components/CreatePlan/Testerfile"
 import FormInput from "../components/CreatePlan/FormInput";
 
 
 function CreatePlan() {
     const [duration,setDuration] = useState(null)
     const [distance,setDistance] = useState(null)
-    console.log(distance,' km and',duration,' minute')
     // const [pathway, setPathway] = useState([
     //     { id: 3, displayName: 'centralwOrld', lat: 13.7465337, lng: 100.5391488 },
     //     { id: 1, displayName: 'King Mongkut’s University of Technology Thonburi (KMUTT)', lat: 13.6512522, lng: 100.4964428 },

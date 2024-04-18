@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faCircle, faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import { Reorder } from "framer-motion";
-import { loadGoogleMapsScript } from '/src/components/MapLoader.js';
+import  loadGoogleMapsScript  from '/src/components/MapLoader.js';
 
 function FormInput({pathway, setPathway, duration, distance}){
     const [ListLength, setListLength] = useState(pathway.length)
@@ -19,14 +19,14 @@ function FormInput({pathway, setPathway, duration, distance}){
         setListLength(newId)
     };
 
-    const handleSubmit = async (e)=>{
-        console.log(e.target.value)
-    }
+    // const handleSubmit = async (e)=>{
+    //     console.log(e.target.value)
+    // }
 
     return(
         <>
             <div className="sidebar">
-                <form className="FormInput" onSubmit={handleSubmit}>
+                <form className="FormInput" >
                     <label htmlFor="titlePlan">
                         <p>ชื่อแพลน</p>
                         <input type="text" name="titlePlan" id="titlePlan" placeholder="ชื่อแพลน"/>
@@ -78,33 +78,34 @@ function FormInput({pathway, setPathway, duration, distance}){
     )
 }
 
-function PathPoint({id, displayName, pathway, setPathway}){
+async function SearchPlace(){
+    const [{ Map }] = await Promise.all([google.maps.importLibrary("places")]);
+    const input = document.getElementById(`pathpoint-input-${id}`);
+    const autocomplete = new google.maps.places.Autocomplete(input, {
+        fields: ["formatted_address", "geometry", "name"],
+        strictBounds: false,
+    });
+    autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (place.geometry && place.geometry.location) {
+            let newLat = place.geometry.location.lat();
+            let newLng = place.geometry.location.lng();
+            setPlaceName(place.name);
+            let updatedPathway = pathway.map(item =>
+                item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng } : item
+            );
+            setPathway(updatedPathway);
+        }
+    });
+    return () => {
+    };
+}
+
+function PathPoint( SearchPlace, {id, displayName, pathway, setPathway}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
-    console.log('PathPoint ID: ',id)
 
     useEffect(() => {
-        function SearchPlace(){
-            const input = document.getElementById(`pathpoint-input-${id}`);
-            const autocomplete = new window.google.maps.places.Autocomplete(input, {
-                fields: ["formatted_address", "geometry", "name"],
-                strictBounds: false,
-            });
-            autocomplete.addListener("place_changed", () => {
-                const place = autocomplete.getPlace();
-                if (place.geometry && place.geometry.location) {
-                    let newLat = place.geometry.location.lat();
-                    let newLng = place.geometry.location.lng();
-                    setPlaceName(place.name);
-                    let updatedPathway = pathway.map(item =>
-                        item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng } : item
-                    );
-                    setPathway(updatedPathway);
-                }
-            });
-            return () => {
-            };
-        }
-        loadGoogleMapsScript(SearchPlace);
+        loadGoogleMapsScript().then(maps => SearchPlace())
     }, [id, setPlaceName]);
 
     return(
@@ -124,12 +125,12 @@ function PathPoint({id, displayName, pathway, setPathway}){
 }
 function PathDestination({id, displayName, pathway, setPathway}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
-    console.log('PathDestination ID:',id)
 
     useEffect(() => {
-        function SearchPlace(){
-            const input = document.getElementById(`PathDestination-input-${id}`);
-            const autocomplete = new window.google.maps.places.Autocomplete(input, {
+        async function SearchPlace(){
+            const [{ Map }] = await Promise.all([google.maps.importLibrary("places")]);
+            const input = document.getElementById(`pathpoint-input-${id}`);
+            const autocomplete = new google.maps.places.Autocomplete(input, {
                 fields: ["formatted_address", "geometry", "name"],
                 strictBounds: false,
             });
@@ -148,7 +149,7 @@ function PathDestination({id, displayName, pathway, setPathway}){
             return () => {
             };
         }
-        loadGoogleMapsScript(SearchPlace);
+        loadGoogleMapsScript().then(maps => SearchPlace())
     }, [id, setPlaceName]);
     return(
         <div className="Path-Destination" >
