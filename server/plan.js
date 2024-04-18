@@ -9,6 +9,7 @@ let collection;
 
 async function connect() {
   await client.connect();
+  console.log('')
   console.log("==> Connected to MongoDB");
   db = client.db("Plan");
   collection = db.collection("Plans");
@@ -17,6 +18,7 @@ async function connect() {
 async function close() {
   await client.close();
   console.log("Closed connection to MongoDB ==>");
+  console.log('')
 }
 
 export async function readAllDocuments(uid, sortField = "CreateAt", sortOrder = 1) {
@@ -24,6 +26,7 @@ export async function readAllDocuments(uid, sortField = "CreateAt", sortOrder = 
     await connect();
     const sortQuery = { [sortField]: sortOrder };
     const documents = await collection.find({ uid }).sort(sortQuery).toArray();
+    console.log(" >> readAllDocuments <<");
     close()
     return documents;
   } catch (error) {
@@ -46,6 +49,8 @@ export async function findOneNearestToDate(uid) {
         { $limit: 1 }
       ])
       .next();
+    console.log(" >> findOneNearestToDate <<");
+    close()
     return document;
   } catch (error) {
     console.error("Error findOneNearestToDate documents:", error);
@@ -64,30 +69,45 @@ export async function readDocument(uid, documentId) {
     throw error;
   }
 }
-
-
-
-
-
-
-
-
 export async function createDocument(uid, document) {
-  const result = await collection.insertOne({ uid, ...document });
-  console.log(`Document created with _id: ${result.insertedId}`);
-  return result.insertedId;
+  try {
+    await connect();
+    const result = await collection.insertOne({ uid, ...document });
+    console.log(`Document created with _id: ${result.insertedId}`);
+    close();
+    return result.insertedId;
+  } catch (error) {
+    console.error("Error createDocument :", error);
+    throw error;
+  }
 }
 
 
 export async function updateDocument(uid, documentId, update) {
-  const result = await collection.updateOne(
-    { _id: ObjectId(documentId), uid },
-    { $set: update }
-  );
-  console.log(`Document updated with _id: ${documentId}`);
+  try {
+    await connect();
+    const result = await collection.updateOne(
+      { _id: ObjectId(documentId), uid },
+      { $set: update }
+    );
+    console.log(`Document updated with _id: ${documentId}`);
+    close();
+    // return result;
+  } catch (error) {
+    console.error("Error updateDocument :", error);
+    throw error;
+  }
 }
 
 export async function deleteDocument(uid, documentId) {
-  const result = await collection.deleteOne({ _id: ObjectId(documentId), uid });
-  console.log(`Document deleted with _id: ${documentId}`);
+  try {
+    await connect();
+    const result = await collection.deleteOne({ _id: ObjectId(documentId), uid });
+    console.log(`Document deleted with _id: ${documentId}`);
+    close();
+    // return result;
+  } catch (error) {
+    console.error("Error deleteDocument :", error);
+    throw error;
+  }
 }

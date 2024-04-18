@@ -9,6 +9,8 @@ app.use(json())
 app.get('/mainpage', (req, res)=>{
     const uid = req.query.uid;
     const planOrder = req.query.planOrder
+    console.log(' ==> uid :',uid)
+    console.log(' ==> planOrder :',planOrder)
     readAllDocuments(uid, "CreateAt", planOrder)
     .then(data => res.json(data))
     .catch(err => res.json(err))
@@ -16,9 +18,6 @@ app.get('/mainpage', (req, res)=>{
 
 app.get('/comingplan', (req, res)=>{
     const uid = req.query.uid;
-    console.log('')
-    console.log('comingplan')
-    console.log('')
     findOneNearestToDate(uid)
     .then(data => res.json(data))
     .catch(err => res.json(err))
@@ -31,6 +30,14 @@ app.get('/plan', (req, res)=>{
     .then(data => res.json(data))
     .catch(err => res.json(err))
 })
+
+app.post('/addPlan', (req, res)=>{
+    const uid = req.query.uid;
+    const document = req.query.document;
+    createDocument(uid,document)
+    .catch(err => res.json(err))
+})
+
 
 app.listen(3000, () =>{
     console.log("server is running")

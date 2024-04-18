@@ -3,13 +3,14 @@ import '/src/global.css';
 import './comingPlan.css'
 import WeatherAPI from '../WeatherAPI/WeatherAPI'
 import { auth } from '/src/DB/Firebase-Config.js'
+import { useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faCircle as solidCircle } from '@fortawesome/free-solid-svg-icons'
 import { faCircle as regularCircle } from '@fortawesome/free-regular-svg-icons'
 
 function ComingPlan({comingPlan, ListLength, route }){
-
+    const navigate = useNavigate()
     return(
         <div className="NowPlan">
             <div className="NowPlan-title"> <h2>{comingPlan.title}</h2> </div>
@@ -34,7 +35,7 @@ function ComingPlan({comingPlan, ListLength, route }){
                         ))}
                 </div>
             </div>
-            <input type="submit" value="ดูแพลน" />
+            <button id="seePlan" onClick={()=> navigate(`/plan/${comingPlan._id}`)}>ดูแพลน</button>
         </div>
     )
 }
