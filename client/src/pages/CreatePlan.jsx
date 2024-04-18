@@ -14,8 +14,7 @@ function CreatePlan() {
     //     { id: 2, displayName: 'Don Mueang International Airport', lat: 13.9199052, lng: 100.6019304 }
     // ])
     const [pathway, setPathway] = useState([
-        { id: 1, displayName: '', lat: null, lng: null },
-        { id: 2, displayName: '', lat: null, lng: null }
+        { id: 1, displayName: '', lat: null, lng: null }
     ])
 
     useEffect(() => {

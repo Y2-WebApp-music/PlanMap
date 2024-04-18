@@ -5,12 +5,60 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faCircle, faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import { Reorder } from "framer-motion";
+import { auth } from '/src/DB/Firebase-Config.js'
 import  loadGoogleMapsScript  from '/src/components/MapLoader.js';
 
 function FormInput({pathway, setPathway, duration, distance}){
     const [ListLength, setListLength] = useState(pathway.length)
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
+    const [userId, setUserId] = useState(null)
+    const [formData, setFormData] = useState({
+        title: '',
+        StartDate: '',
+        EndDate: '',
+        Addition: '',
+        uid: null,
+        Route: null
+    });
+
+    const { title, StartDate, EndDate, Addition } = formData;
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                setUserId(user.uid);
+                setFormData({
+                    ...formData,
+                    uid: user.uid
+                });
+            } else {
+                setUserId(null);
+            }
+        });
+        return () => unsubscribe();
+    }, [userId]);
+    useEffect(() => {
+        setFormData({
+            ...formData,
+            Route: pathway
+        });
+        return console.log('formData ==> ',formData);
+    }, [pathway]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Handle form submission
+        console.log(formData);
+    };
 
     const addPathDestination = () => {
         const newId = ListLength + 1;
@@ -19,25 +67,42 @@ function FormInput({pathway, setPathway, duration, distance}){
         setListLength(newId)
     };
 
-    // const handleSubmit = async (e)=>{
-    //     console.log(e.target.value)
-    // }
-
     return(
         <>
             <div className="sidebar">
-                <form className="FormInput" >
+                <form className="FormInput" onSubmit={handleSubmit}>
                     <label htmlFor="titlePlan">
                         <p>ชื่อแพลน</p>
-                        <input type="text" name="titlePlan" id="titlePlan" placeholder="ชื่อแพลน"/>
+                        <input
+                        type="text"
+                        name="title"
+                        id="titlePlan"
+                        placeholder="ชื่อแพลน"
+                        value={title}
+                        onChange={handleChange}
+                    />
                     </label>
 
                     <div className="PlanDate">
                         <p>วันที่เดินทาง</p>
                         <div className="calendar-Custom">
-                            <input type="date" id="startDate" name="start" value={"2018-07-22"} placeholder="เริ่มการเดินทาง"/>
+                            <input
+                                type="date"
+                                id="startDate"
+                                name="StartDate"
+                                value={StartDate}
+                                placeholder="เริ่มการเดินทาง"
+                                onChange={handleChange}
+                            />
                             <p>-</p>
-                            <input type="date" id="endDate" name="end" placeholder="สิ้นสุดการเดินทาง"/>
+                            <input
+                                type="date"
+                                id="endDate"
+                                name="EndDate"
+                                value={EndDate}
+                                placeholder="สิ้นสุดการเดินทาง"
+                                onChange={handleChange}
+                            />
                         </div>
                     </div>
 
@@ -66,19 +131,25 @@ function FormInput({pathway, setPathway, duration, distance}){
 
                             <label htmlFor="">
                                 <p>บันทึกเพิ่มเติม</p>
-                                <textarea name="addition" id="" cols="30" rows="10"></textarea>
+                                <textarea
+                                name="Addition"
+                                id="addition"
+                                cols="30"
+                                rows="10"
+                                value={Addition}
+                                onChange={handleChange}
+                            />
                             </label>
                         </div>
                     </div>
-
-                    <input type="submit" value="บันทึกแพลน" id="submit-btn"/>
+                    <button type="submit" id="submit-btn" >บันทึกแพลน </button>
                 </form>
             </div>
         </>
     )
 }
 
-async function SearchPlace(){
+async function SearchPlace(id, setPlaceName, pathway, setPathway) {
     const [{ Map }] = await Promise.all([google.maps.importLibrary("places")]);
     const input = document.getElementById(`pathpoint-input-${id}`);
     const autocomplete = new google.maps.places.Autocomplete(input, {
@@ -97,15 +168,13 @@ async function SearchPlace(){
             setPathway(updatedPathway);
         }
     });
-    return () => {
-    };
 }
 
-function PathPoint( SearchPlace, {id, displayName, pathway, setPathway}){
+function PathPoint({id, displayName, pathway, setPathway}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
 
     useEffect(() => {
-        loadGoogleMapsScript().then(maps => SearchPlace())
+        loadGoogleMapsScript().then(maps => SearchPlace(id, setPlaceName, pathway, setPathway))
     }, [id, setPlaceName]);
 
     return(
@@ -118,7 +187,14 @@ function PathPoint( SearchPlace, {id, displayName, pathway, setPathway}){
                     <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
                 </div>
             </div>
-            <input type="text" value={placeName} placeholder="เลือกจุดหมาย" name="PathPoint" id={`pathpoint-input-${id}`} onChange={(e) => setPlaceName(e.target.value)} />
+            <input
+                type="text"
+                defaultValue={placeName}
+                placeholder="เลือกจุดหมาย"
+                name="PathPoint"
+                id={`pathpoint-input-${id}`}
+                onChange={(e) => setPlaceName(e.target.value)}
+            />
             <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
         </div>
     )
@@ -127,34 +203,20 @@ function PathDestination({id, displayName, pathway, setPathway}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
 
     useEffect(() => {
-        async function SearchPlace(){
-            const [{ Map }] = await Promise.all([google.maps.importLibrary("places")]);
-            const input = document.getElementById(`pathpoint-input-${id}`);
-            const autocomplete = new google.maps.places.Autocomplete(input, {
-                fields: ["formatted_address", "geometry", "name"],
-                strictBounds: false,
-            });
-            autocomplete.addListener("place_changed", () => {
-                const place = autocomplete.getPlace();
-                if (place.geometry && place.geometry.location) {
-                    let newLat = place.geometry.location.lat();
-                    let newLng = place.geometry.location.lng();
-                    setPlaceName(place.name);
-                    let updatedPathway = pathway.map(item =>
-                        item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng } : item
-                    );
-                    setPathway(updatedPathway);
-                }
-            });
-            return () => {
-            };
-        }
-        loadGoogleMapsScript().then(maps => SearchPlace())
+        loadGoogleMapsScript().then(maps => SearchPlace(id, setPlaceName, pathway, setPathway))
     }, [id, setPlaceName]);
+
     return(
         <div className="Path-Destination" >
             <FontAwesomeIcon icon={faLocationDot} size="lg" id="faLocationDot"/>
-            <input type="text" value={placeName} placeholder="เลือกปลายทาง" id={`PathDestination-input-${id}`} onChange={(e) => setPlaceName(e.target.value)} />
+            <input
+                type="text"
+                defaultValue={placeName}
+                placeholder="เลือกจุดหมาย"
+                name="PathPoint"
+                id={`pathpoint-input-${id}`}
+                onChange={(e) => setPlaceName(e.target.value)}
+            />
             <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
         </div>
     )
