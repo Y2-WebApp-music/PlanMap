@@ -1,31 +1,42 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import '/src/global.css';
 import './planDetail.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
-import { faLocationDot, faCircle } from '@fortawesome/free-solid-svg-icons'
-import { Reorder } from "framer-motion";
-import { loadGoogleMapsScript } from '/src/components/MapLoader.js';
+import { faLocationDot, faCircle, faAngleLeft } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from "react-router-dom";
 
-function FormInput({title, start, end, addition, pathway, length, duration, distance}){
+function FormInput({currentPlan, pathway, duration, distance}){
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
-    console.log(length)
+    const navigate = useNavigate()
+
+    console.log('')
+    console.log('PlanDetail currentPlan ===>',currentPlan)
+    console.log('PlanDetail pathway ===>',pathway)
+    console.log('')
 
     return(
         <>
             <div className="sidebar">
                 <div className="PlanDetailView">
-                    <div>
+                    <div className="btn-planView">
+                        <a className="backToMain" href="/mainpage">
+                            <FontAwesomeIcon icon={faAngleLeft} size="lg" id="icon" />
+                            <p>ย้อนกลับ</p>
+                        </a>
+                        <button onClick={()=> navigate(`/editplan/${currentPlan._id}`)}>แก้ไขแพลนนี้</button>
+                    </div>
+                    <div className="Title-Container">
                         <p>ชื่อแพลน</p>
-                        <p id="titlePlan">{title}</p>
+                        <p id="titlePlanView">{currentPlan.title}</p>
                     </div>
                     <div className="PlanDate">
                         <p>วันที่เดินทาง</p>
                         <div className="calendar-Custom">
-                            <p id="startDate">{start}</p>
+                            <p id="startDate">{currentPlan.StartDate}</p>
                             <p>-</p>
-                            <p id="startDate">{end}</p>
+                            <p id="startDate">{currentPlan.EndDate}</p>
                         </div>
                     </div>
                     <div className="sidebar-CreatePlan-scroll">
@@ -37,7 +48,7 @@ function FormInput({title, start, end, addition, pathway, length, duration, dist
                                         <span>เวลาโดยประมาณ</span><span id="TimeCurrent"> {hours} ชั่วโมง {minutes} นาที</span><span> ด้วยรถยนต์</span>
                                     </div>
                                         {pathway.map((point, index) => (
-                                                index === length - 1 ? (
+                                                index === pathway.length - 1 ? (
                                                     <PathDestination key={point.id} displayName={point.displayName}/>
                                                 ) : (
                                                     <PathPoint key={point.id} displayName={point.displayName}/>
@@ -47,7 +58,7 @@ function FormInput({title, start, end, addition, pathway, length, duration, dist
                             </div>
                             <div>
                                 <p>บันทึกเพิ่มเติม</p>
-                                <p>{addition}</p>
+                                <p>{currentPlan.Addition}</p>
                             </div>
                         </div>
                     </div>

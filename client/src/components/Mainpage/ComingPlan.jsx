@@ -13,7 +13,6 @@ function ComingPlan(){
     const [userId, setUserId] = useState(null)
     const [ListLength, setListLength] = useState(null)
     const [route, setRoute] = useState([])
-    // console.log(comingPlan.Route.length)
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -41,7 +40,7 @@ function ComingPlan(){
 
     return(
         <div className="NowPlan">
-            <div className="NowPlan-title"> <h2>{comingPlan.tilte}</h2> </div>
+            <div className="NowPlan-title"> <h2>{comingPlan.title}</h2> </div>
             <div className="Date">
                 <span>วันที่ </span><span>{comingPlan.StartDate}</span><span> - </span><span>{comingPlan.EndDate}</span>
             </div>

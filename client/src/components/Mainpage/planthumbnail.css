@@ -101,6 +101,7 @@
 
 .Thumbnail-scroll{
     overflow: scroll;
+    overflow-x: hidden;
     width: 98%;
     height: 86vh;
     margin: 1rem 1rem;

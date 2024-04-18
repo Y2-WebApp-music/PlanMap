@@ -9,14 +9,14 @@ let collection;
 
 async function connect() {
   await client.connect();
-  console.log("Connected to MongoDB");
+  console.log("==> Connected to MongoDB");
   db = client.db("Plan");
   collection = db.collection("Plans");
 }
 
 async function close() {
   await client.close();
-  console.log("Closed connection to MongoDB");
+  console.log("Closed connection to MongoDB ==>");
 }
 
 export async function readAllDocuments(uid, sortField = "CreateAt", sortOrder = 1) {
@@ -46,7 +46,6 @@ export async function findOneNearestToDate(uid) {
         { $limit: 1 }
       ])
       .next();
-
     return document;
   } catch (error) {
     console.error("Error findOneNearestToDate documents:", error);
