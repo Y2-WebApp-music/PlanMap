@@ -8,35 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faCircle as solidCircle } from '@fortawesome/free-solid-svg-icons'
 import { faCircle as regularCircle } from '@fortawesome/free-regular-svg-icons'
 
-function ComingPlan(){
-    const [comingPlan,setComingPlan] = useState([])
-    const [userId, setUserId] = useState(null)
-    const [ListLength, setListLength] = useState(null)
-    const [route, setRoute] = useState([])
-
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            if (user) {
-                setUserId(user.uid);
-                fetch(`http://localhost:3000/comingplan?uid=${user.uid}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(plan => {
-                    setComingPlan(plan);
-                    setListLength(plan.Route.length);
-                    setRoute(plan.Route)
-                })
-                .catch(error => console.error('Error fetching or parsing plan:', error));
-            } else {
-                setUserId(null);
-            }
-        });
-        return () => unsubscribe();
-    }, []);
+function ComingPlan({comingPlan, ListLength, route }){
 
     return(
         <div className="NowPlan">

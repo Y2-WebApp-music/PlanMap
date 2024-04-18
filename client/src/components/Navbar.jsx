@@ -83,10 +83,6 @@ function LoginChecker({togglePopUp, username, userPhoto }){
 }
 
 function PopUPSetting({username , email}) {
-    const navigate = useNavigate();
-    const handleSetting = ()=>{
-        navigate("/setting")
-    }
 
     return(
         <>
@@ -94,10 +90,10 @@ function PopUPSetting({username , email}) {
             <p className="p-userName">{username}</p>
             <p className="p-email">{email}</p>
             <hr />
-            <div className="PopUp-btn" onClick={handleSetting}>
+            <a className="PopUp-btn" href="/setting">
                 <FontAwesomeIcon icon={faGear} size="lg" id="icon" />
                 <p> การตั้งค่า </p>
-            </div>
+            </a>
             <div className="PopUp-btn" onClick={()=>signOut(auth)}>
                 <FontAwesomeIcon icon={faRightFromBracket} size="lg" id="icon" />
                 <p> ออกจากระบบ </p>
