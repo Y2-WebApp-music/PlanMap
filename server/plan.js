@@ -75,7 +75,6 @@ export async function createDocument(uid, document) {
     const result = await collection.insertOne({ uid, ...document });
     console.log(`Document created with _id: ${result.insertedId}`);
     close();
-    return result.insertedId;
   } catch (error) {
     console.error("Error createDocument :", error);
     throw error;

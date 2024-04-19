@@ -6,9 +6,11 @@ import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faCircle, faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import { Reorder } from "framer-motion";
 import { auth } from '/src/DB/Firebase-Config.js'
+import { useNavigate } from "react-router-dom";
 import  loadGoogleMapsScript  from '/src/components/MapLoader.js';
 
 function FormInput({pathway, setPathway, duration, distance}){
+    const navigate = useNavigate()
     const [ListLength, setListLength] = useState(pathway.length)
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
@@ -19,7 +21,7 @@ function FormInput({pathway, setPathway, duration, distance}){
         EndDate: '',
         Addition: '',
         uid: null,
-        Route: null
+        Route: []
     });
 
     const { title, StartDate, EndDate, Addition } = formData;
@@ -54,10 +56,32 @@ function FormInput({pathway, setPathway, duration, distance}){
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission
         console.log(formData);
+        try {
+            await fetch(`http://localhost:3000/addPlan?uid=${userId}&document=${formData}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }).then (
+                console.log(" ===> Document added"),
+                setFormData({
+                    title: '',
+                    StartDate: '',
+                    EndDate: '',
+                    Addition: '',
+                    uid: null,
+                    Route: []
+                }),
+                navigate("/mainpage")
+            )
+        } catch (error) {
+            console.error("Error send post:", error);
+            throw error;
+        }
     };
 
     const addPathDestination = () => {

@@ -21,25 +21,38 @@ function Mainpage(){
     const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
+        const unsubscribe = auth.onAuthStateChanged(async user => {
             if (user) {
-                console.log('http://localhost:3000/mainpage')
-                setUserInformation(prevState => ({
-                    ...prevState,
+                setUserInformation({
                     username: user.displayName,
-                    email:user.email,
-                    userPhoto:user.photoURL
-                }));
-                try {
-                    fetch(`http://localhost:3000/mainpage?uid=${user.uid}&planOrder=${planOrder}`)
-                    .then(response => response.json())
-                    .then(plan => setPlanList(plan))
-                    .then(() => setFirstEffectCompleted(true))
-                    .catch(error => console.error('Error fetching plan:', error));
-                } catch (error) {
-                    console.error("Error mainpage documents:", error);
-                    throw error;
-                }
+                    email: user.email,
+                    userPhoto: user.photoURL
+                });
+
+                let retryCount = 0;
+                const maxRetries = 3;
+                const fetchPlan = async () => {
+                    try {
+                        const response = await fetch(`http://localhost:3000/mainpage?uid=${user.uid}&planOrder=${planOrder}`);
+                        const plan = await response.json();
+                        if (Object.keys(plan).length === 0 && plan.constructor === Object) {
+                            console.log("Plan is empty. Retrying...");
+                            retryCount++;
+                            if (retryCount <= maxRetries) {
+                                setTimeout(fetchPlan, 1000);
+                            } else {
+                                console.log("Max retries exceeded. Unable to fetch plan.");
+                            }
+                        } else {
+                            setPlanList(plan);
+                            setFirstEffectCompleted(true);
+                        }
+                    } catch (error) {
+                        console.error('Error fetching plan:', error);
+                        setTimeout(fetchPlan, 1000);
+                    }
+                };
+                fetchPlan();
             } else {
                 setUsername(null);
                 setEmail(null);
@@ -98,26 +111,35 @@ function Mainpage(){
     console.log('userInformation',userInformation)
     console.log('comingPlan',comingPlan)
     console.log('route',route)
-    // console.log('route',route.length)
     console.log('planList',planList)
+    console.log(planList.length != 0)
 
     return(
         <>
             <div className="mainPage">
-                <div className="sideBar">
-                    <div className="personalInfo">
-                        <img src={userInformation.userPhoto} alt="Profile" />
-                        <h4>{userInformation.username}</h4>
-                        <p>{userInformation.email}</p>
-                    </div>
-                    <div className="ComingPlan">
-                        <p> แพลนที่จะถึงนี้ </p>
-                        <ComingPlan comingPlan={comingPlan} ListLength={route.length} route={route} />
-                    </div>
-                </div>
-                <div className="Thumbnail-container">
-                    < Thumbnail handleOrderSelection={handleOrderSelection} planList={planList} clickedButton={clickedButton}/>
-                </div>
+                    <>
+                        <div className="sideBar">
+                            { userInformation.userPhoto != null?(
+                                    <div className="personalInfo">
+                                    <img src={userInformation.userPhoto} alt="Profile" />
+                                    <h4>{userInformation.username}</h4>
+                                    <p>{userInformation.email}</p>
+                                </div>
+                            ):(<> <h1>Loading .... </h1> </>)}
+                            <div className="ComingPlan">
+                                <p> แพลนที่จะถึงนี้ </p>
+                                { comingPlan.length != 0 && route.length != 0 ?(
+                                    <ComingPlan comingPlan={comingPlan} ListLength={route.length} route={route} />
+                                ):(<> <h1>Loading .... </h1> </>)}
+                            </div>
+                        </div>
+                        <div className="Thumbnail-container">
+                            {planList.length != 0 && comingPlan.length != 0 && route.length != 0 ?(
+                                < Thumbnail handleOrderSelection={handleOrderSelection} planList={planList} clickedButton={clickedButton}/>
+                            ):
+                            (<> <h1>Loading .... </h1> </>)}
+                        </div>
+                    </>
             </div>
         </>
     )
