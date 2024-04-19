@@ -17,10 +17,11 @@ function registerForm() {
         const displayName = e.target.username.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const photoURL = "/public/images/user.png"
 
         try {
             const res = await createUserWithEmailAndPassword(auth, email, password);
-            await updateProfile(res.user, { displayName });
+            await updateProfile(res.user, { displayName,photoURL });
             navigate("/mainpage");
         } catch (error) {
             console.error('Registration error:', error);

@@ -19,3 +19,6 @@ body {
   min-height: 100%;
 }
 
+button{
+  font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}

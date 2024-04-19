@@ -6,36 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsisVertical, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { auth } from '/src/DB/Firebase-Config.js'
 
-function Thumbnail(){
-    const [planList,setPlanList] = useState([])
-    const [userId, setUserId] = useState(null)
-    const [planOrder, setPlanOrder] = useState(-1)
-    const [clickedButton, setClickedButton] = useState("ล่าสุด");
+function Thumbnail({handleOrderSelection, planList, clickedButton}){
     const [searchQuery, setSearchQuery] = useState('');
 
-    const handleOrderSelection = (selectedOrder) => {
-        setClickedButton(selectedOrder);
-        if (selectedOrder === "ล่าสุด") {
-            setPlanOrder(-1);
-        } else if (selectedOrder === "เก่าที่สุด") {
-            setPlanOrder(1);
-        }
-    };
-
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            if (user) {
-                setUserId(user.uid);
-                fetch(`http://localhost:3000/mainpage?uid=${user.uid}&planOrder=${planOrder}`)
-                .then(response => response.json())
-                .then(plan => setPlanList(plan))
-                .catch(error => console.error('Error fetching plan:', error));
-            } else {
-                setUserId(null);
-            }
-        });
-        return () => unsubscribe();
-    }, [planOrder]);
     const handleSearchInputChange = (event) => {
         setSearchQuery(event.target.value);
     };
@@ -58,8 +31,8 @@ function Thumbnail(){
 
         <div className="Thumbnail-scroll">
             <div className="Thumbnail">
-                {planList.map((planList)=>(
-                    <ThumbnailElement key={planList._id} id={planList._id} Title={planList.title} StartDate={planList.StartDate} EndDate={planList.EndDate} From={planList.Route[0].displayName} To={planList.Route[planList.Route.length - 1].displayName}/>
+                {planList.map((planList, index)=>(
+                    <ThumbnailElement key={index} id={planList._id} Title={planList.title} StartDate={planList.StartDate} EndDate={planList.EndDate} From={planList.Route[0].displayName} To={planList.Route[planList.Route.length - 1].displayName}/>
                 ))}
             </div>
         </div>

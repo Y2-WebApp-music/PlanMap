@@ -1,0 +1,94 @@
+.PlanThumbnail-skeleton {
+    box-sizing: border-box;
+    width: 100%;
+    height: 94vh;
+    display: grid;
+    grid-template-rows: 5% 1fr;
+    gap: 5px;
+}
+
+.FilterArea-skeleton{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: start;
+    align-items: center;
+    background: linear-gradient(0deg, rgba(255,255,255,0) 15%, rgba(0,0,0,0.2) 100%);
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+.searchBox-skeleton {
+    height: 90%;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(227, 227, 227);
+    border-radius: 30px;
+    padding: 0.3rem 1rem;
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.15);
+}
+
+.FilterBTN-skeleton{
+    background-color: rgb(220, 220, 220);
+    border-radius: 30px;
+    padding: 0.2rem 1.2rem;
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.15);
+    height: 80%;
+    width: 8%;
+}
+
+.Thumbnail-sekeleton-grid{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    margin-top: 1rem;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    box-sizing: border-box;
+}
+.Thumbnail-sekeleton{
+    background-color: rgb(221, 221, 221);
+    width: 90%;
+    height: 80%;
+    padding: 1rem 1rem;
+    border-radius: 15px;
+    display: grid;
+    grid-template-rows: 35% 15% 10% 10% 1fr;
+    flex-direction: column;
+    gap: 5px;
+    box-shadow: 0 0rem 0.4rem rgba(99, 99, 99, 0.55);
+}
+.Thumbnail-sekeleton-title{
+    width: 95%;
+    height: 100%;
+    background-color: rgb(196, 196, 196);
+    border-radius: 15px;
+    animation: pulse 1.5s infinite;
+}
+.Thumbnail-sekeleton-button{
+    justify-self: flex-end;
+    align-self: flex-end;
+    width: 18%;
+    height: 100%;
+    background-color: rgb(131, 131, 131);
+    border-radius: 30px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        background-color: rgb(171, 171, 171);
+    }
+    60% {
+        background-color: rgb(199, 198, 198);
+    }
+    100% {
+        background-color: rgb(171, 171, 171);
+    }
+}
