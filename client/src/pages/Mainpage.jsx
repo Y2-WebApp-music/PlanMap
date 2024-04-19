@@ -4,6 +4,7 @@ import './mainpage.css';
 import { auth } from '/src/DB/Firebase-Config.js'
 import Thumbnail from "../components/Mainpage/PlanThumbnail";
 import ComingPlan from "../components/Mainpage/ComingPlan";
+import ThumbnailSkeleton from "../components/Loading/LoadThumbnail";
 
 function Mainpage(){
     const [userInformation, setUserInformation] = useState({
@@ -137,7 +138,7 @@ function Mainpage(){
                                         <ComingPlan comingPlan={comingPlan} ListLength={route.length} route={route} />
                                     ):(<>
                                         <div className="ComingIsEmpty">
-                                            {/* <p> text </p> */}
+                                            <p> text</p>
                                         </div>
                                     </>)
                                 ):
@@ -157,7 +158,7 @@ function Mainpage(){
                                     </div>
                                 )
                             ):
-                            (<> <h1> Loading .... </h1> </>)}
+                            (<ThumbnailSkeleton/>)}
                         </div>
                     </>
             </div>
