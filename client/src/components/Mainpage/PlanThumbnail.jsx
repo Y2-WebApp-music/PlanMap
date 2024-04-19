@@ -31,8 +31,8 @@ function Thumbnail({handleOrderSelection, planList, clickedButton}){
 
         <div className="Thumbnail-scroll">
             <div className="Thumbnail">
-                {planList.map((planList)=>(
-                    <ThumbnailElement key={planList._id} id={planList._id} Title={planList.title} StartDate={planList.StartDate} EndDate={planList.EndDate} From={planList.Route[0].displayName} To={planList.Route[planList.Route.length - 1].displayName}/>
+                {planList.map((planList, index)=>(
+                    <ThumbnailElement key={index} id={planList._id} Title={planList.title} StartDate={planList.StartDate} EndDate={planList.EndDate} From={planList.Route[0].displayName} To={planList.Route[planList.Route.length - 1].displayName}/>
                 ))}
             </div>
         </div>

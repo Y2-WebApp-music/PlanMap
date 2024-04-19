@@ -58,15 +58,18 @@
     height: 80%;
     border-radius: 50%;
     align-self: flex-end;
+    animation: growUP 1s;
 }
 .personalInfo h4 {
     margin: 0 0;
     font-size: 2rem;
     font-weight: 500;
+    animation: growUP 1s;
 }
 .personalInfo p {
     margin: 0 0;
     font-size: 1rem;
+    animation: growUP 1s;
 }
 
 /* ===================================

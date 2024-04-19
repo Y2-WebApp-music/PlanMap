@@ -12,7 +12,7 @@ export default function ThumbnailSkeleton(){
                     </div>
                 </div>
                 <div className='Thumbnail-sekeleton-grid'>
-                    {[...Array(8)].map((index) => (
+                    {[...Array(8)].map((thumbnail, index) => (
                         <div key={index} className="Thumbnail-sekeleton">
                             <div className='Thumbnail-sekeleton-title'></div>
                             <div className='Thumbnail-sekeleton-title'></div>

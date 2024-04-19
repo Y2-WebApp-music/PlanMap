@@ -1,0 +1,28 @@
+.ComingSkeleton {
+    width: 95%;
+    height: 80%;
+    background-color: rgba(255, 255, 255, 0.71);
+    padding: 1rem 0rem;
+    box-shadow: 0rem 0rem 0.6rem rgba(37, 19, 1, 0.25);
+    border-radius: 10px;
+    display: grid;
+    grid-template-rows:  17% 8% 3% 20% 3% 1fr 7% ;
+    justify-items: center;
+    align-items: center;
+    gap: 10px;
+}
+.ComingSkeleton-Detail{
+    width: 90%;
+    height: 100%;
+    background-color: rgb(195, 195, 195);
+    border-radius: 10px;
+    animation: pulse 1.5s infinite;
+}
+
+.ComingSkeleton-button{
+    width: 40%;
+    height: 100%;
+    background-color: rgb(195, 195, 195);
+    border-radius: 30px;
+    animation: pulse 1.5s infinite;
+}

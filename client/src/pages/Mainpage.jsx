@@ -5,6 +5,8 @@ import { auth } from '/src/DB/Firebase-Config.js'
 import Thumbnail from "../components/Mainpage/PlanThumbnail";
 import ComingPlan from "../components/Mainpage/ComingPlan";
 import ThumbnailSkeleton from "../components/Loading/LoadThumbnail";
+import ComingSkeleton from "../components/Loading/LoadComing";
+import ProfileSkeleton from "../components/Loading/LoadProfile";
 
 function Mainpage(){
     const [userInformation, setUserInformation] = useState({
@@ -35,9 +37,7 @@ function Mainpage(){
                 const maxRetries = 3;
                 const fetchPlan = async () => {
                     try {
-                        console.log("Going to fetch plan ..... ")
                         const response = await fetch(`http://localhost:3000/mainpage?uid=${user.uid}&planOrder=${planOrder}`);
-                        console.log('... response > ',response)
                         const plan = await response.json();
                         if (Object.keys(plan).length === 0 && plan.constructor === Object) {
                             console.log("Plan is empty. Retrying...");
@@ -111,40 +111,28 @@ function Mainpage(){
         }
     };
 
-    // console.log('userInformation',userInformation)
-    // console.log('comingPlan',comingPlan)
-    // console.log('route',route)
-    // console.log('planList',planList)
-    // console.log('checkPlan => ',checkPlan)
-    // console.log(planList.length != 0)
-    // console.log('')
-
     return(
         <>
             <div className="mainPage">
                     <>
                         <div className="sideBar">
                             { userInformation.userPhoto != null?(
-                                    <div className="personalInfo">
+                                <div className="personalInfo">
                                     <img src={userInformation.userPhoto} alt="Profile" />
                                     <h4>{userInformation.username}</h4>
                                     <p>{userInformation.email}</p>
                                 </div>
-                            ):(<> <h1>Loading .... </h1> </>)}
+                            ):(<ProfileSkeleton/>)}
                             <div className="ComingPlan">
                                 <p> แพลนที่จะถึงนี้ </p>
                                 {checkPlan?(
                                     route.length != 0 ?(
                                         <ComingPlan comingPlan={comingPlan} ListLength={route.length} route={route} />
                                     ):(<>
-                                        <div className="ComingIsEmpty">
-                                            <p> text</p>
-                                        </div>
+                                        <div className="ComingIsEmpty"></div>
                                     </>)
                                 ):
-                                (
-                                    <> <h1> Loading .... </h1> </>
-                                )}
+                                (<ComingSkeleton/>)}
                             </div>
                         </div>
                         <div className="Thumbnail-container">

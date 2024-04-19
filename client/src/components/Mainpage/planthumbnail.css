@@ -130,6 +130,7 @@
     align-items: center;
     grid-template-rows: 80% 20%;
     box-sizing: border-box;
+    animation: growUP 1s;
 }
 
 .ThumbnailElement:hover {
@@ -281,4 +282,15 @@
     background-color: var(--color-blue);
     box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.35);
     cursor: pointer;
+}
+
+@keyframes growUP {
+    0%{
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0px);
+    }
 }
