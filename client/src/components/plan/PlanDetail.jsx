@@ -5,11 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faCircle, faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
+import { formatThaiDate } from "../DateFormat";
 
 function FormInput({currentPlan, pathway, duration, distance}){
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
     const navigate = useNavigate()
+    console.log(currentPlan.StartDate)
+    const start = formatThaiDate(currentPlan.StartDate);
+    const end = formatThaiDate(currentPlan.EndDate);
 
     console.log('')
     console.log('PlanDetail currentPlan ===>',currentPlan)
@@ -18,7 +22,7 @@ function FormInput({currentPlan, pathway, duration, distance}){
 
     return(
         <>
-            <div className="sidebar">
+            <div className="sidebarView">
                 <div className="PlanDetailView">
                     <div className="btn-planView">
                         <a className="backToMain" href="/mainpage">
@@ -27,20 +31,22 @@ function FormInput({currentPlan, pathway, duration, distance}){
                         </a>
                         <button onClick={()=> navigate(`/editplan/${currentPlan._id}`)}>แก้ไขแพลนนี้</button>
                     </div>
-                    <div className="Title-Container">
+                    <div className="Title-View-Container">
                         <p>ชื่อแพลน</p>
-                        <p id="titlePlanView">{currentPlan.title}</p>
-                    </div>
-                    <div className="PlanDate">
-                        <p>วันที่เดินทาง</p>
-                        <div className="calendar-Custom">
-                            <p id="startDate">{currentPlan.StartDate}</p>
-                            <p>-</p>
-                            <p id="startDate">{currentPlan.EndDate}</p>
+                        <div id="titlePlanView">
+                            <p >{currentPlan.title}</p>
                         </div>
                     </div>
-                    <div className="sidebar-CreatePlan-scroll">
-                        <div className="sidebar-CreatePlan">
+                    <div className="PlanDateView">
+                        <p>วันที่เดินทาง</p>
+                        <div className="startEndView">
+                            <p className="DateView">{start}</p>
+                            <p>ถึง</p>
+                            <p className="DateView">{end}</p>
+                        </div>
+                    </div>
+                    <div className="sidebar-CreatePlan-scroll-view">
+                        <div className="sidebar-CreatePlan-view">
                             <div className="Pathway">
                                 <p>สถานที่ในการเดินทาง</p>
                                 <div className="Pathway-List">
@@ -56,9 +62,9 @@ function FormInput({currentPlan, pathway, duration, distance}){
                                         ))}
                                 </div>
                             </div>
-                            <div>
+                            <div className="addition-view">
                                 <p>บันทึกเพิ่มเติม</p>
-                                <p>{currentPlan.Addition}</p>
+                                <div dangerouslySetInnerHTML={{ __html: `${currentPlan.Addition}`.replace(/\n/g, '<br>') }} id="addition"/>
                             </div>
                         </div>
                     </div>
@@ -88,7 +94,7 @@ function PathPoint({ displayName}){
 function PathDestination({ displayName}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
     return(
-        <div className="Path-Destination" >
+        <div className="View-Path-Point" >
             <FontAwesomeIcon icon={faLocationDot} size="lg" id="faLocationDot"/>
             <p className="View-placeName">{placeName}</p>
         </div>

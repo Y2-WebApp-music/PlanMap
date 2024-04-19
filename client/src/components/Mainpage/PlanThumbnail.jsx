@@ -4,6 +4,7 @@ import '/src/global.css'
 import './planthumbnail.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsisVertical, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { formatThaiDate } from "../DateFormat";
 
 function Thumbnail({uid, handleOrderSelection, planList, clickedButton }){
     const [searchQuery, setSearchQuery] = useState('');
@@ -49,6 +50,8 @@ function FilterBTN({ text, onClick, clicked }) {
 function ThumbnailElement({id, Title, StartDate, EndDate, From, To, uid}){
     const [showPopup, setShowPopup] = useState(false);
     const [deletePlan, setDeletePlan] = useState(false)
+    const start = formatThaiDate(StartDate);
+    const end = formatThaiDate(EndDate);
     const navigate = useNavigate()
     const togglePopup = () => {
         setShowPopup(!showPopup);
@@ -60,7 +63,7 @@ function ThumbnailElement({id, Title, StartDate, EndDate, From, To, uid}){
                 <div className="Thumbnail-content">
                     <h2>{Title}</h2>
                     <div className="Date">
-                        <span>วันที่ </span><span>{StartDate}</span><span> - </span><span>{EndDate}</span>
+                        <span>วันที่ </span><span>{start}</span><span> - </span><span>{end}</span>
                     </div>
                     <div className="Thumbnail-where"><span>จาก : </span><span>{From}</span></div>
                     <div className="Thumbnail-where"><span>ถึง : </span><span>{To}</span></div>
@@ -95,7 +98,7 @@ function PlanSetting({id, showPopup, setShowPopup, setDeletePlan}){
 
     return(
         <div className="Plan-setting-popUp" id="planSettingPopup">
-            <button className="setting-popUp-content" onClick={()=> navigate(`/plan/${id}`)}>
+            <button className="setting-popUp-content" onClick={()=> navigate(`/editplan/${id}`)}>
                 <FontAwesomeIcon icon={faPencil} size="lg" id="faPencil"/>
                 <p>แก้ไขแพลนนี้</p>
             </button>

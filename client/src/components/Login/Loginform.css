@@ -88,8 +88,8 @@
 
 .googleLogin {
     background-color: var(--color-bg2);
-    border: solid;
-    width: 50%;
+    border: none;
+    width: 45%;
     padding: 0.3rem 0.3rem;
     display: grid;
     grid-template-columns: 20% 1fr;
@@ -99,25 +99,22 @@
     margin-bottom: 3rem;
     box-shadow: 0 0rem 0.1rem rgba(37, 19, 1, 0.35);
     color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 500;
     transition: .2s;
 }
 
 .googleLogin:hover {
-    background-color: var(--color-lightblue);
-    scale: 1.04;
-    padding: 0.3rem 1rem;
+    background-color: var(--color-blue);
     color: white;
     transition: .2s;
     cursor: pointer;
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.65);
 }
 
 .googleLogin img {
-    width: 40px;
-}
-.googleLogin p {
-    text-align: start;
-    margin: 0 0;
-    width: 100%;
-    font-weight: 500;
+    width: auto;
+    background-color: white;
+    border-radius: 50%;
 }
 
