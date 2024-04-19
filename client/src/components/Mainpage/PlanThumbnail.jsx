@@ -4,15 +4,13 @@ import '/src/global.css'
 import './planthumbnail.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsisVertical, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { auth } from '/src/DB/Firebase-Config.js'
 
-function Thumbnail({handleOrderSelection, planList, clickedButton}){
+function Thumbnail({uid, handleOrderSelection, planList, clickedButton }){
     const [searchQuery, setSearchQuery] = useState('');
 
     const handleSearchInputChange = (event) => {
         setSearchQuery(event.target.value);
     };
-
 
     return(<>
     <div className="PlanThumbnail">
@@ -32,7 +30,7 @@ function Thumbnail({handleOrderSelection, planList, clickedButton}){
         <div className="Thumbnail-scroll">
             <div className="Thumbnail">
                 {planList.map((planList, index)=>(
-                    <ThumbnailElement key={index} id={planList._id} Title={planList.title} StartDate={planList.StartDate} EndDate={planList.EndDate} From={planList.Route[0].displayName} To={planList.Route[planList.Route.length - 1].displayName}/>
+                    <ThumbnailElement key={index} id={planList._id} Title={planList.title} StartDate={planList.StartDate} EndDate={planList.EndDate} From={planList.Route[0].displayName} To={planList.Route[planList.Route.length - 1].displayName} uid={uid} />
                 ))}
             </div>
         </div>
@@ -48,31 +46,13 @@ function FilterBTN({ text, onClick, clicked }) {
     );
 }
 
-function ThumbnailElement({id, Title, StartDate, EndDate, From, To}){
+function ThumbnailElement({id, Title, StartDate, EndDate, From, To, uid}){
     const [showPopup, setShowPopup] = useState(false);
-
+    const [deletePlan, setDeletePlan] = useState(false)
+    const navigate = useNavigate()
     const togglePopup = () => {
         setShowPopup(!showPopup);
     };
-
-    const closePopup = () => {
-        setShowPopup(false);
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (showPopup && !event.target.closest('.Plan-setting-popUp')) {
-                setShowPopup(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [showPopup]);
-    const navigate = useNavigate()
 
     return(
         <div className="ThumbnailElement">
@@ -87,22 +67,66 @@ function ThumbnailElement({id, Title, StartDate, EndDate, From, To}){
                 </div>
                 <div className="Plan-setting">
                     <FontAwesomeIcon icon={faEllipsisVertical} size="lg" id="settingPlan-btn" onClick={togglePopup}/>
-                    {showPopup && (
-                        <div className="Plan-setting-popUp" id="planSettingPopup" onClick={closePopup}>
-                            <div className="setting-popUp-content">
-                                <FontAwesomeIcon icon={faPencil} size="lg" id="faPencil"/>
-                                <p>แก้ไขแพลนนี้</p>
-                            </div>
-                            <div className="setting-popUp-content">
-                                <FontAwesomeIcon icon={faTrash} size="lg" id="faTrash"/>
-                                <p>ลบแพลนนี้</p>
-                            </div>
-                        </div>
-                    )}
+                    {showPopup && ( <PlanSetting showPopup={showPopup} setShowPopup={setShowPopup} id={id} setDeletePlan={setDeletePlan}/>)}
                 </div>
             </div>
             <div className="goToPlan">
                 <button id="seePlan" onClick={()=> navigate(`/plan/${id}`)}>ดูแพลน</button>
+            </div>
+            {deletePlan && (<DeletePopUp uid={uid} id={id} setDeletePlan={setDeletePlan}/>)}
+        </div>
+    )
+}
+
+function PlanSetting({id, showPopup, setShowPopup, setDeletePlan}){
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (showPopup && !event.target.closest('.Plan-setting-popUp')) {
+                setShowPopup(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showPopup]);
+
+    return(
+        <div className="Plan-setting-popUp" id="planSettingPopup">
+            <button className="setting-popUp-content" onClick={()=> navigate(`/plan/${id}`)}>
+                <FontAwesomeIcon icon={faPencil} size="lg" id="faPencil"/>
+                <p>แก้ไขแพลนนี้</p>
+            </button>
+            <button className="setting-popUp-content" onClick={()=> setDeletePlan(true)}>
+                <FontAwesomeIcon icon={faTrash} size="lg" id="faTrash"/>
+                <p>ลบแพลนนี้</p>
+            </button>
+        </div>
+    )
+}
+
+function DeletePopUp({ uid ,id, setDeletePlan }){
+    const DeletePlan = async ()=>{
+        console.log("DeletePlan : ", {id})
+        try {
+            await fetch(`http://localhost:3000/deletePlan?uid=${uid}&id=${id}`, {
+                method: 'POST'
+            }).then(
+                window.location.reload()
+            )
+        } catch (error) {
+            console.error("Error send post:", error);
+            throw error;
+        }
+    }
+    return(
+        <div className="Delete-Pop-UP">
+            <p>คุณต้องการลบแพลนนี้ใช่หรือไม่</p>
+            <div>
+                <button className="Delete-Yes" onClick={DeletePlan}>ใช่</button>
+                <button className="Delete-No" onClick={()=> setDeletePlan(false)}>ไม่</button>
             </div>
         </div>
     )

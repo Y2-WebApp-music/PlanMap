@@ -36,6 +36,16 @@ app.post('/addPlan', (req, res)=>{
     .catch(err => res.json(err))
 })
 
+app.post('/deletePlan', (req, res)=>{
+    const uid = req.query.uid;
+    const id = req.query.id;
+    console.log(" >> Delete Plan << ")
+    // console.log("uid : ",uid)
+    // console.log("id : ",id)
+    deleteDocument(uid, id)
+    .catch(err => res.json(err))
+})
+
 
 app.listen(3000, () =>{
     console.log("server is running")

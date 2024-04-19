@@ -101,7 +101,9 @@ export async function updateDocument(uid, documentId, update) {
 export async function deleteDocument(uid, documentId) {
   try {
     await connect();
-    const result = await collection.deleteOne({ _id: ObjectId(documentId), uid });
+    console.log("uid : ",uid)
+    console.log("id : ",documentId)
+    const result = await collection.deleteOne({ _id: new ObjectId(documentId), uid });
     console.log(`Document deleted with _id: ${documentId}`);
     close();
     // return result;

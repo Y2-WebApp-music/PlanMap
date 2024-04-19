@@ -10,6 +10,7 @@ import ProfileSkeleton from "../components/Loading/LoadProfile";
 
 function Mainpage(){
     const [userInformation, setUserInformation] = useState({
+        uid : null,
         username: null,
         email: null,
         userPhoto: null
@@ -23,11 +24,13 @@ function Mainpage(){
     const [clickedButton, setClickedButton] = useState("ล่าสุด");
     const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
     const [checkPlan, setCheckPlan] = useState(false)
+    const [reloadFlag, setReloadFlag] = useState(false);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async user => {
             if (user) {
                 setUserInformation({
+                    uid : user.uid,
                     username: user.displayName,
                     email: user.email,
                     userPhoto: user.photoURL
@@ -138,7 +141,7 @@ function Mainpage(){
                         <div className="Thumbnail-container">
                             { checkPlan? (
                                 planList.length != 0 ?(
-                                    < Thumbnail handleOrderSelection={handleOrderSelection} planList={planList} clickedButton={clickedButton}/>
+                                    < Thumbnail handleOrderSelection={handleOrderSelection} planList={planList} clickedButton={clickedButton} uid={userInformation.uid}/>
                                 ):(
                                     <div className="CheckEmptyCreatePlan">
                                         <p>เริ่มสร้างแพลนของคุณ</p>
