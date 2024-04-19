@@ -16,3 +16,26 @@
 
     /* Font Size */
 }
+
+@keyframes pulse {
+    0% {
+        background-color: rgb(171, 171, 171);
+    }
+    60% {
+        background-color: rgb(199, 198, 198);
+    }
+    100% {
+        background-color: rgb(171, 171, 171);
+    }
+}
+
+@keyframes growUP {
+    0%{
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}

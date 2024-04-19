@@ -5,7 +5,7 @@ import MapPlan from "../components/plan/MapPlan"
 import PlanDetail from "../components/plan/PlanDetail"
 import { auth } from "../DB/Firebase-Config";
 import { useParams } from "react-router-dom";
-
+import PlanSkeleton from "../components/Loading/LoadPlan";
 
 function PlanView() {
     const { id } = useParams()
@@ -57,8 +57,9 @@ function PlanView() {
                     </>
                 )
                 :
-                (<> <h1>Loading .... </h1> </>)
+                (<PlanSkeleton/>)
                 }
+                {/* <PlanSkeleton/> */}
             </div>
         </>
     )

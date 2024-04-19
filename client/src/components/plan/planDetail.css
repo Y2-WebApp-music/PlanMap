@@ -17,8 +17,7 @@
     align-items: center;
     grid-template-rows: 5% max-content max-content 1fr 5%;
     gap: 5px;
-    /* background-color: rgb(27, 139, 102); */
-    /* overflow-x: scroll; */
+    animation: growUP 1s;
 }
 .PlanDetailView p{
     color: var(--color-text);
