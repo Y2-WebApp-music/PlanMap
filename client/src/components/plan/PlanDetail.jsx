@@ -49,7 +49,7 @@ function FormInput({currentPlan, pathway, duration, distance}){
                         <div className="sidebar-CreatePlan-view">
                             <div className="Pathway">
                                 <p>สถานที่ในการเดินทาง</p>
-                                <div className="Pathway-List">
+                                <div className="Pathway-List-View">
                                     <div className="TimePrediction">
                                         <span>เวลาโดยประมาณ</span><span id="TimeCurrent"> {hours} ชั่วโมง {minutes} นาที</span><span> ด้วยรถยนต์</span>
                                     </div>

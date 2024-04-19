@@ -1,20 +1,14 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import '/src/global.css';
 import '../CreatePlan/FormInput.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
-import { faLocationDot, faCircle, faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
-import { Reorder } from "framer-motion";
+import PathList from "../CreatePlan/PathList";
 import { auth } from '/src/DB/Firebase-Config.js'
 import { useNavigate } from "react-router-dom";
-import  loadGoogleMapsScript  from '/src/components/MapLoader.js';
 
 function EditForm({currentPlan, pathway, setPathway, duration, distance}){
     const navigate = useNavigate()
-    const [ListLength, setListLength] = useState(pathway.length)
-    const hours = Math.floor(duration / 60);
-    const minutes = Math.round(duration % 60);
     const [userId, setUserId] = useState(null)
+    const [documentId, setDocumentId] = useState(currentPlan._id)
     const [formData ,setFormData] = useState(
         {
             title: currentPlan.title,
@@ -25,6 +19,7 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance}){
             Route: pathway
         }
     )
+    console.log('currentPlan._id',currentPlan._id)
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -56,14 +51,14 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance}){
         e.preventDefault();
         console.log(formData);
         try {
-            await fetch(`http://localhost:3000/addPlan?uid=${userId}&document=${formData}`, {
+            await fetch(`http://localhost:3000/updatePlan?uid=${userId}&documentId=${documentId}&update=${formData}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
             }).then (
-                console.log(" ===> Document added"),
+                console.log(" ===> Document update"),
                 setFormData({
                     title: '',
                     StartDate: '',
@@ -80,48 +75,21 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance}){
         }
     };
 
-    const addPathDestination = () => {
-        const newId = ListLength + 1;
-        const newPoint = { id: newId, displayName: '', lat: null, lng: null };
-        setPathway([...pathway, newPoint]);
-        setListLength(newId)
-    };
-
     return(
         <>
             <div className="sidebar">
                 <form className="FormInput" onSubmit={handleSubmit}>
                     <label htmlFor="titlePlan">
                         <p>ชื่อแพลน</p>
-                        <input
-                        type="text"
-                        name="title"
-                        id="titlePlan"
-                        placeholder="ชื่อแพลน"
-                        value={formData.title}
-                        onChange={handleChange}
-                    />
+                        <input type="text" name="title" id="titlePlan" placeholder="ชื่อแพลน" value={formData.title} onChange={handleChange}/>
                     </label>
 
                     <div className="PlanDate">
                         <p>วันที่เดินทาง</p>
                         <div className="calendar-Custom">
-                            <input
-                                type="date"
-                                id="startDate"
-                                name="StartDate"
-                                value={formData.StartDate}
-                                placeholder="เริ่มการเดินทาง"
-                                onChange={handleChange}
-                            />
+                            <input type="date" id="startDate" name="StartDate" value={formData.StartDate} placeholder="เริ่มการเดินทาง" onChange={handleChange} />
                             <p>-</p>
-                            <input
-                                type="date"
-                                id="endDate"
-                                name="EndDate"
-                                value={formData.EndDate}
-                                placeholder="สิ้นสุดการเดินทาง"
-                                onChange={handleChange}
+                            <input type="date" id="endDate" name="EndDate" value={formData.EndDate} placeholder="สิ้นสุดการเดินทาง" onChange={handleChange}
                             />
                         </div>
                     </div>
@@ -130,34 +98,12 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance}){
                         <div className="sidebar-CreatePlan">
                             <div className="Pathway">
                                 <p>สถานที่ในการเดินทาง</p>
-                                <div className="Pathway-List">
-                                    <div className="TimePrediction">
-                                        <span>เวลาโดยประมาณ</span><span id="TimeCurrent"> {hours} ชั่วโมง {minutes} นาที</span><span> ด้วยรถยนต์</span>
-                                    </div>
-                                    <Reorder.Group axis="y" values={pathway} onReorder={setPathway}>
-                                        {pathway.map((point, index) => (
-                                            <Reorder.Item value={point} key={point.id}>
-                                                {index === ListLength - 1 ? (
-                                                    <PathDestination key={point.id} id={point.id} displayName={point.displayName} setPathway={setPathway} pathway={pathway}/>
-                                                ) : (
-                                                    <PathPoint key={point.id} id={point.id} displayName={point.displayName} setPathway={setPathway} pathway={pathway}/>
-                                                )}
-                                            </Reorder.Item>
-                                        ))}
-                                    </Reorder.Group>
-                                    <div className="AddPoint" onClick={addPathDestination}><FontAwesomeIcon icon={faCirclePlus} size="lg" id="faCirclePlus"/> เพิ่มจุดหมาย</div>
-                                </div>
+                                < PathList setPathway={setPathway} pathway={pathway} duration={duration} distance={distance}/>
                             </div>
 
                             <label htmlFor="">
                                 <p>บันทึกเพิ่มเติม</p>
-                                <textarea
-                                name="Addition"
-                                id="addition"
-                                cols="30"
-                                rows="10"
-                                value={formData.Addition}
-                                onChange={handleChange}
+                                <textarea name="Addition" id="addition" cols="30" rows="10" value={formData.Addition} onChange={handleChange}
                             />
                             </label>
                         </div>
@@ -166,79 +112,6 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance}){
                 </form>
             </div>
         </>
-    )
-}
-
-async function SearchPlace(id, setPlaceName, pathway, setPathway) {
-    const [{ Map }] = await Promise.all([google.maps.importLibrary("places")]);
-    const input = document.getElementById(`pathpoint-input-${id}`);
-    const autocomplete = new google.maps.places.Autocomplete(input, {
-        fields: ["formatted_address", "geometry", "name"],
-        strictBounds: false,
-    });
-    autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        if (place.geometry && place.geometry.location) {
-            let newLat = place.geometry.location.lat();
-            let newLng = place.geometry.location.lng();
-            setPlaceName(place.name);
-            let updatedPathway = pathway.map(item =>
-                item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng } : item
-            );
-            setPathway(updatedPathway);
-        }
-    });
-}
-
-function PathPoint({id, displayName, pathway, setPathway}){
-    const [placeName, setPlaceName] = useState(`${displayName}`);
-
-    useEffect(() => {
-        loadGoogleMapsScript().then(maps => SearchPlace(id, setPlaceName, pathway, setPathway))
-    }, [id, setPlaceName]);
-
-    return(
-        <div className="Path-Point" >
-            <div className="icon-Path-Point">
-                <FontAwesomeIcon icon={holdCircle} size="sm" id="holdCircle"/>
-                <div className="dot-connectPath">
-                    <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
-                    <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
-                    <FontAwesomeIcon icon={faCircle} size="2xs" id="faCircle"/>
-                </div>
-            </div>
-            <input
-                type="text"
-                defaultValue={placeName}
-                placeholder="เลือกจุดหมาย"
-                name="PathPoint"
-                id={`pathpoint-input-${id}`}
-                onChange={(e) => setPlaceName(e.target.value)}
-            />
-            <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
-        </div>
-    )
-}
-function PathDestination({id, displayName, pathway, setPathway}){
-    const [placeName, setPlaceName] = useState(`${displayName}`);
-
-    useEffect(() => {
-        loadGoogleMapsScript().then(maps => SearchPlace(id, setPlaceName, pathway, setPathway))
-    }, [id, setPlaceName]);
-
-    return(
-        <div className="Path-Destination" >
-            <FontAwesomeIcon icon={faLocationDot} size="lg" id="faLocationDot"/>
-            <input
-                type="text"
-                defaultValue={placeName}
-                placeholder="เลือกจุดหมาย"
-                name="PathPoint"
-                id={`pathpoint-input-${id}`}
-                onChange={(e) => setPlaceName(e.target.value)}
-            />
-            <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
-        </div>
     )
 }
 

@@ -86,7 +86,7 @@ export async function updateDocument(uid, documentId, update) {
   try {
     await connect();
     const result = await collection.updateOne(
-      { _id: ObjectId(documentId), uid },
+      { _id: new ObjectId(documentId), uid },
       { $set: update }
     );
     console.log(`Document updated with _id: ${documentId}`);

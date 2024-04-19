@@ -151,7 +151,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 }
 .Path-Point{
     width: 100%;
@@ -234,6 +234,11 @@
 }
 .Path-Destination input:hover{
     border-color: var(--color-blue);
+}
+p.distance{
+    text-align: center;
+    width: 100%;
+    color: rgb(105, 107, 121);
 }
 .AddPoint{
     background-color: var(--color-bg2);
