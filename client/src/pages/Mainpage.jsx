@@ -19,6 +19,7 @@ function Mainpage(){
     const [planOrder, setPlanOrder] = useState(-1);
     const [clickedButton, setClickedButton] = useState("ล่าสุด");
     const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
+    const [checkPlan, setCheckPlan] = useState(false)
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async user => {
@@ -33,7 +34,9 @@ function Mainpage(){
                 const maxRetries = 3;
                 const fetchPlan = async () => {
                     try {
+                        console.log("Going to fetch plan ..... ")
                         const response = await fetch(`http://localhost:3000/mainpage?uid=${user.uid}&planOrder=${planOrder}`);
+                        console.log('... response > ',response)
                         const plan = await response.json();
                         if (Object.keys(plan).length === 0 && plan.constructor === Object) {
                             console.log("Plan is empty. Retrying...");
@@ -45,6 +48,7 @@ function Mainpage(){
                             }
                         } else {
                             setPlanList(plan);
+                            setCheckPlan(true)
                             setFirstEffectCompleted(true);
                         }
                     } catch (error) {
@@ -54,9 +58,7 @@ function Mainpage(){
                 };
                 fetchPlan();
             } else {
-                setUsername(null);
-                setEmail(null);
-                setUserPhoto(null);
+                console.log('Else condition of 3000/mainpage')
             }
         });
         return () => unsubscribe();
@@ -108,11 +110,13 @@ function Mainpage(){
         }
     };
 
-    console.log('userInformation',userInformation)
-    console.log('comingPlan',comingPlan)
-    console.log('route',route)
-    console.log('planList',planList)
-    console.log(planList.length != 0)
+    // console.log('userInformation',userInformation)
+    // console.log('comingPlan',comingPlan)
+    // console.log('route',route)
+    // console.log('planList',planList)
+    // console.log('checkPlan => ',checkPlan)
+    // console.log(planList.length != 0)
+    // console.log('')
 
     return(
         <>
@@ -128,16 +132,32 @@ function Mainpage(){
                             ):(<> <h1>Loading .... </h1> </>)}
                             <div className="ComingPlan">
                                 <p> แพลนที่จะถึงนี้ </p>
-                                { comingPlan.length != 0 && route.length != 0 ?(
-                                    <ComingPlan comingPlan={comingPlan} ListLength={route.length} route={route} />
-                                ):(<> <h1>Loading .... </h1> </>)}
+                                {checkPlan?(
+                                    route.length != 0 ?(
+                                        <ComingPlan comingPlan={comingPlan} ListLength={route.length} route={route} />
+                                    ):(<>
+                                        <div className="ComingIsEmpty">
+                                            {/* <p> text </p> */}
+                                        </div>
+                                    </>)
+                                ):
+                                (
+                                    <> <h1> Loading .... </h1> </>
+                                )}
                             </div>
                         </div>
                         <div className="Thumbnail-container">
-                            {planList.length != 0 && comingPlan.length != 0 && route.length != 0 ?(
-                                < Thumbnail handleOrderSelection={handleOrderSelection} planList={planList} clickedButton={clickedButton}/>
+                            { checkPlan? (
+                                planList.length != 0 ?(
+                                    < Thumbnail handleOrderSelection={handleOrderSelection} planList={planList} clickedButton={clickedButton}/>
+                                ):(
+                                    <div className="CheckEmptyCreatePlan">
+                                        <p>เริ่มสร้างแพลนของคุณ</p>
+                                        <a href="/createPlan">สร้างแพลน</a>
+                                    </div>
+                                )
                             ):
-                            (<> <h1>Loading .... </h1> </>)}
+                            (<> <h1> Loading .... </h1> </>)}
                         </div>
                     </>
             </div>
