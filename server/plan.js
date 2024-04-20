@@ -21,7 +21,7 @@ async function close() {
   console.log('')
 }
 
-export async function readAllDocuments(uid, sortField = "CreateAt", sortOrder = 1) {
+export async function readAllDocuments(uid, sortField = "CreateAt", sortOrder = -1) {
   try {
     await connect();
     const sortQuery = { [sortField]: sortOrder };
@@ -91,7 +91,6 @@ export async function updateDocument(uid, documentId, update) {
     );
     console.log(`Document updated with _id: ${documentId}`);
     close();
-    // return result;
   } catch (error) {
     console.error("Error updateDocument :", error);
     throw error;
@@ -106,7 +105,6 @@ export async function deleteDocument(uid, documentId) {
     const result = await collection.deleteOne({ _id: new ObjectId(documentId), uid });
     console.log(`Document deleted with _id: ${documentId}`);
     close();
-    // return result;
   } catch (error) {
     console.error("Error deleteDocument :", error);
     throw error;

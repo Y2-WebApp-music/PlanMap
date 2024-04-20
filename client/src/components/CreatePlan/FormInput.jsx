@@ -14,7 +14,8 @@ function FormInput({pathway, setPathway, duration, distance}){
         EndDate: '',
         Addition: '',
         uid: null,
-        Route: []
+        Route: [],
+        CreateAt : new Date()
     });
 
     const { title, StartDate, EndDate, Addition } = formData;
@@ -67,7 +68,8 @@ function FormInput({pathway, setPathway, duration, distance}){
                     EndDate: '',
                     Addition: '',
                     uid: null,
-                    Route: []
+                    Route: [],
+                    CreateAt : new Date()
                 }),
                 navigate("/mainpage")
             )
