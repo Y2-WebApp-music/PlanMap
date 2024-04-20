@@ -44,8 +44,8 @@ app.post('/updatePlan', (req, res)=>{
     console.log('uid ', uid)
     console.log('documentId ', documentId)
     console.log('update ', update)
-    // updateDocument(uid, documentId, update)
-    // .catch(err => res.json(err))
+    updateDocument(uid, documentId, update)
+    .catch(err => res.json(err))
 })
 
 app.post('/deletePlan', (req, res)=>{
