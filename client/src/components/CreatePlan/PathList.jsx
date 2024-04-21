@@ -19,6 +19,8 @@ export default function PathList({pathway, setPathway, duration, distance}){
         setListLength(newId)
     };
 
+    console.log('ListLength',ListLength)
+
     return(
         <div className="Pathway-List">
             <div className="TimePrediction">
@@ -28,9 +30,9 @@ export default function PathList({pathway, setPathway, duration, distance}){
                 {pathway.map((point, index) => (
                     <Reorder.Item value={point} key={point.id}>
                         {index === ListLength - 1 ? (
-                            <PathDestination key={point.id} id={point.id} displayName={point.displayName} setPathway={setPathway} pathway={pathway}/>
+                            <PathDestination key={point.id} id={point.id} displayName={point.displayName} setPathway={setPathway} pathway={pathway} setListLength={setListLength} ListLength={ListLength}/>
                         ) : (
-                            <PathPoint key={point.id} id={point.id} displayName={point.displayName} setPathway={setPathway} pathway={pathway}/>
+                            <PathPoint key={point.id} id={point.id} displayName={point.displayName} setPathway={setPathway} pathway={pathway} setListLength={setListLength} ListLength={ListLength}/>
                         )}
                     </Reorder.Item>
                 ))}

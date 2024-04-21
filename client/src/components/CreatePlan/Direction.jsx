@@ -27,12 +27,18 @@ async function SearchPlace(id, setPlaceName, pathway, setPathway) {
     });
 }
 
-export function PathPoint({id, displayName, pathway, setPathway}){
+export function PathPoint({id, displayName, pathway, setPathway, setListLength, ListLength}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
 
     useEffect(() => {
         loadGoogleMapsScript().then(maps => SearchPlace(id, setPlaceName, pathway, setPathway))
     }, [id, setPlaceName]);
+
+    const handleDelete = () => {
+        const updatedPathway = pathway.filter(item => item.id !== id);
+        setPathway(updatedPathway);
+        setListLength(ListLength-1)
+    };
 
     return(
         <div className="Path-Point" >
@@ -52,16 +58,22 @@ export function PathPoint({id, displayName, pathway, setPathway}){
                 id={`pathpoint-input-${id}`}
                 onChange={(e) => setPlaceName(e.target.value)}
             />
-            <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
+            <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark" onClick={handleDelete}/>
         </div>
     )
 }
-export function PathDestination({id, displayName, pathway, setPathway}){
+export function PathDestination({id, displayName, pathway, setPathway, setListLength, ListLength}){
     const [placeName, setPlaceName] = useState(`${displayName}`);
 
     useEffect(() => {
         loadGoogleMapsScript().then(maps => SearchPlace(id, setPlaceName, pathway, setPathway))
     }, [id, setPlaceName]);
+
+    const handleDelete = () => {
+        const updatedPathway = pathway.filter(item => item.id !== id);
+        setPathway(updatedPathway);
+        setListLength(ListLength-1)
+    };
 
     return(
         <div className="Path-Destination" >
@@ -74,7 +86,7 @@ export function PathDestination({id, displayName, pathway, setPathway}){
                 id={`pathpoint-input-${id}`}
                 onChange={(e) => setPlaceName(e.target.value)}
             />
-            <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark"/>
+            <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark" onClick={handleDelete}/>
         </div>
     )
 }
