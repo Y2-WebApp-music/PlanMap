@@ -80,15 +80,3 @@
     border-radius: 30px;
     animation: pulse 1.5s infinite;
 }
-
-@keyframes pulse {
-    0% {
-        background-color: rgb(171, 171, 171);
-    }
-    60% {
-        background-color: rgb(199, 198, 198);
-    }
-    100% {
-        background-color: rgb(171, 171, 171);
-    }
-}

@@ -91,11 +91,11 @@ function PopUPSetting({username , email}) {
             <p className="p-email">{email}</p>
             <hr />
             <a className="PopUp-btn" href="/setting">
-                <FontAwesomeIcon icon={faGear} size="lg" id="icon" />
+                <FontAwesomeIcon icon={faGear} size="lg" id="faGear" />
                 <p> การตั้งค่า </p>
             </a>
             <div className="PopUp-btn" onClick={()=>signOut(auth)}>
-                <FontAwesomeIcon icon={faRightFromBracket} size="lg" id="icon" />
+                <FontAwesomeIcon icon={faRightFromBracket} size="lg" id="faRightFromBracket" />
                 <p> ออกจากระบบ </p>
             </div>
         </div>

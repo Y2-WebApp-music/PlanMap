@@ -1,0 +1,74 @@
+.sidebarView-skeleton{
+    width: 100%;
+    height: 95vh;
+    background-color: rgba(255, 255, 255, 0.465);
+    backdrop-filter: blur(10px);
+    box-shadow: 0rem 0rem 0.4rem rgba(37, 19, 1, 0.25);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 7% 3% 5% 3% 5% 3% 1fr 3% 1fr ;
+    justify-items: center;
+    align-items: center;
+    gap: 5px;
+}
+.PlanDetailView-grid{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    gap: 20px;
+}
+.PlanDetailView-grid-left{
+    width: 50%;
+    height: 50%;
+    background-color: rgb(195, 195, 195);
+    border-radius: 10px;
+    animation: pulse 1.5s infinite;
+    justify-self: start;
+    margin-left: 2rem;
+}
+
+.PlanDetailView-grid-right{
+    width: 50%;
+    height: 50%;
+    background-color: rgb(195, 195, 195);
+    border-radius: 30px;
+    animation: pulse 1.5s infinite;
+    justify-self: end;
+    margin-right: 2rem;
+}
+.PlanDetailView-skeleton{
+    width: 90%;
+    height: 90%;
+    background-color: rgb(195, 195, 195);
+    border-radius: 10px;
+    animation: pulse 1.5s infinite;
+}
+.PlanDetailView-p{
+    width: 30%;
+    height: 80%;
+    background-color: rgb(195, 195, 195);
+    border-radius: 10px;
+    animation: pulse 1.5s infinite;
+    justify-self: start;
+    margin-left: 2rem;
+}
+
+.PlanDetailView-grid-p-l{
+    width: 60%;
+    height: 90%;
+    background-color: rgb(195, 195, 195);
+    border-radius: 10px;
+    animation: pulse 1.5s infinite;
+    justify-self: end;
+}
+.PlanDetailView-grid-p-r{
+    width: 60%;
+    height: 90%;
+    background-color: rgb(195, 195, 195);
+    border-radius: 10px;
+    animation: pulse 1.5s infinite;
+    justify-self: start;
+}

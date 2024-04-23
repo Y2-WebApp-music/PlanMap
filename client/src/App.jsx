@@ -9,6 +9,7 @@ import Register from './pages/Register.jsx'
 import Mainpage from './pages/Mainpage.jsx'
 import CreatePlan from './pages/CreatePlan';
 import PlanView from './pages/Planview';
+import EditPlan from './pages/editplan';
 import Setting from './pages/Setting';
 
 function App() {
@@ -47,6 +48,11 @@ function App() {
           <Route path='plan/:id' element={
             <ProtectedRoute>
               <PlanView/>
+            </ProtectedRoute>}
+          />
+          <Route path='editplan/:id' element={
+            <ProtectedRoute>
+              <EditPlan/>
             </ProtectedRoute>}
           />
         </Route>

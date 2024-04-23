@@ -1,33 +1,30 @@
 import React, { useState, useEffect } from "react";
 import '/src/global.css';
-import './FormInput.css'
-import PathList from "./PathList";
+import '../CreatePlan/FormInput.css'
+import PathList from "../CreatePlan/PathList";
 import { auth } from '/src/DB/Firebase-Config.js'
 import { useNavigate } from "react-router-dom";
 
-function FormInput({pathway, setPathway, duration, distance}){
+function EditForm({currentPlan, pathway, setPathway, duration, distance}){
     const navigate = useNavigate()
     const [userId, setUserId] = useState(null)
-    const [formData, setFormData] = useState({
-        title: '',
-        StartDate: '',
-        EndDate: '',
-        Addition: '',
-        uid: null,
-        Route: [],
-        CreateAt : new Date()
-    });
-
-    const { title, StartDate, EndDate, Addition } = formData;
+    const [documentId, setDocumentId] = useState(currentPlan._id)
+    const [formData ,setFormData] = useState(
+        {
+            title: currentPlan.title,
+            StartDate: currentPlan.StartDate,
+            EndDate: currentPlan.EndDate,
+            Addition: currentPlan.Addition,
+            uid: currentPlan.uid ,
+            Route: pathway
+        }
+    )
+    console.log('currentPlan._id',currentPlan._id)
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             if (user) {
                 setUserId(user.uid);
-                setFormData({
-                    ...formData,
-                    uid: user.uid
-                });
             } else {
                 setUserId(null);
             }
@@ -54,22 +51,21 @@ function FormInput({pathway, setPathway, duration, distance}){
         e.preventDefault();
         console.log(formData);
         try {
-            await fetch(`http://localhost:3000/addPlan?uid=${userId}&document=${formData}`, {
+            await fetch(`http://localhost:3000/updatePlan?uid=${userId}&documentId=${documentId}&update=${formData}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
             }).then (
-                console.log(" ===> Document added"),
+                console.log(" ===> Document update"),
                 setFormData({
                     title: '',
                     StartDate: '',
                     EndDate: '',
                     Addition: '',
                     uid: null,
-                    Route: [],
-                    CreateAt : new Date()
+                    Route: []
                 }),
                 navigate("/mainpage")
             )
@@ -79,22 +75,22 @@ function FormInput({pathway, setPathway, duration, distance}){
         }
     };
 
-
     return(
         <>
             <div className="sidebar">
                 <form className="FormInput" onSubmit={handleSubmit}>
                     <label htmlFor="titlePlan">
                         <p>ชื่อแพลน</p>
-                        <input type="text" name="title" id="titlePlan" placeholder="ชื่อแพลน" value={title} onChange={handleChange} />
+                        <input type="text" name="title" id="titlePlan" placeholder="ชื่อแพลน" value={formData.title} onChange={handleChange}/>
                     </label>
 
                     <div className="PlanDate">
                         <p>วันที่เดินทาง</p>
                         <div className="calendar-Custom">
-                            <input type="date" id="startDate" name="StartDate" value={StartDate} placeholder="เริ่มการเดินทาง" onChange={handleChange} />
+                            <input type="date" id="startDate" name="StartDate" value={formData.StartDate} placeholder="เริ่มการเดินทาง" onChange={handleChange} />
                             <p>-</p>
-                            <input type="date" id="endDate" name="EndDate" value={EndDate} placeholder="สิ้นสุดการเดินทาง" onChange={handleChange}/>
+                            <input type="date" id="endDate" name="EndDate" value={formData.EndDate} placeholder="สิ้นสุดการเดินทาง" onChange={handleChange}
+                            />
                         </div>
                     </div>
 
@@ -107,15 +103,16 @@ function FormInput({pathway, setPathway, duration, distance}){
 
                             <label htmlFor="">
                                 <p>บันทึกเพิ่มเติม</p>
-                                <textarea name="Addition" id="addition" cols="30" rows="10" value={Addition} onChange={handleChange}
+                                <textarea name="Addition" id="addition" cols="30" rows="10" value={formData.Addition} onChange={handleChange}
                             />
                             </label>
                         </div>
                     </div>
-                    <button type="submit" id="submit-btn" >บันทึกแพลน </button>
+                    <button type="submit" id="submit-btn" >อัพเดตแพลน </button>
                 </form>
             </div>
         </>
     )
 }
-export default FormInput;
+
+export default EditForm;

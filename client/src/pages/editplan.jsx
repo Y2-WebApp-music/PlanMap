@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import '../global.css';
-import '../pages/planview.css'
-import MapPlan from "../components/plan/MapPlan"
-import PlanDetail from "../components/plan/PlanDetail"
+import '../pages/editplan.css'
+import Map from "../components/CreatePlan/Testerfile"
+import EditForm from "../components/EditPlan/EditForm";
 import { auth } from "../DB/Firebase-Config";
 import { useParams } from "react-router-dom";
 import PlanSkeleton from "../components/Loading/LoadPlan";
 
-function PlanView() {
+function EditPlan() {
     const { id } = useParams()
     const [currentPlan,setCurrentPlan] = useState(null)
     const [pathway, setPathway] = useState([])
@@ -52,17 +52,16 @@ function PlanView() {
             <div className="PlanView-content">
                 {currentPlan != null && pathway != null ?(
                     <>
-                        <PlanDetail currentPlan={currentPlan} pathway={pathway} duration={duration} distance={distance}/>
-                        <MapPlan pathway={pathway} setDuration={setDuration} setDistance={setDistance}/>
+                        <EditForm currentPlan={currentPlan} pathway={pathway} setPathway={setPathway} duration={duration} distance={distance}/>
+                        <Map pathway={pathway} setDuration={setDuration} setDistance={setDistance}/>
                     </>
                 )
                 :
                 (<PlanSkeleton/>)
                 }
-                {/* <PlanSkeleton/> */}
             </div>
         </>
     )
 }
 
-export default PlanView;
+export default EditPlan;

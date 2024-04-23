@@ -21,7 +21,7 @@ async function close() {
   console.log('')
 }
 
-export async function readAllDocuments(uid, sortField = "CreateAt", sortOrder = 1) {
+export async function readAllDocuments(uid, sortField = "CreateAt", sortOrder = -1) {
   try {
     await connect();
     const sortQuery = { [sortField]: sortOrder };
@@ -86,12 +86,11 @@ export async function updateDocument(uid, documentId, update) {
   try {
     await connect();
     const result = await collection.updateOne(
-      { _id: ObjectId(documentId), uid },
+      { _id: new ObjectId(documentId), uid },
       { $set: update }
     );
     console.log(`Document updated with _id: ${documentId}`);
     close();
-    // return result;
   } catch (error) {
     console.error("Error updateDocument :", error);
     throw error;
@@ -101,10 +100,11 @@ export async function updateDocument(uid, documentId, update) {
 export async function deleteDocument(uid, documentId) {
   try {
     await connect();
-    const result = await collection.deleteOne({ _id: ObjectId(documentId), uid });
+    console.log("uid : ",uid)
+    console.log("id : ",documentId)
+    const result = await collection.deleteOne({ _id: new ObjectId(documentId), uid });
     console.log(`Document deleted with _id: ${documentId}`);
     close();
-    // return result;
   } catch (error) {
     console.error("Error deleteDocument :", error);
     throw error;
