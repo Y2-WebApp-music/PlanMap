@@ -23,6 +23,9 @@ function Map({pathway, setDuration, setDistance}) {
                 disableDefaultUI: true,
             });
             const { AdvancedMarkerElement, PinElement } =  google.maps.importLibrary("marker");
+            const trafficLayer = new google.maps.TrafficLayer();
+
+            trafficLayer.setMap(map);
 
             const card = document.getElementById("pac-card");
             const input = document.getElementById("google-search");

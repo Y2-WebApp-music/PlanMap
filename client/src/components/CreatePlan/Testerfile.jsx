@@ -37,54 +37,57 @@ function MapPlan({pathway, setDuration, setDistance}) {
                 });
 
                 const { AdvancedMarkerElement, PinElement } =  google.maps.importLibrary("marker");
+                const trafficLayer = new google.maps.TrafficLayer();
 
-            const card = document.getElementById("pac-card");
-            const input = document.getElementById("google-search");
-            const options = {
-                fields: ["formatted_address", "geometry", "name"],
-                strictBounds: false,
-            };
-            const infoWindow = new InfoWindow();
+                trafficLayer.setMap(map);
 
-            map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
+                const card = document.getElementById("pac-card");
+                const input = document.getElementById("google-search");
+                const options = {
+                    fields: ["formatted_address", "geometry", "name"],
+                    strictBounds: false,
+                };
+                const infoWindow = new InfoWindow();
 
-            const autocomplete = new window.google.maps.places.Autocomplete(
-                input,
-                options
-            );
+                map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
 
-            autocomplete.bindTo("bounds", map);
-            autocomplete.addListener("place_changed", () => {
-
-                const place = autocomplete.getPlace();
-
-                if (!place.geometry || !place.geometry.location) {
-                    window.alert(
-                        "No details available for input: '" + place.name + "'"
+                const autocomplete = new window.google.maps.places.Autocomplete(
+                    input,
+                    options
                 );
-                    return;
-                }
 
-                if (place.geometry.viewport) {
-                    map.fitBounds(place.geometry.viewport);
-                } else {
-                    map.setCenter(place.geometry.location);
+                autocomplete.bindTo("bounds", map);
+                autocomplete.addListener("place_changed", () => {
+
+                    const place = autocomplete.getPlace();
+
+                    if (!place.geometry || !place.geometry.location) {
+                        window.alert(
+                            "No details available for input: '" + place.name + "'"
+                    );
+                        return;
+                    }
+
+                    if (place.geometry.viewport) {
+                        map.fitBounds(place.geometry.viewport);
+                    } else {
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(17);
+                    }
+
+
+                    map.panTo(place.geometry.location);
                     map.setZoom(17);
-                }
 
-
-                map.panTo(place.geometry.location);
-                map.setZoom(17);
-
-                const marker = new AdvancedMarkerElement({
-                    map,
-                    position: place.geometry.location,
-                    title: "Hello from marker"
+                    const marker = new AdvancedMarkerElement({
+                        map,
+                        position: place.geometry.location,
+                        title: "Hello from marker"
+                    });
+                    infoWindow.close();
+                    infoWindow.setContent(marker.title);
+                    infoWindow.open(marker.map, marker);
                 });
-                infoWindow.close();
-                infoWindow.setContent(marker.title);
-                infoWindow.open(marker.map, marker);
-            });
 
                 const directionsService = new google.maps.DirectionsService();
                 const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });

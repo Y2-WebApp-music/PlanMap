@@ -33,6 +33,9 @@ function MapPlan({pathway, setDuration, setDistance}) {
                     mapTypeControl: false,
                     disableDefaultUI: true,
                 });
+                const trafficLayer = new google.maps.TrafficLayer();
+
+                trafficLayer.setMap(map);
 
                 const directionsService = new google.maps.DirectionsService();
                 const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });
