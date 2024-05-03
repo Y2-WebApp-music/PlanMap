@@ -29,7 +29,7 @@
     align-items: center;
 }
 .google-searchBox #google-searchLabel{
-    background-color: var(--color-notSelect);
+    background-color: var(--color-bg2);
     border-radius: 30px;
     padding: 0.1rem 1rem;
     height: 80%;
@@ -48,7 +48,7 @@
     background-color: var(--color-bg);
 }
 
-.google-searchBox #google-searchLabel #google-search {
+.google-searchBox #google-searchLabel #googleSearch {
     font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     width: 100%;
     height: 100%;

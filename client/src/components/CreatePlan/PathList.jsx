@@ -19,8 +19,6 @@ export default function PathList({pathway, setPathway, duration, distance}){
         setListLength(newId)
     };
 
-    console.log('ListLength',ListLength)
-
     return(
         <div className="Pathway-List">
             <div className="TimePrediction">

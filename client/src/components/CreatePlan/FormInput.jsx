@@ -39,7 +39,7 @@ function FormInput({pathway, setPathway, duration, distance}){
             ...formData,
             Route: pathway
         });
-        return console.log('formData ==> ',formData);
+        return;
     }, [pathway]);
 
     const handleChange = (e) => {

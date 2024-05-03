@@ -6,24 +6,21 @@ import { Loader } from "@googlemaps/js-api-loader"
 
 
 function MapPlan({pathway, setDuration, setDistance}) {
-    console.log('Map Get Pathway From Parent => ',pathway)
     const [filteredPathway,setFilteredPathway] = useState([])
 
     const loader = new Loader({
         apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
-        version: "weekly"
+        version: "weekly",
       });
     useEffect(()=>{
         setFilteredPathway(pathway.filter(point => point.lat !== null && point.lng !== null))
         return;
     },[pathway])
-    console.log('filteredPathway From Parent => ',filteredPathway)
 
     useEffect(() => {
-        console.log(' >>> Map use <<< ')
-        const input = document.getElementById("google-search");
-            input.addEventListener("click", () => {
-            input.select();
+        const inputSe = document.getElementById("googleSearch");
+            inputSe.addEventListener("click", () => {
+            inputSe.select();
         });
         loader.load()
         .then(maps => {
@@ -31,7 +28,7 @@ function MapPlan({pathway, setDuration, setDistance}) {
 
             async function initMap() {
                 const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-                // const {Place} = await google.maps.importLibrary("places");
+                const { Place } = await google.maps.importLibrary("places");
 
                 map = new Map(document.getElementById("map"), {
                     center: { lat: 13.7734, lng: 100.5202 },
@@ -46,19 +43,15 @@ function MapPlan({pathway, setDuration, setDistance}) {
 
                 trafficLayer.setMap(map);
 
-                const card = document.getElementById("pac-card");
-                const input = document.getElementById("google-search");
-                const options = {
-                    fields: ["formatted_address", "geometry", "name"],
-                    strictBounds: false,
-                };
+                const input = document.getElementById("googleSearch");
                 const infoWindow = new InfoWindow();
-
-                map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
 
                 const autocomplete = new window.google.maps.places.Autocomplete(
                     input,
-                    options
+                    {
+                        fields: ["formatted_address", "geometry", "name"],
+                        strictBounds: false,
+                    }
                 );
 
                 autocomplete.bindTo("bounds", map);
@@ -94,10 +87,13 @@ function MapPlan({pathway, setDuration, setDistance}) {
                     infoWindow.open(marker.map, marker);
                 });
 
+                console.log(">>>> Testerfile.jsx File Update <<<<")
+
                 const directionsService = new google.maps.DirectionsService();
                 const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });
                 if (filteredPathway.length < 2) {
                     map.setCenter({ lat: 13.7734, lng: 100.5202 });
+                    console.log(">>>> directionsRenderer <<<<")
                     return;
                 } else{
                     const start = { lat: filteredPathway[0].lat, lng: filteredPathway[0].lng };
@@ -147,11 +143,10 @@ function MapPlan({pathway, setDuration, setDistance}) {
         <div className="Map-container">
             <div className="SearchArea">
                 <div className="google-searchBox">
-                    <label htmlFor="google-search" id="google-searchLabel">
+                    <label id="google-searchLabel">
                         <input type="text"
                                 placeholder="ค้นหาใน google map"
-                                id="google-search"/>
-                        {/* <FontAwesomeIcon icon={searchICON} size="lg" style={{ color: 'var(--color-text)' }}/> */}
+                                id="googleSearch"/>
                     </label>
                 </div>
                 <div className="FilterBTN-class">
