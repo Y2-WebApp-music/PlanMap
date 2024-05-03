@@ -2,12 +2,17 @@ import React, { useEffect,useState } from 'react';
 import '/src/global.css';
 import './map.css';
 
-import  loadGoogleMapsScript from '/src/components/MapLoader.js'
+import { Loader } from "@googlemaps/js-api-loader"
 
 
 function MapPlan({pathway, setDuration, setDistance}) {
     console.log('Map Get Pathway From Parent => ',pathway)
     const [filteredPathway,setFilteredPathway] = useState([])
+
+    const loader = new Loader({
+        apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
+        version: "weekly"
+      });
     useEffect(()=>{
         setFilteredPathway(pathway.filter(point => point.lat !== null && point.lng !== null))
         return;
@@ -20,7 +25,7 @@ function MapPlan({pathway, setDuration, setDistance}) {
             input.addEventListener("click", () => {
             input.select();
         });
-        loadGoogleMapsScript()
+        loader.load()
         .then(maps => {
             let map;
 

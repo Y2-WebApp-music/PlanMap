@@ -2,7 +2,7 @@ import React, { useEffect,useState } from 'react';
 import '/src/global.css';
 import '/src/components/CreatePlan/map.css';
 
-import  loadGoogleMapsScript from '/src/components/MapLoader.js'
+import { Loader } from "@googlemaps/js-api-loader"
 
 
 function MapEdit({pathway, setDuration, setDistance}) {
@@ -13,6 +13,10 @@ function MapEdit({pathway, setDuration, setDistance}) {
         return;
     },[pathway])
     console.log('filteredPathway From Parent => ',filteredPathway)
+    const loader = new Loader({
+        apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
+        version: "weekly"
+      });
 
     useEffect(() => {
         console.log(' >>> Map use <<< ')
@@ -23,7 +27,7 @@ function MapEdit({pathway, setDuration, setDistance}) {
             input.addEventListener("click", () => {
             input.select();
         });
-        loadGoogleMapsScript()
+        loader.load()
         .then(maps => {
             let map;
 

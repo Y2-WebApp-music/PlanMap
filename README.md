@@ -42,6 +42,7 @@ npm i --save @fortawesome/free-brands-svg-icons
 npm i --save @fortawesome/react-fontawesome@latest
 npm i react-router-dom
 npm i framer-motion
+npm install @googlemaps/js-api-loader
 npm i firebase
 npm i @firebase/firestore
 npm i mongodb

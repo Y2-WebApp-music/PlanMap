@@ -2,7 +2,7 @@ import React, { useEffect,useState } from 'react';
 import '/src/global.css';
 import '/src/components/CreatePlan/map.css';
 
-import  loadGoogleMapsScript from '/src/components/MapLoader.js'
+import { Loader } from "@googlemaps/js-api-loader"
 
 function MapPlan({pathway, setDuration, setDistance}) {
     console.log('Map Get Pathway From Parent => ',pathway)
@@ -13,13 +13,17 @@ function MapPlan({pathway, setDuration, setDistance}) {
     },[pathway])
 
     console.log('filteredPathway From Parent => ',filteredPathway)
+    const loader = new Loader({
+        apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
+        version: "weekly"
+      });
 
     useEffect(() => {
         console.log(' >>> Map use <<< ')
         if (filteredPathway.length === 0) {
             return;
         }
-        loadGoogleMapsScript()
+        loader.load()
         .then(maps => {
             let map;
 

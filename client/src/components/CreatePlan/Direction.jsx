@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import '/src/global.css';
 import './FormInput.css'
-import  loadGoogleMapsScript  from '/src/components/MapLoader.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+import { Loader } from "@googlemaps/js-api-loader"
+
+const loader = new Loader({
+    apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
+    version: "weekly"
+  });
 
 async function SearchPlace(id, setPlaceName, pathway, setPathway) {
     const [{ Map }] = await Promise.all([google.maps.importLibrary("places")]);
@@ -31,7 +36,7 @@ export function PathPoint({id, displayName, pathway, setPathway, setListLength, 
     const [placeName, setPlaceName] = useState(`${displayName}`);
 
     useEffect(() => {
-        loadGoogleMapsScript().then(maps => SearchPlace(id, setPlaceName, pathway, setPathway))
+        loader.load().then(maps => SearchPlace(id, setPlaceName, pathway, setPathway))
     }, [id, setPlaceName]);
 
     const handleDelete = () => {
@@ -66,7 +71,7 @@ export function PathDestination({id, displayName, pathway, setPathway, setListLe
     const [placeName, setPlaceName] = useState(`${displayName}`);
 
     useEffect(() => {
-        loadGoogleMapsScript().then(maps => SearchPlace(id, setPlaceName, pathway, setPathway))
+        loader.load().then(maps => SearchPlace(id, setPlaceName, pathway, setPathway))
     }, [id, setPlaceName]);
 
     const handleDelete = () => {
