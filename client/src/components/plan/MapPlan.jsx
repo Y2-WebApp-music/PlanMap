@@ -12,11 +12,11 @@ function MapPlan({pathway, setDuration, setDistance}) {
         return;
     },[pathway])
 
-    console.log('filteredPathway From Parent => ',filteredPathway)
     const loader = new Loader({
         apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
-        version: "weekly"
-      });
+        version: "weekly",
+        language: "th",
+    });
 
     useEffect(() => {
         console.log(' >>> Map use <<< ')

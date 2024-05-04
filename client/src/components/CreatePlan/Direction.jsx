@@ -8,8 +8,9 @@ import { Loader } from "@googlemaps/js-api-loader"
 
 const loader = new Loader({
     apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
-    version: "weekly"
-  });
+    version: "weekly",
+    language: "th",
+});
 
 async function SearchPlace(id, setPlaceName, pathway, setPathway) {
     const [{ Map }] = await Promise.all([google.maps.importLibrary("places")]);

@@ -104,8 +104,9 @@
     right: 10px;
     width: 350px;
     height: 80vh;
-    background-color: var(--color-bg);
-    box-shadow: 0 0rem 0.5rem rgba(37, 19, 1, 0.90);
+    background-color: rgba(247, 247, 247, 0.848);
+    backdrop-filter: blur(7px);
+    box-shadow: 0 0rem 1rem rgba(0, 0, 0, 0.3);
     border-radius: 15px;
     display: grid;
     grid-template-rows: 30% auto 1fr auto;
@@ -148,6 +149,7 @@
 .InformationName{
     font-size: 1.4rem;
     font-weight: 600;
+    line-height: 1.3em;
     width: 92%;
     padding: 0.5rem 4%;
     margin: 0 0;
@@ -158,7 +160,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 -0.1rem 0.1rem rgba(37, 19, 1, 0.25);
+    box-shadow: 0 -0.1rem 0.2rem rgba(37, 19, 1, 0.25);
     border-radius: 0 0 15px 15px;
 }
 .AddPlaceInfo{
@@ -176,6 +178,11 @@
     transition: .1s;
     margin: 0.5rem 0;
 }
+.AddPlaceInfo:hover{
+    scale: 1.02;
+    box-shadow: 0 0rem 0.1rem rgba(0, 0, 0, 0.25);
+    transition: .1s;
+}
 #faPlus{
     width: 18px;
     height: 18px;
@@ -185,21 +192,111 @@
     font-size: 1rem;
     font-weight: 500;
 }
-.AddPlaceInfo:hover{
-    scale: 1.04;
-    box-shadow: 0 0rem 0.1rem rgba(0, 0, 0, 0.25);
-    transition: .1s;
-}
 
 .Information-Detail-contain {
     overflow: scroll;
     overflow-x: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 .Information-Detail-contain::-webkit-scrollbar {
     display: none;
 }
 
-.example-detail{
+.Information-detail{
+    width: 96%;
     height: 600px;
-    background-color: rgb(183, 183, 216);
+    margin: 1rem 0;
 }
+.Information-detail p{
+    margin:  0 0;
+}
+
+
+.Review-contain{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+nav {
+    background: #fdfdfd;
+    padding: 5px 5px 0;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 1px solid #eeeeee;
+    height: 44px;
+}
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 128px;
+    flex-grow: 1;
+    user-select: none;
+}
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+ul {
+  display: flex;
+  width: 100%;
+  /* background-color: aquamarine; */
+}
+
+li {
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    width: 100%;
+    padding: 10px 15px;
+    position: relative;
+    background: white;
+    cursor: pointer;
+    height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    user-select: none;
+}
+li.selected {
+    background: #eee;
+}
+
+  li button {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    background: #fff;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    stroke: #000;
+    margin-left: 10px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+.underline {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--accent);
+  }

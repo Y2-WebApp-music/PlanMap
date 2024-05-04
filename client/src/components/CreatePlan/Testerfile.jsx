@@ -2,17 +2,22 @@ import React, { useEffect, useState } from 'react';
 import '/src/global.css';
 import './map.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faPlus, faStar, faStarHalf } from '@fortawesome/free-solid-svg-icons'
 import { Loader } from "@googlemaps/js-api-loader"
+import { motion, AnimatePresence } from "framer-motion";
 
-function MapPlan({pathway, setDuration, setDistance}) {
+function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, ListLength}) {
     const [filteredPathway,setFilteredPathway] = useState([])
+    const [placePin, setPlacePin] = useState(null)
+    const [placePhoto, setPlacePhoto] = useState(null)
+    const [detail, setDetail] = useState(false)
+    const [marker, setMarker] = useState(null);
 
     const loader = new Loader({
         apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
         version: "weekly",
-      });
+        language: "th",
+    });
     useEffect(()=>{
         setFilteredPathway(pathway.filter(point => point.lat !== null && point.lng !== null))
         return;
@@ -28,8 +33,8 @@ function MapPlan({pathway, setDuration, setDistance}) {
             let map;
 
             async function initMap() {
-                const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-                const { Place } = await google.maps.importLibrary("places");
+                const { Map } = await google.maps.importLibrary("maps");
+                const { Place, Photo, Review } = await google.maps.importLibrary("places");
 
                 map = new Map(document.getElementById("map"), {
                     center: { lat: 13.7734, lng: 100.5202 },
@@ -38,26 +43,29 @@ function MapPlan({pathway, setDuration, setDistance}) {
                     mapTypeControl: false,
                     disableDefaultUI: true,
                 });
-
                 const trafficLayer = new google.maps.TrafficLayer();
-
                 trafficLayer.setMap(map);
 
                 const input = document.getElementById("googleSearch");
-                const infoWindow = new InfoWindow();
-
                 const autocomplete = new window.google.maps.places.Autocomplete(
                     input,
                     {
-                        fields: ["formatted_address", "geometry", "name"],
                         strictBounds: false,
                     }
                 );
 
                 autocomplete.bindTo("bounds", map);
                 autocomplete.addListener("place_changed", () => {
-
+                    console.log(">>>> autocomplete <<<<")
                     const place = autocomplete.getPlace();
+                    console.log(' ========= Get place ========= ',place)
+                    const photoUrl = place.photos[0].getUrl({maxWidth:1000})
+                    console.log(' ========= Get photo ========= ',photoUrl)
+                    setPlacePin(place)
+                    setPlacePhoto(photoUrl)
+                    if(setPlacePin != null){
+                        setDetail(true)
+                    }
 
                     if (!place.geometry || !place.geometry.location) {
                         window.alert(
@@ -77,12 +85,8 @@ function MapPlan({pathway, setDuration, setDistance}) {
                         map,
                         position: place.geometry.location,
                     });
-                    // infoWindow.close();
-                    // infoWindow.setContent(marker.title);
-                    // infoWindow.open(marker.map, marker);
+                    setMarker(marker);
                 });
-
-                console.log(">>>> Testerfile.jsx File Update <<<<")
 
                 const directionsService = new google.maps.DirectionsService();
                 const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });
@@ -94,8 +98,6 @@ function MapPlan({pathway, setDuration, setDistance}) {
                     const start = { lat: filteredPathway[0].lat, lng: filteredPathway[0].lng };
                     const end = { lat: filteredPathway[filteredPathway.length - 1].lat, lng: filteredPathway[filteredPathway.length - 1].lng };
                     const waypoints = [];
-                    console.log('waypoints',start)
-                    console.log('end',end)
 
                     for (let i = 1; i < filteredPathway.length - 1; i++) {
                         waypoints.push({
@@ -103,7 +105,6 @@ function MapPlan({pathway, setDuration, setDistance}) {
                         stopover: true,
                         });
                     }
-                    console.log('waypoints',waypoints)
                     directionsService.route({
                         origin: new window.google.maps.LatLng(start.lat, start.lng),
                         destination: new window.google.maps.LatLng(end.lat, end.lng),
@@ -151,8 +152,8 @@ function MapPlan({pathway, setDuration, setDistance}) {
                     <GoogleFilterBTN text={"☕️ ร้านกาแฟ"} category="coffeeShops" />
                 </div>
             </div>
-            <Information/>
-            {/* <div id="map" style={{ height: '100%', width: '100%' }}></div> */}
+            {detail && (<Information placePin={placePin} placePhoto={placePhoto} setDetail={setDetail} marker={marker} pathway={pathway} setPathway={setPathway} setListLength={setListLength} ListLength={ListLength}/>)}
+            <div id="map" style={{ height: '100%', width: '100%' }}></div>
         </div>
     );
 }
@@ -170,27 +171,105 @@ function GoogleFilterBTN({ text, category }) {
     )
 }
 
-function Information(){
+function Information({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
+    const placeName = placePin?.name || "Unknown Place";
+    const reviews = placePin.reviews
+    const tabs = [
+        {name: "ภาพรวม", content: 
+            <div className='Review-contain'>
+                <p>test</p>
+            </div>},
+        {name : "รีวิว", content:
+            <div className='Review-contain'>
+                {reviews.map((review, index)=>(
+                    <Review key={index} name={review.author_name} url={review.profile_photo_url} rate={review.rating} text={review.text} time={review.relative_time_description}/>
+                ))}
+            </div>}
+        ]
+    const [selectedTab, setSelectedTab] = useState(tabs[0]);
+    // console.log('Information  placePin.=>',placePin)
+    // console.log('Information  placePhoto.=>',placePhoto)
+    // console.log('Information  review.=>',reviews)
+    console.log('selectedTab : ',selectedTab)
+
+    const handleClose = () => {
+        setDetail(false);
+        marker.setMap(null);
+    };
+
+    const addPathDestination = () => {
+        const newId = ListLength + 1;
+        const newPoint = { id: newId, displayName: placeName, lat: placePin.geometry.location.lat(), lng: placePin.geometry.location.lng() };
+        setPathway([...pathway, newPoint]);
+        setListLength(newId)
+        handleClose()
+    };
+
     return(<>
         <div className='Information'>
             <div className='img-contain'>
-                <img src="/public/images/thumbnail-photo.jpg" alt="" className='Information-img'/>
+                <img src={placePhoto} alt="" className='Information-img'/>
             </div>
-            <button className='close-Information'><FontAwesomeIcon icon={faXmark} size="lg" id="faXmark"/></button>
+            <button className='close-Information' onClick={handleClose}>
+                <FontAwesomeIcon icon={faXmark} size="lg" id="faXmark"/>
+                </button>
             <div className='InformationName-contain'>
-                <p className='InformationName'>King Mongkut’s University of Technology Thonburi (KMUTT)</p>
+                <p className='InformationName'>{placeName}</p>
+                <span>{placePin.rating}</span><span>({placePin.user_ratings_total})</span>
             </div>
             <div className='Information-Detail-contain'>
-                <div className='example-detail'>
-                    <p> About or Review ? </p>
+                <div className='Information-detail'>
+                    <nav>
+                        <ul>
+                        {tabs.map((item) => (
+                            <li key={item.name} className={item === selectedTab ? "selected" : ""} onClick={() => setSelectedTab(item)} >
+                            {`${item.name}`}
+                            {item === selectedTab ? (
+                                <motion.div className="underline" layoutId="underline" />
+                            ) : null}
+                            </li>
+                        ))}
+                        </ul>
+                    </nav>
+                    <main>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={selectedTab ? selectedTab.name : "empty"}
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -10, opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                {selectedTab ? selectedTab.content : "😋"}
+                            </motion.div>
+                        </AnimatePresence>
+                    </main>
+                    {/* <p> รีวิว </p>
+                    <hr />
+                    <div className='Review-contain'>
+                        {reviews.map((review, index)=>(
+                            <Review key={index} name={review.author_name} url={review.profile_photo_url} rate={review.rating} text={review.text} time={review.relative_time_description}/>
+                        ))}
+                    </div> */}
                 </div>
             </div>
             <div className='AddPlaceInfo-contain'>
-                <button className='AddPlaceInfo'>
+                <button className='AddPlaceInfo' onClick={addPathDestination}>
                     <FontAwesomeIcon icon={faPlus} size="lg" id="faPlus"/>
                     <p>เพิ่มสถานที่นี้</p>
                 </button>
             </div>
+        </div>
+    </>)
+}
+
+function Review({name, url, rate, text, time}){
+    return(<>
+        <div className='Review'>
+            <p>{name}</p>
+            <img src={url} alt="" width={50}/>
+            <p>{rate}</p>
+            <p>{text}</p>
         </div>
     </>)
 }
