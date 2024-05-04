@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '/src/global.css';
 import './map.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faPlus, faStar, faStarHalf } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faPlus, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock } from '@fortawesome/free-solid-svg-icons'
 import { Loader } from "@googlemaps/js-api-loader"
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -174,10 +174,31 @@ function GoogleFilterBTN({ text, category }) {
 function Information({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
     const placeName = placePin?.name || "Unknown Place";
     const reviews = placePin.reviews
+    const openTimes = placePin.opening_hours.weekday_text
+    console.log('openTime', openTimes)
     const tabs = [
-        {name: "ภาพรวม", content: 
-            <div className='Review-contain'>
-                <p>test</p>
+        {name: "ภาพรวม", content:
+            <div className='AllInformation-contain'>
+                <div className='AllInformation-detail'>
+                    <FontAwesomeIcon icon={faLocationDot} size="lg" id="faAllInformation"/>
+                    <p>{placePin.formatted_address}</p>
+                </div>
+                <div className='AllInformation-detail'>
+                    <FontAwesomeIcon icon={faPhone} size="lg" id="faAllInformation"/>
+                    <p>{placePin.formatted_phone_number}</p>
+                </div>
+                <div className='AllInformation-detail'>
+                    <FontAwesomeIcon icon={faGlobe} size="lg" id="faAllInformation"/>
+                    <a href={placePin.website} target="_blank">{placePin.website}</a>
+                </div>
+                <div className='AllInformation-detail'>
+                    <FontAwesomeIcon icon={faClock} size="lg" id="faAllInformation" style={{ alignSelf: 'start' }}/>
+                    <div>
+                        {openTimes.map((time, index) => (
+                            <p key={index}>{time}</p>
+                        ))}
+                    </div>
+                </div>
             </div>},
         {name : "รีวิว", content:
             <div className='Review-contain'>
@@ -187,7 +208,7 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
             </div>}
         ]
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
-    // console.log('Information  placePin.=>',placePin)
+    console.log('Information  placePin.=>',placePin)
     // console.log('Information  placePhoto.=>',placePhoto)
     // console.log('Information  review.=>',reviews)
     console.log('selectedTab : ',selectedTab)
@@ -216,17 +237,15 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
             <div className='InformationName-contain'>
                 <p className='InformationName'>{placeName}</p>
                 <span>{placePin.rating}</span><span>({placePin.user_ratings_total})</span>
+                <p>{placePin.types[0]}</p>
             </div>
             <div className='Information-Detail-contain'>
                 <div className='Information-detail'>
                     <nav>
-                        <ul>
+                        <ul className='detail-btn-contain'>
                         {tabs.map((item) => (
-                            <li key={item.name} className={item === selectedTab ? "selected" : ""} onClick={() => setSelectedTab(item)} >
-                            {`${item.name}`}
-                            {item === selectedTab ? (
-                                <motion.div className="underline" layoutId="underline" />
-                            ) : null}
+                            <li key={item.name} className={`detail-btn ${item === selectedTab ? "selected" : ""}`} onClick={() => setSelectedTab(item)} >
+                                <p>{`${item.name}`}</p>
                             </li>
                         ))}
                         </ul>
@@ -239,18 +258,12 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
                                 animate={{ y: 0, opacity: 1 }}
                                 exit={{ y: -10, opacity: 0 }}
                                 transition={{ duration: 0.2 }}
+                                className='motion-div-info'
                             >
                                 {selectedTab ? selectedTab.content : "😋"}
                             </motion.div>
                         </AnimatePresence>
                     </main>
-                    {/* <p> รีวิว </p>
-                    <hr />
-                    <div className='Review-contain'>
-                        {reviews.map((review, index)=>(
-                            <Review key={index} name={review.author_name} url={review.profile_photo_url} rate={review.rating} text={review.text} time={review.relative_time_description}/>
-                        ))}
-                    </div> */}
                 </div>
             </div>
             <div className='AddPlaceInfo-contain'>
@@ -266,9 +279,13 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
 function Review({name, url, rate, text, time}){
     return(<>
         <div className='Review'>
-            <p>{name}</p>
-            <img src={url} alt="" width={50}/>
-            <p>{rate}</p>
+            <div className='Reviewer'>
+                <img src={url} alt="" width={50}/>
+                <div>
+                    <p>{name}</p>
+                    <p>{rate}</p>
+                </div>
+            </div>
             <p>{text}</p>
         </div>
     </>)
