@@ -110,6 +110,9 @@
     height: 100%;
     overflow-y: scroll;
 }
+.sidebar-CreatePlan-scroll::-webkit-scrollbar {
+    display: none;
+}
 .sidebar-CreatePlan{
     width: 100%;
     height: auto;

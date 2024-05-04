@@ -1,9 +1,10 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '/src/global.css';
 import './map.css';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Loader } from "@googlemaps/js-api-loader"
-
 
 function MapPlan({pathway, setDuration, setDistance}) {
     const [filteredPathway,setFilteredPathway] = useState([])
@@ -38,7 +39,6 @@ function MapPlan({pathway, setDuration, setDistance}) {
                     disableDefaultUI: true,
                 });
 
-                const { AdvancedMarkerElement, PinElement } =  google.maps.importLibrary("marker");
                 const trafficLayer = new google.maps.TrafficLayer();
 
                 trafficLayer.setMap(map);
@@ -73,18 +73,13 @@ function MapPlan({pathway, setDuration, setDistance}) {
                         map.setZoom(17);
                     }
 
-
-                    map.panTo(place.geometry.location);
-                    map.setZoom(17);
-
-                    const marker = new AdvancedMarkerElement({
+                    const marker = new google.maps.Marker({
                         map,
                         position: place.geometry.location,
-                        title: "Hello from marker"
                     });
-                    infoWindow.close();
-                    infoWindow.setContent(marker.title);
-                    infoWindow.open(marker.map, marker);
+                    // infoWindow.close();
+                    // infoWindow.setContent(marker.title);
+                    // infoWindow.open(marker.map, marker);
                 });
 
                 console.log(">>>> Testerfile.jsx File Update <<<<")
@@ -156,8 +151,8 @@ function MapPlan({pathway, setDuration, setDistance}) {
                     <GoogleFilterBTN text={"☕️ ร้านกาแฟ"} category="coffeeShops" />
                 </div>
             </div>
-
-            <div id="map" style={{ height: '100%', width: '100%' }}></div>
+            <Information/>
+            {/* <div id="map" style={{ height: '100%', width: '100%' }}></div> */}
         </div>
     );
 }
@@ -173,6 +168,31 @@ function GoogleFilterBTN({ text, category }) {
             />
         </div>
     )
+}
+
+function Information(){
+    return(<>
+        <div className='Information'>
+            <div className='img-contain'>
+                <img src="/public/images/thumbnail-photo.jpg" alt="" className='Information-img'/>
+            </div>
+            <button className='close-Information'><FontAwesomeIcon icon={faXmark} size="lg" id="faXmark"/></button>
+            <div className='InformationName-contain'>
+                <p className='InformationName'>King Mongkut’s University of Technology Thonburi (KMUTT)</p>
+            </div>
+            <div className='Information-Detail-contain'>
+                <div className='example-detail'>
+                    <p> About or Review ? </p>
+                </div>
+            </div>
+            <div className='AddPlaceInfo-contain'>
+                <button className='AddPlaceInfo'>
+                    <FontAwesomeIcon icon={faPlus} size="lg" id="faPlus"/>
+                    <p>เพิ่มสถานที่นี้</p>
+                </button>
+            </div>
+        </div>
+    </>)
 }
 
 export default MapPlan;

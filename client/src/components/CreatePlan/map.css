@@ -96,3 +96,110 @@
     color: var(--color-text);
     cursor: pointer;
 }
+
+.Information{
+    position: absolute;
+    z-index: 6;
+    top: 70px;
+    right: 10px;
+    width: 350px;
+    height: 80vh;
+    background-color: var(--color-bg);
+    box-shadow: 0 0rem 0.5rem rgba(37, 19, 1, 0.90);
+    border-radius: 15px;
+    display: grid;
+    grid-template-rows: 30% auto 1fr auto;
+    box-sizing: border-box;
+}
+.img-contain{
+    width: 100%;
+    height: 100%;
+}
+.Information-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px 15px 0 0;
+}
+.close-Information{
+    position: absolute;
+    z-index: 7;
+    top: 10px;
+    right: 10px;
+    background-color: var(--color-bg);
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.25);
+    border-radius: 50%;
+    border: none;
+    padding: 0.3rem 0.3rem;
+}
+#faXmark {
+    color: var(--color-text);
+    width: 25px;
+    height: 25px;
+}
+.close-Information:hover {
+    scale: 1.05;
+}
+.InformationName-contain{
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 .1rem 0.2rem rgba(37, 19, 1, 0.25);
+}
+.InformationName{
+    font-size: 1.4rem;
+    font-weight: 600;
+    width: 92%;
+    padding: 0.5rem 4%;
+    margin: 0 0;
+}
+.AddPlaceInfo-contain{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 -0.1rem 0.1rem rgba(37, 19, 1, 0.25);
+    border-radius: 0 0 15px 15px;
+}
+.AddPlaceInfo{
+    background: var(--color-blue);
+    width: 80%;
+    height: max-content;
+    padding: 0.4rem 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border-radius: 30px;
+    border: none;
+    transition: .1s;
+    margin: 0.5rem 0;
+}
+#faPlus{
+    width: 18px;
+    height: 18px;
+}
+.AddPlaceInfo p {
+    margin: 0 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+.AddPlaceInfo:hover{
+    scale: 1.04;
+    box-shadow: 0 0rem 0.1rem rgba(0, 0, 0, 0.25);
+    transition: .1s;
+}
+
+.Information-Detail-contain {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.Information-Detail-contain::-webkit-scrollbar {
+    display: none;
+}
+
+.example-detail{
+    height: 600px;
+    background-color: rgb(183, 183, 216);
+}
