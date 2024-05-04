@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import '/src/global.css';
 import './map.css';
+import { Loader } from "@googlemaps/js-api-loader"
+// import Information from './Information';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faPlus, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock } from '@fortawesome/free-solid-svg-icons'
-import { Loader } from "@googlemaps/js-api-loader"
 import { motion, AnimatePresence } from "framer-motion";
 
 function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, ListLength}) {
@@ -56,6 +57,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
 
                 autocomplete.bindTo("bounds", map);
                 autocomplete.addListener("place_changed", () => {
+                    setDetail(false)
                     console.log(">>>> autocomplete <<<<")
                     const place = autocomplete.getPlace();
                     console.log(' ========= Get place ========= ',place)
@@ -74,12 +76,14 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                         return;
                     }
 
-                    if (place.geometry.viewport) {
-                        map.fitBounds(place.geometry.viewport);
-                    } else {
-                        map.setCenter(place.geometry.location);
+                    // if (place.geometry.viewport) {
+                    //     map.fitBounds(place.geometry.viewport);
+                    // } else {
+                    //     map.setCenter(place.geometry.location);
+                    //     map.setZoom(17);
+                    // }
+                    map.setCenter(place.geometry.location);
                         map.setZoom(17);
-                    }
 
                     const marker = new google.maps.Marker({
                         map,
@@ -133,7 +137,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
         .catch(error => {
             console.error("Error loading Google Maps API:", error);
         });
-    }, [filteredPathway]);
+    }, [filteredPathway, placePin]);
 
     return (
         <div className="Map-container">
@@ -175,7 +179,6 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
     const placeName = placePin?.name || "Unknown Place";
     const reviews = placePin.reviews
     const openTimes = placePin.opening_hours.weekday_text
-    console.log('openTime', openTimes)
     const tabs = [
         {name: "ภาพรวม", content:
             <div className='AllInformation-contain'>
@@ -208,10 +211,25 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
             </div>}
         ]
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
+    const rating = placePin.rating;
+    const stars = [];
+    const integerPart = Math.floor(rating);
+    const fractionalPart = rating - integerPart;
+
+    for (let i = 0; i < integerPart; i++) {
+    stars.push(<FontAwesomeIcon key={i} icon={faStar} size="sm" id="faStar"/>);
+    }
+
+    if (fractionalPart >= 0.25 && fractionalPart <= 0.75) {
+    stars.push(<FontAwesomeIcon key="half" icon={faStarHalf} size="sm" id="faStar"/>);
+    }
+
+    const remainingStars = 5 - stars.length;
+    for (let i = 0; i < remainingStars; i++) {
+    stars.push(<FontAwesomeIcon key={`empty${i}`} icon={faStar} size="sm" id="faStar" style={{ color: 'transparent' }} />);
+    }
     console.log('Information  placePin.=>',placePin)
-    // console.log('Information  placePhoto.=>',placePhoto)
-    // console.log('Information  review.=>',reviews)
-    console.log('selectedTab : ',selectedTab)
+    // console.log('selectedTab : ',selectedTab)
 
     const handleClose = () => {
         setDetail(false);
@@ -236,15 +254,19 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
                 </button>
             <div className='InformationName-contain'>
                 <p className='InformationName'>{placeName}</p>
-                <span>{placePin.rating}</span><span>({placePin.user_ratings_total})</span>
-                <p>{placePin.types[0]}</p>
+                <span className='placeRate'>
+                    {rating}
+                    {stars}
+                    <span>({placePin.user_ratings_total})</span>
+                </span>
+                <p className='placeType'>{placePin.types[0]}</p>
             </div>
             <div className='Information-Detail-contain'>
                 <div className='Information-detail'>
                     <nav>
                         <ul className='detail-btn-contain'>
                         {tabs.map((item) => (
-                            <li key={item.name} className={`detail-btn ${item === selectedTab ? "selected" : ""}`} onClick={() => setSelectedTab(item)} >
+                            <li key={item.name} className={`detail-btn ${item.name === selectedTab.name ? "selected" : ""}`} onClick={() => setSelectedTab(item)} >
                                 <p>{`${item.name}`}</p>
                             </li>
                         ))}
@@ -277,13 +299,33 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
 }
 
 function Review({name, url, rate, text, time}){
+    const rating = rate;
+    const stars = [];
+    const integerPart = Math.floor(rating);
+    const fractionalPart = rating - integerPart;
+
+    for (let i = 0; i < integerPart; i++) {
+    stars.push(<FontAwesomeIcon key={i} icon={faStar} size="sm" id="faStar"/>);
+    }
+
+    if (fractionalPart >= 0.25 && fractionalPart <= 0.75) {
+    stars.push(<FontAwesomeIcon key="half" icon={faStarHalf} size="sm" id="faStar"/>);
+    }
+
+    const remainingStars = 5 - stars.length;
+    for (let i = 0; i < remainingStars; i++) {
+    stars.push(<FontAwesomeIcon key={`empty${i}`} icon={faStar} size="sm" id="faStar" style={{ color: 'transparent' }} />);
+    }
     return(<>
         <div className='Review'>
             <div className='Reviewer'>
                 <img src={url} alt="" width={50}/>
-                <div>
+                <div className='Reviewer-Detail'>
                     <p>{name}</p>
-                    <p>{rate}</p>
+                    <div className='ReviewRate'>
+                        <p>{stars}</p>
+                        <p className='ReviewTime'> {time} </p>
+                    </div>
                 </div>
             </div>
             <p>{text}</p>

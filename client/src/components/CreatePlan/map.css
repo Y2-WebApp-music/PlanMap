@@ -154,6 +154,17 @@
     padding: 0.5rem 4%;
     margin: 0 0;
 }
+.placeRate{
+    margin-left: 1rem;
+}
+.placeType{
+    color: var(--color-subtext);
+    margin: 0 0;
+    margin-left: 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transform: translateY(-3px);
+}
 .AddPlaceInfo-contain{
     width: 100%;
     height: 100%;
@@ -287,9 +298,23 @@ main {
     display: flex;
     gap: 10px;
 }
-
+.ReviewRate{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}
+.Reviewer-Detail{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.ReviewTime{
+    justify-self: end;
+    color: var(--color-subtext);
+    font-size: 0.9rem;
+}
 .AllInformation-detail{
-    margin: 0.5rem 0;
+    margin: 1rem 0;
     display: grid;
     grid-template-columns: 10% 1fr;
     align-items: center;
@@ -303,4 +328,7 @@ main {
 }
 #faAllInformation{
     color: var(--color-blue);
+}
+#faStar{
+    color: var(--color-orange);
 }
