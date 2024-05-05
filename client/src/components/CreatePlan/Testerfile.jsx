@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, ListLength}) {
     const [filteredPathway,setFilteredPathway] = useState([])
-    const [placePin, setPlacePin] = useState(null)
+    const [placePin, setPlacePin] = useState([])
     const [placePhoto, setPlacePhoto] = useState(null)
     const [detail, setDetail] = useState(false)
     const [marker, setMarker] = useState(null);
@@ -74,9 +74,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                     console.log(">>>> autocomplete <<<<")
                     const place = autocomplete.getPlace();
                     const photoUrl = place.photos[0].getUrl({maxWidth:1000})
-                    setPlacePin(place)
-                    setPlacePhoto(photoUrl)
-                    setDetail(true)
+                    const passPlace = place;
 
                     if (!place.geometry || !place.geometry.location) {
                         window.alert("No details available for input: '" + place.name + "'");
@@ -84,7 +82,10 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                     }
                     if (place.geometry.viewport) {
                         map.fitBounds(place.geometry.viewport);
-                        console.log("Checking :",place)
+                        console.log('passPlace ==> ',passPlace)
+                        setPlacePin(passPlace)
+                        setPlacePhoto(photoUrl)
+                        setDetail(true)
                     } else {
                         map.setCenter(place.geometry.location);
                         map.setZoom(17);
@@ -139,7 +140,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
         .catch(error => {
             console.error("Error loading Google Maps API:", error);
         });
-    }, [filteredPathway, placePin]);
+    }, [filteredPathway]);
 
     return (
         <div className="Map-container">
