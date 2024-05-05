@@ -1,232 +1,76 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '/src/global.css';
 import './map.css';
+import { Loader } from "@googlemaps/js-api-loader"
+// import Information from './Information';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark, faPlus, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock } from '@fortawesome/free-solid-svg-icons'
+import { motion, AnimatePresence } from "framer-motion";
 
-import  loadGoogleMapsScript  from '/src/components/MapLoader.js'
+function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, ListLength}) {
+    const [filteredPathway,setFilteredPathway] = useState([])
+    const [placePin, setPlacePin] = useState(null)
+    const [placePhoto, setPlacePhoto] = useState(null)
+    const [detail, setDetail] = useState(false)
+    const [marker, setMarker] = useState(null);
 
+    const loader = new Loader({
+        apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
+        version: "weekly",
+        language: "th",
+    });
 
-function Map({pathway, setDuration, setDistance}) {
     useEffect(() => {
-        const input = document.getElementById("google-search");
-            input.addEventListener("click", () => {
-            input.select();
+        const inputSe = document.getElementById("googleSearch");
+            inputSe.addEventListener("click", () => {
+            inputSe.select();
         });
-        loadGoogleMapsScript()
+        loader.load()
         .then(maps => {
-            console.log("Google Maps API loaded:", maps);
-            const { Map,InfoWindow } =  google.maps.importLibrary("maps");
-            const map = new Map(document.getElementById("map"), {
-                center: { lat: 13.7734, lng: 100.5202 },
+                        // Initialize and add the map
+            let map;
+
+            async function initMap() {
+            // The location of Uluru
+            const position = { lat: -25.344, lng: 131.031 };
+            // Request needed libraries.
+            //@ts-ignore
+            const { Map } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+            // The map, centered at Uluru
+            map = new Map(document.getElementById("map"), {
+                center: { lat: 30.7734, lng: 155.5202 },
                 zoom: 10,
                 mapId: "981d73a7e46f15d2",
                 mapTypeControl: false,
                 disableDefaultUI: true,
             });
-            const { AdvancedMarkerElement, PinElement } =  google.maps.importLibrary("marker");
-            const trafficLayer = new google.maps.TrafficLayer();
 
-            trafficLayer.setMap(map);
-
-            const card = document.getElementById("pac-card");
-            const input = document.getElementById("google-search");
-            const options = {
-                fields: ["formatted_address", "geometry", "name"],
-                strictBounds: false,
-            };
-            const infoWindow = new InfoWindow();
-
-            map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
-
-            const autocomplete = new window.google.maps.places.Autocomplete(
-                input,
-                options
-            );
-
-            autocomplete.bindTo("bounds", map);
-            autocomplete.addListener("place_changed", () => {
-
-                const place = autocomplete.getPlace();
-
-                if (!place.geometry || !place.geometry.location) {
-                    window.alert(
-                        "No details available for input: '" + place.name + "'"
-                );
-                    return;
-                }
-
-                if (place.geometry.viewport) {
-                    map.fitBounds(place.geometry.viewport);
-                } else {
-                    map.setCenter(place.geometry.location);
-                    map.setZoom(17);
-                }
-
-
-                map.panTo(place.geometry.location);
-                map.setZoom(17);
-
-                const marker = new AdvancedMarkerElement({
-                    map,
-                    position: place.geometry.location,
-                    title: "Hello from marker"
-                });
-                infoWindow.close();
-                infoWindow.setContent(marker.title);
-                infoWindow.open(marker.map, marker);
+            // The marker, positioned at Uluru
+            const marker = new AdvancedMarkerElement({
+                map: map,
+                position: position,
+                title: "Uluru",
             });
-
-            const directionsService = new google.maps.DirectionsService();
-            const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });
-            const filteredPathway = pathway.filter(point => point.lat !== null && point.lng !== null);
-            if (filteredPathway.length < 2) {
-                map.setCenter({ lat: 13.7734, lng: 100.5202 });
-                return;
-            } else{
-                const start = { lat: filteredPathway[0].lat, lng: filteredPathway[0].lng };
-                const end = { lat: filteredPathway[filteredPathway.length - 1].lat, lng: filteredPathway[filteredPathway.length - 1].lng };
-                const waypoints = [];
-
-                for (let i = 1; i < filteredPathway.length - 1; i++) {
-                    waypoints.push({
-                    location: new window.google.maps.LatLng(filteredPathway[i].lat, filteredPathway[i].lng),
-                    stopover: true,
-                    });
-                }
-                directionsService.route({
-                    origin: new window.google.maps.LatLng(start.lat, start.lng),
-                    destination: new window.google.maps.LatLng(end.lat, end.lng),
-                    waypoints: waypoints,
-                    optimizeWaypoints: true,
-                    travelMode: window.google.maps.TravelMode.DRIVING,
-                    }, (response, status) => {
-                    if (status === 'OK') {
-                        directionsRenderer.setDirections(response);
-                        const route = response.routes[0];
-                        let distance = route.legs.reduce((acc, leg) => acc + leg.distance.value, 0);
-                        let duration = route.legs.reduce((acc, leg) => acc + leg.duration.value, 0);
-                        setDistance(distance/1000)
-                        setDuration(duration/60)
-
-                    } else {
-                    window.alert("Directions request failed due to " + status);
-                    }
-                });
-                directionsRenderer.setMap(map);
             }
+
+            initMap();
+
         })
         .catch(error => {
             console.error("Error loading Google Maps API:", error);
         });
-        // async function initMap() {
-        //     const { Map,InfoWindow } = await google.maps.importLibrary("maps");
-        //     const map = new Map(document.getElementById("map"), {
-        //         center: { lat: 13.7734, lng: 100.5202 },
-        //         zoom: 10,
-        //         mapId: "981d73a7e46f15d2",
-        //         mapTypeControl: false,
-        //         disableDefaultUI: true,
-        //     });
-        //     const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
-
-        //     const card = document.getElementById("pac-card");
-        //     const input = document.getElementById("google-search");
-        //     const options = {
-        //         fields: ["formatted_address", "geometry", "name"],
-        //         strictBounds: false,
-        //     };
-        //     const infoWindow = new InfoWindow();
-
-        //     map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
-
-        //     const autocomplete = new window.google.maps.places.Autocomplete(
-        //         input,
-        //         options
-        //     );
-
-        //     autocomplete.bindTo("bounds", map);
-        //     autocomplete.addListener("place_changed", () => {
-
-        //         const place = autocomplete.getPlace();
-
-        //         if (!place.geometry || !place.geometry.location) {
-        //             window.alert(
-        //                 "No details available for input: '" + place.name + "'"
-        //         );
-        //             return;
-        //         }
-
-        //         if (place.geometry.viewport) {
-        //             map.fitBounds(place.geometry.viewport);
-        //         } else {
-        //             map.setCenter(place.geometry.location);
-        //             map.setZoom(17);
-        //         }
-
-
-        //         map.panTo(place.geometry.location);
-        //         map.setZoom(17);
-
-        //         const marker = new AdvancedMarkerElement({
-        //             map,
-        //             position: place.geometry.location,
-        //             title: "Hello from marker"
-        //         });
-        //         infoWindow.close();
-        //         infoWindow.setContent(marker.title);
-        //         infoWindow.open(marker.map, marker);
-        //     });
-
-        //     const directionsService = new google.maps.DirectionsService();
-        //     const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });
-        //     const filteredPathway = pathway.filter(point => point.lat !== null && point.lng !== null);
-        //     if (filteredPathway.length < 2) {
-        //         map.setCenter({ lat: 13.7734, lng: 100.5202 });
-        //         return;
-        //     } else{
-        //         const start = { lat: filteredPathway[0].lat, lng: filteredPathway[0].lng };
-        //         const end = { lat: filteredPathway[filteredPathway.length - 1].lat, lng: filteredPathway[filteredPathway.length - 1].lng };
-        //         const waypoints = [];
-
-        //         for (let i = 1; i < filteredPathway.length - 1; i++) {
-        //             waypoints.push({
-        //             location: new window.google.maps.LatLng(filteredPathway[i].lat, filteredPathway[i].lng),
-        //             stopover: true,
-        //             });
-        //         }
-        //         directionsService.route({
-        //             origin: new window.google.maps.LatLng(start.lat, start.lng),
-        //             destination: new window.google.maps.LatLng(end.lat, end.lng),
-        //             waypoints: waypoints,
-        //             optimizeWaypoints: true,
-        //             travelMode: window.google.maps.TravelMode.DRIVING,
-        //             }, (response, status) => {
-        //             if (status === 'OK') {
-        //                 directionsRenderer.setDirections(response);
-        //                 const route = response.routes[0];
-        //                 let distance = route.legs.reduce((acc, leg) => acc + leg.distance.value, 0);
-        //                 let duration = route.legs.reduce((acc, leg) => acc + leg.duration.value, 0);
-        //                 setDistance(distance/1000)
-        //                 setDuration(duration/60)
-
-        //             } else {
-        //             window.alert("Directions request failed due to " + status);
-        //             }
-        //         });
-        //         directionsRenderer.setMap(map);
-        //     }
-        // }
-        // loadGoogleMapsScript(initMap);
-    }, [pathway]);
+    }, [filteredPathway, placePin]);
 
     return (
         <div className="Map-container">
             <div className="SearchArea">
                 <div className="google-searchBox">
-                    <label htmlFor="google-search" id="google-searchLabel">
+                    <label id="google-searchLabel">
                         <input type="text"
                                 placeholder="ค้นหาใน google map"
-                                id="google-search"/>
-                        {/* <FontAwesomeIcon icon={searchICON} size="lg" style={{ color: 'var(--color-text)' }}/> */}
+                                id="googleSearch"/>
                     </label>
                 </div>
                 <div className="FilterBTN-class">
@@ -236,7 +80,7 @@ function Map({pathway, setDuration, setDistance}) {
                     <GoogleFilterBTN text={"☕️ ร้านกาแฟ"} category="coffeeShops" />
                 </div>
             </div>
-
+            {detail && (<Information placePin={placePin} placePhoto={placePhoto} setDetail={setDetail} marker={marker} pathway={pathway} setPathway={setPathway} setListLength={setListLength} ListLength={ListLength}/>)}
             <div id="map" style={{ height: '100%', width: '100%' }}></div>
         </div>
     );
@@ -255,4 +99,162 @@ function GoogleFilterBTN({ text, category }) {
     )
 }
 
-export default Map;
+function Information({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
+    const placeName = placePin?.name || "Unknown Place";
+    const reviews = placePin.reviews
+    const openTimes = placePin.opening_hours.weekday_text
+    const tabs = [
+        {name: "ภาพรวม", content:
+            <div className='AllInformation-contain'>
+                <div className='AllInformation-detail'>
+                    <FontAwesomeIcon icon={faLocationDot} size="lg" id="faAllInformation"/>
+                    <p>{placePin.formatted_address}</p>
+                </div>
+                <div className='AllInformation-detail'>
+                    <FontAwesomeIcon icon={faPhone} size="lg" id="faAllInformation"/>
+                    <p>{placePin.formatted_phone_number}</p>
+                </div>
+                <div className='AllInformation-detail'>
+                    <FontAwesomeIcon icon={faGlobe} size="lg" id="faAllInformation"/>
+                    <a href={placePin.website} target="_blank">{placePin.website}</a>
+                </div>
+                <div className='AllInformation-detail'>
+                    <FontAwesomeIcon icon={faClock} size="lg" id="faAllInformation" style={{ alignSelf: 'start' }}/>
+                    <div>
+                        {openTimes.map((time, index) => (
+                            <p key={index}>{time}</p>
+                        ))}
+                    </div>
+                </div>
+            </div>},
+        {name : "รีวิว", content:
+            <div className='Review-contain'>
+                {reviews.map((review, index)=>(
+                    <Review key={index} name={review.author_name} url={review.profile_photo_url} rate={review.rating} text={review.text} time={review.relative_time_description}/>
+                ))}
+            </div>}
+        ]
+    const [selectedTab, setSelectedTab] = useState(tabs[0]);
+    const rating = placePin.rating;
+    const stars = [];
+    const integerPart = Math.floor(rating);
+    const fractionalPart = rating - integerPart;
+
+    for (let i = 0; i < integerPart; i++) {
+    stars.push(<FontAwesomeIcon key={i} icon={faStar} size="sm" id="faStar"/>);
+    }
+
+    if (fractionalPart >= 0.25 && fractionalPart <= 0.75) {
+    stars.push(<FontAwesomeIcon key="half" icon={faStarHalf} size="sm" id="faStar"/>);
+    }
+
+    const remainingStars = 5 - stars.length;
+    for (let i = 0; i < remainingStars; i++) {
+    stars.push(<FontAwesomeIcon key={`empty${i}`} icon={faStar} size="sm" id="faStar" style={{ color: 'transparent' }} />);
+    }
+    console.log('Information  placePin.=>',placePin)
+    // console.log('selectedTab : ',selectedTab)
+
+    const handleClose = () => {
+        setDetail(false);
+        marker.setMap(null);
+    };
+
+    const addPathDestination = () => {
+        const newId = ListLength + 1;
+        const newPoint = { id: newId, displayName: placeName, lat: placePin.geometry.location.lat(), lng: placePin.geometry.location.lng() };
+        setPathway([...pathway, newPoint]);
+        setListLength(newId)
+        handleClose()
+    };
+
+    return(<>
+        <div className='Information'>
+            <div className='img-contain'>
+                <img src={placePhoto} alt="" className='Information-img'/>
+            </div>
+            <button className='close-Information' onClick={handleClose}>
+                <FontAwesomeIcon icon={faXmark} size="lg" id="faXmark"/>
+                </button>
+            <div className='InformationName-contain'>
+                <p className='InformationName'>{placeName}</p>
+                <span className='placeRate'>
+                    {rating}
+                    {stars}
+                    <span>({placePin.user_ratings_total})</span>
+                </span>
+                <p className='placeType'>{placePin.types[0]}</p>
+            </div>
+            <div className='Information-Detail-contain'>
+                <div className='Information-detail'>
+                    <nav>
+                        <ul className='detail-btn-contain'>
+                        {tabs.map((item) => (
+                            <li key={item.name} className={`detail-btn ${item.name === selectedTab.name ? "selected" : ""}`} onClick={() => setSelectedTab(item)} >
+                                <p>{`${item.name}`}</p>
+                            </li>
+                        ))}
+                        </ul>
+                    </nav>
+                    <main>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={selectedTab ? selectedTab.name : "empty"}
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -10, opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className='motion-div-info'
+                            >
+                                {selectedTab ? selectedTab.content : "😋"}
+                            </motion.div>
+                        </AnimatePresence>
+                    </main>
+                </div>
+            </div>
+            <div className='AddPlaceInfo-contain'>
+                <button className='AddPlaceInfo' onClick={addPathDestination}>
+                    <FontAwesomeIcon icon={faPlus} size="lg" id="faPlus"/>
+                    <p>เพิ่มสถานที่นี้</p>
+                </button>
+            </div>
+        </div>
+    </>)
+}
+
+function Review({name, url, rate, text, time}){
+    const rating = rate;
+    const stars = [];
+    const integerPart = Math.floor(rating);
+    const fractionalPart = rating - integerPart;
+
+    for (let i = 0; i < integerPart; i++) {
+    stars.push(<FontAwesomeIcon key={i} icon={faStar} size="sm" id="faStar"/>);
+    }
+
+    if (fractionalPart >= 0.25 && fractionalPart <= 0.75) {
+    stars.push(<FontAwesomeIcon key="half" icon={faStarHalf} size="sm" id="faStar"/>);
+    }
+
+    const remainingStars = 5 - stars.length;
+    for (let i = 0; i < remainingStars; i++) {
+    stars.push(<FontAwesomeIcon key={`empty${i}`} icon={faStar} size="sm" id="faStar" style={{ color: 'transparent' }} />);
+    }
+    return(<>
+        <div className='Review'>
+            <div className='Reviewer'>
+                <img src={url} alt="" width={50}/>
+                <div className='Reviewer-Detail'>
+                    <p>{name}</p>
+                    <div className='ReviewRate'>
+                        <p>{stars}</p>
+                        <p className='ReviewTime'> {time} </p>
+                    </div>
+                </div>
+            </div>
+            <p>{text}</p>
+        </div>
+    </>)
+}
+
+export default MapPlan;

@@ -35,10 +35,13 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
 
             async function initMap() {
                 const { Map } = await google.maps.importLibrary("maps");
-                const { Place, Photo, Review } = await google.maps.importLibrary("places");
+                const { Place } = await google.maps.importLibrary("places");
+                const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+                const position = { lat: 13.7734, lng: 100.5202 };
+                const center = { lat: 13.7734, lng: 100.5202 };
 
                 map = new Map(document.getElementById("map"), {
-                    center: { lat: 13.7734, lng: 100.5202 },
+                    center: center,
                     zoom: 10,
                     mapId: "981d73a7e46f15d2",
                     mapTypeControl: false,
@@ -46,50 +49,49 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                 });
                 const trafficLayer = new google.maps.TrafficLayer();
                 trafficLayer.setMap(map);
+                const defaultBounds = {
+                    north: center.lat + 2,
+                    south: center.lat - 2,
+                    east: center.lng + 2,
+                    west: center.lng - 2,
+                };
 
                 const input = document.getElementById("googleSearch");
-                const autocomplete = new window.google.maps.places.Autocomplete(
-                    input,
-                    {
-                        strictBounds: false,
-                    }
-                );
-
+                const options = {
+                    bounds: defaultBounds,
+                    strictBounds: false,
+                };
+                const autocomplete = new google.maps.places.Autocomplete(input, options);
                 autocomplete.bindTo("bounds", map);
+
+                const marker = new google.maps.Marker({
+                    map,
+                    anchorPoint: new google.maps.Point(0, -29),
+                });
+
                 autocomplete.addListener("place_changed", () => {
-                    setDetail(false)
+                    marker.setVisible(false);
                     console.log(">>>> autocomplete <<<<")
                     const place = autocomplete.getPlace();
-                    console.log(' ========= Get place ========= ',place)
                     const photoUrl = place.photos[0].getUrl({maxWidth:1000})
-                    console.log(' ========= Get photo ========= ',photoUrl)
                     setPlacePin(place)
                     setPlacePhoto(photoUrl)
-                    if(setPlacePin != null){
-                        setDetail(true)
-                    }
+                    setDetail(true)
 
                     if (!place.geometry || !place.geometry.location) {
-                        window.alert(
-                            "No details available for input: '" + place.name + "'"
-                    );
+                        window.alert("No details available for input: '" + place.name + "'");
                         return;
                     }
-
-                    // if (place.geometry.viewport) {
-                    //     map.fitBounds(place.geometry.viewport);
-                    // } else {
-                    //     map.setCenter(place.geometry.location);
-                    //     map.setZoom(17);
-                    // }
-                    map.setCenter(place.geometry.location);
+                    if (place.geometry.viewport) {
+                        map.fitBounds(place.geometry.viewport);
+                        console.log("Checking :",place)
+                    } else {
+                        map.setCenter(place.geometry.location);
                         map.setZoom(17);
+                    }
 
-                    const marker = new google.maps.Marker({
-                        map,
-                        position: place.geometry.location,
-                    });
-                    setMarker(marker);
+                    marker.setPosition(place.geometry.location);
+                    marker.setVisible(true);
                 });
 
                 const directionsService = new google.maps.DirectionsService();
