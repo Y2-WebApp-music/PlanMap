@@ -63,7 +63,7 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
 
     const handleClose = () => {
         setDetail(false);
-        marker.setMap(null);
+        marker.setVisible(false);
     };
 
     const addPathDestination = () => {

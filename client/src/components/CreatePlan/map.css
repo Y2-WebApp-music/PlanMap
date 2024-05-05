@@ -77,13 +77,23 @@
     outline: none;
     border: none;
     filter: grayscale(80%);
-    opacity: 60%;
+    opacity: 90%;
     border-radius: 30px;
     font-size: 1.1rem;
     font-weight: 400;
     padding: 0.2rem 1.2rem;
     box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.15);
     transition: .2s;
+}
+.GoogleFilterBTN.selected{
+    background-color: var(--color-bg);
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.35);
+    filter: grayscale(0%);
+    color: var(--color-text);
+    opacity: 1;
+}
+#GoogleFilter-icon{
+    color: var(--color-blue);
 }
 
 .GoogleFilterBTN:hover {
