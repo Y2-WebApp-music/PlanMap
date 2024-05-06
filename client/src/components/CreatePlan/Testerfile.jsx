@@ -45,11 +45,11 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                 const { Map } = await google.maps.importLibrary("maps");
                 const { Place } = await google.maps.importLibrary("places");
                 const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-                const position = { lat: 13.7734, lng: 100.5202 };
-                const defaultCenter = { lat: 13.7734, lng: 100.5202 };
+                // const position = { lat: 13.7734, lng: 100.5202 };
+                // const defaultCenter = { lat: 13.7734, lng: 100.5202 };
 
                 map = new Map(document.getElementById("map"), {
-                    center: defaultCenter,
+                    center: { lat: 13.7734, lng: 100.5202 },
                     zoom: 10,
                     mapId: "981d73a7e46f15d2",
                     mapTypeControl: false,
@@ -58,16 +58,9 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
 
                 const trafficLayer = new google.maps.TrafficLayer();
                 trafficLayer.setMap(map);
-                const defaultBounds = {
-                    north: defaultCenter.lat + 2,
-                    south: defaultCenter.lat - 2,
-                    east: defaultCenter.lng + 2,
-                    west: defaultCenter.lng - 2,
-                };
 
                 const input = document.getElementById("googleSearch");
                 const options = {
-                    bounds: defaultBounds,
                     strictBounds: false,
                 };
                 const autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -113,6 +106,8 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                 });
 
                 // Near by search Here
+
+                Directions({map, filteredPathway, setDistance, setDuration})
                 let places;
                 let markers = [];
                 if (selectedFil != null) {
@@ -154,8 +149,6 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                     }
                     markers = [];
                 }
-
-                // Directions({map, filteredPathway, setDistance, setDuration})
             }
 
             initMap();
