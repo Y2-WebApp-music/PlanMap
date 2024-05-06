@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faPlus, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock } from '@fortawesome/free-solid-svg-icons'
 import { motion, AnimatePresence } from "framer-motion";
 
-function Information({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
+export function Information({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
     const placeName = placePin?.name || "Unknown Place";
+    // const Photo = placePhoto?.name || "Unknown Place";
     let reviews = placePin.reviews
     let openTimes = placePin.opening_hours.weekday_text
+
     let tabs = [
         {name: "ภาพรวม", content:
             <div className='AllInformation-contain'>
@@ -58,8 +60,6 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
     for (let i = 0; i < remainingStars; i++) {
     stars.push(<FontAwesomeIcon key={`empty${i}`} icon={faStar} size="sm" id="faStar" style={{ color: 'transparent' }} />);
     }
-    console.log('Information  placePin.=>',placePin)
-    // console.log('selectedTab : ',selectedTab)
 
     const handleClose = () => {
         setDetail(false);
@@ -128,6 +128,62 @@ function Information({placePin, placePhoto, setDetail, marker, pathway, setPathw
     </>)
 }
 
+
+
+export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLength, ListLength}){
+    const placeName = placePin?.name || "Unknown Place";
+    const rating = placePin.rating;
+    const stars = [];
+    const integerPart = Math.floor(rating);
+    const fractionalPart = rating - integerPart;
+
+    for (let i = 0; i < integerPart; i++) {
+    stars.push(<FontAwesomeIcon key={i} icon={faStar} size="sm" id="faStar"/>);
+    }
+
+    if (fractionalPart >= 0.25 && fractionalPart <= 0.75) {
+    stars.push(<FontAwesomeIcon key="half" icon={faStarHalf} size="sm" id="faStar"/>);
+    }
+
+    const remainingStars = 5 - stars.length;
+    for (let i = 0; i < remainingStars; i++) {
+    stars.push(<FontAwesomeIcon key={`empty${i}`} icon={faStar} size="sm" id="faStar" style={{ color: 'transparent' }} />);
+    }
+
+    const addPathDestination = () => {
+        const newId = ListLength + 1;
+        const newPoint = { id: newId, displayName: placeName, lat: placePin.geometry.location.lat(), lng: placePin.geometry.location.lng() };
+        setPathway([...pathway, newPoint]);
+        setListLength(newId)
+        handleClose()
+    };
+
+    return(<>
+        <div className='placeList'>
+            <div className='img-contain'>
+                <img src={placePhoto} alt="" className='Information-img' id='imgNotDrag'/>
+            </div>
+            <div className='placeList-contain'>
+                <p className='InformationName'>{placeName}</p>
+                <div className='placeList-Information'>
+                    <span className='placeRate'>
+                        {rating}
+                        {stars}
+                        <span className='ratings_total'>({placePin.user_ratings_total})</span>
+                        <p className='placeList-placeType'>{placePin.types[0]}</p>
+                    </span>
+                    <div className='placeList-AddPlaceInfo-contain'>
+                        <button className='placeList-AddPlaceInfo' onClick={addPathDestination}>
+                            <FontAwesomeIcon icon={faPlus} size="lg" id="faPlus"/>
+                            <p>เพิ่มสถานที่นี้</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </>)
+}
+
 function Review({name, url, rate, text, time}){
     const rating = rate;
     const stars = [];
@@ -162,5 +218,3 @@ function Review({name, url, rate, text, time}){
         </div>
     </>)
 }
-
-export default Information;

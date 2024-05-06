@@ -121,7 +121,9 @@
     display: grid;
     grid-template-rows: 30% auto 1fr auto;
     box-sizing: border-box;
+    animation: RightIn 1.5s;
 }
+
 .img-contain{
     width: 100%;
     height: 100%;
@@ -341,4 +343,121 @@ main {
 }
 #faStar{
     color: var(--color-orange);
+}
+
+.placeList-scroll{
+    overflow: hidden;
+    overflow-x: scroll;
+    position: absolute;
+    z-index: 5;
+    bottom: 10px;
+    left: 0px;
+    width: 100%;
+    height: 30vh;
+    animation: RaiseUp 1.5s;
+}
+.placeList-scroll::-webkit-scrollbar {
+    display: none;
+}
+.placeList-contain-all{
+    height: 100%;
+    width: 100%;
+    width: fit-content;
+    display: flex;
+    gap: 20px;
+    padding: 1rem 1rem;
+}
+.placeList{
+    width: 320px;
+    height: 28vh;
+    background-color: rgba(247, 247, 247, 0.848);
+    backdrop-filter: blur(7px);
+    box-shadow: 0 0rem 1rem rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    display: grid;
+    grid-template-rows: 50% auto;
+    box-sizing: border-box;
+}
+
+.placeList-contain{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    cursor: grab;
+}
+
+.placeList-Information{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 45% 55%;
+    justify-items: start;
+    align-items: center;
+}
+
+.placeList-AddPlaceInfo-contain{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.placeList-AddPlaceInfo{
+    background: var(--color-blue);
+    width: 90%;
+    height: max-content;
+    padding: 0.4rem 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border-radius: 30px;
+    border: none;
+    transition: .1s;
+    margin: 0.5rem 0;
+}
+.placeList-AddPlaceInfo:hover{
+    scale: 1.02;
+    box-shadow: 0 0rem 0.1rem rgba(0, 0, 0, 0.25);
+    transition: .1s;
+}
+.ratings_total{
+    font-size: 00.8rem;
+}
+.placeList-AddPlaceInfo p {
+    margin: 0 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+.placeList-placeType{
+    color: var(--color-subtext);
+    margin: 0 0;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transform: translateY(-3px);
+}
+
+
+@keyframes RightIn {
+    0% {
+        transform: translateX(600px);
+    }
+    60% {
+        transform: translateX(-5px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}
+@keyframes RaiseUp {
+    0% {
+        transform: translateY(600px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
 }
