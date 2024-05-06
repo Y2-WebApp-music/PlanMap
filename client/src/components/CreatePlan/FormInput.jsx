@@ -5,7 +5,7 @@ import PathList from "./PathList";
 import { auth } from '/src/DB/Firebase-Config.js'
 import { useNavigate } from "react-router-dom";
 
-function FormInput({pathway, setPathway, duration, distance}){
+function FormInput({pathway, setPathway, duration, distance, setListLength, ListLength}){
     const navigate = useNavigate()
     const [userId, setUserId] = useState(null)
     const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ function FormInput({pathway, setPathway, duration, distance}){
             ...formData,
             Route: pathway
         });
-        return console.log('formData ==> ',formData);
+        return;
     }, [pathway]);
 
     const handleChange = (e) => {
@@ -102,7 +102,7 @@ function FormInput({pathway, setPathway, duration, distance}){
                         <div className="sidebar-CreatePlan">
                             <div className="Pathway">
                                 <p>สถานที่ในการเดินทาง</p>
-                                < PathList setPathway={setPathway} pathway={pathway} duration={duration} distance={distance}/>
+                                < PathList setPathway={setPathway} pathway={pathway} duration={duration} distance={distance} setListLength={setListLength} ListLength={ListLength}/>
                             </div>
 
                             <label htmlFor="">

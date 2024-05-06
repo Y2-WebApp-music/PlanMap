@@ -4,13 +4,15 @@ import '/src/components/CreatePlan/map.css';
 
 import { Loader } from "@googlemaps/js-api-loader"
 
-function MapPlan({pathway, setDuration, setDistance}) {
+
+function MapEdit({pathway, setDuration, setDistance}) {
     console.log('Map Get Pathway From Parent => ',pathway)
     const [filteredPathway,setFilteredPathway] = useState([])
     useEffect(()=>{
         setFilteredPathway(pathway.filter(point => point.lat !== null && point.lng !== null))
         return;
     },[pathway])
+    console.log('filteredPathway From Parent => ',filteredPathway)
 
     const loader = new Loader({
         apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
@@ -23,12 +25,17 @@ function MapPlan({pathway, setDuration, setDistance}) {
         if (filteredPathway.length === 0) {
             return;
         }
+        const input = document.getElementById("google-search");
+            input.addEventListener("click", () => {
+            input.select();
+        });
         loader.load()
         .then(maps => {
             let map;
 
             async function initMap() {
-                const { Map } = await google.maps.importLibrary("maps");
+                const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+                // const {Place} = await google.maps.importLibrary("places");
 
                 map = new Map(document.getElementById("map"), {
                     center: { lat: 13.7734, lng: 100.5202 },
@@ -37,9 +44,56 @@ function MapPlan({pathway, setDuration, setDistance}) {
                     mapTypeControl: false,
                     disableDefaultUI: true,
                 });
-                const trafficLayer = new google.maps.TrafficLayer();
 
-                trafficLayer.setMap(map);
+                const { AdvancedMarkerElement, PinElement } =  google.maps.importLibrary("marker");
+
+            const card = document.getElementById("pac-card");
+            const input = document.getElementById("google-search");
+            const options = {
+                fields: ["formatted_address", "geometry", "name"],
+                strictBounds: false,
+            };
+            const infoWindow = new InfoWindow();
+
+            map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
+
+            const autocomplete = new window.google.maps.places.Autocomplete(
+                input,
+                options
+            );
+
+            autocomplete.bindTo("bounds", map);
+            autocomplete.addListener("place_changed", () => {
+
+                const place = autocomplete.getPlace();
+
+                if (!place.geometry || !place.geometry.location) {
+                    window.alert(
+                        "No details available for input: '" + place.name + "'"
+                );
+                    return;
+                }
+
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+
+
+                map.panTo(place.geometry.location);
+                map.setZoom(17);
+
+                const marker = new AdvancedMarkerElement({
+                    map,
+                    position: place.geometry.location,
+                    title: "Hello from marker"
+                });
+                infoWindow.close();
+                infoWindow.setContent(marker.title);
+                infoWindow.open(marker.map, marker);
+            });
 
                 const directionsService = new google.maps.DirectionsService();
                 const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });
@@ -92,9 +146,38 @@ function MapPlan({pathway, setDuration, setDistance}) {
 
     return (
         <div className="Map-container">
+            <div className="SearchArea">
+                <div className="google-searchBox">
+                    <label htmlFor="google-search" id="google-searchLabel">
+                        <input type="text"
+                                placeholder="ค้นหาใน google map"
+                                id="google-search"/>
+                        {/* <FontAwesomeIcon icon={searchICON} size="lg" style={{ color: 'var(--color-text)' }}/> */}
+                    </label>
+                </div>
+                <div className="FilterBTN-class">
+                    <GoogleFilterBTN text={"🏬 โรงแรม"} category="hotels" />
+                    <GoogleFilterBTN text={"⛽️ สถานีน้ำมัน"} category="gasStations" />
+                    <GoogleFilterBTN text={"🍽️ ร้านอาหาร"} category="restaurants" />
+                    <GoogleFilterBTN text={"☕️ ร้านกาแฟ"} category="coffeeShops" />
+                </div>
+            </div>
+
             <div id="map" style={{ height: '100%', width: '100%' }}></div>
         </div>
     );
 }
+function GoogleFilterBTN({ text, category }) {
+    return(
+        <div>
+            <input
+                type="button"
+                className="GoogleFilterBTN"
+                value={text}
+                data-category={category}
+            />
+        </div>
+    )
+}
 
-export default MapPlan;
+export default MapEdit;

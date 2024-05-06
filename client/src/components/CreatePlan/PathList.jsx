@@ -6,11 +6,10 @@ import { faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import '/src/global.css';
 import './FormInput.css'
 
-export default function PathList({pathway, setPathway, duration, distance}){
+export default function PathList({pathway, setPathway, duration, distance, setListLength, ListLength}){
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
     const roundedDistance = distance;
-    const [ListLength, setListLength] = useState(pathway.length)
 
     const addPathDestination = () => {
         const newId = ListLength + 1;
@@ -18,8 +17,6 @@ export default function PathList({pathway, setPathway, duration, distance}){
         setPathway([...pathway, newPoint]);
         setListLength(newId)
     };
-
-    console.log('ListLength',ListLength)
 
     return(
         <div className="Pathway-List">

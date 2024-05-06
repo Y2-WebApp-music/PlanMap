@@ -1,255 +1,64 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '/src/global.css';
 import './map.css';
+import { Loader } from "@googlemaps/js-api-loader"
+import { Information, PlaceList } from './Information';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHotel, faUtensils, faGasPump, faMugHot } from '@fortawesome/free-solid-svg-icons'
 
-import  loadGoogleMapsScript  from '/src/components/MapLoader.js'
+function MapPlan({ pathway, setDuration, setDistance, setPathway, setListLength, ListLength }) {
+    const [map, setMap] = useState(null);
+    const [mapLoaded, setMapLoaded] = useState(false);
+    const [markers, setMarkers] = useState([]);
 
-
-function Map({pathway, setDuration, setDistance}) {
     useEffect(() => {
-        const input = document.getElementById("google-search");
-            input.addEventListener("click", () => {
-            input.select();
+        const loader = new Loader({
+            apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
+            version: "weekly",
+            language: "th",
         });
-        loadGoogleMapsScript()
-        .then(maps => {
-            console.log("Google Maps API loaded:", maps);
-            const { Map,InfoWindow } =  google.maps.importLibrary("maps");
-            const map = new Map(document.getElementById("map"), {
-                center: { lat: 13.7734, lng: 100.5202 },
-                zoom: 10,
-                mapId: "981d73a7e46f15d2",
-                mapTypeControl: false,
-                disableDefaultUI: true,
+
+        loader.load().then(() => {
+            const { Place } = google.maps.importLibrary("places");
+            const mapInstance = new window.google.maps.Map(document.getElementById('map'), {
+                center: { lat: 40.7128, lng: -74.0060 },
+                zoom: 12,
             });
-            const { AdvancedMarkerElement, PinElement } =  google.maps.importLibrary("marker");
+            setMap(mapInstance);
+            setMapLoaded(true);
 
-            const card = document.getElementById("pac-card");
-            const input = document.getElementById("google-search");
-            const options = {
-                fields: ["formatted_address", "geometry", "name"],
-                strictBounds: false,
-            };
-            const infoWindow = new InfoWindow();
-
-            map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
-
-            const autocomplete = new window.google.maps.places.Autocomplete(
-                input,
-                options
-            );
-
-            autocomplete.bindTo("bounds", map);
-            autocomplete.addListener("place_changed", () => {
-
-                const place = autocomplete.getPlace();
-
-                if (!place.geometry || !place.geometry.location) {
-                    window.alert(
-                        "No details available for input: '" + place.name + "'"
-                );
-                    return;
-                }
-
-                if (place.geometry.viewport) {
-                    map.fitBounds(place.geometry.viewport);
-                } else {
-                    map.setCenter(place.geometry.location);
-                    map.setZoom(17);
-                }
-
-
-                map.panTo(place.geometry.location);
-                map.setZoom(17);
-
-                const marker = new AdvancedMarkerElement({
-                    map,
-                    position: place.geometry.location,
-                    title: "Hello from marker"
-                });
-                infoWindow.close();
-                infoWindow.setContent(marker.title);
-                infoWindow.open(marker.map, marker);
-            });
-
-            const directionsService = new google.maps.DirectionsService();
-            const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });
-            const filteredPathway = pathway.filter(point => point.lat !== null && point.lng !== null);
-            if (filteredPathway.length < 2) {
-                map.setCenter({ lat: 13.7734, lng: 100.5202 });
-                return;
-            } else{
-                const start = { lat: filteredPathway[0].lat, lng: filteredPathway[0].lng };
-                const end = { lat: filteredPathway[filteredPathway.length - 1].lat, lng: filteredPathway[filteredPathway.length - 1].lng };
-                const waypoints = [];
-
-                for (let i = 1; i < filteredPathway.length - 1; i++) {
-                    waypoints.push({
-                    location: new window.google.maps.LatLng(filteredPathway[i].lat, filteredPathway[i].lng),
-                    stopover: true,
-                    });
-                }
-                directionsService.route({
-                    origin: new window.google.maps.LatLng(start.lat, start.lng),
-                    destination: new window.google.maps.LatLng(end.lat, end.lng),
-                    waypoints: waypoints,
-                    optimizeWaypoints: true,
-                    travelMode: window.google.maps.TravelMode.DRIVING,
-                    }, (response, status) => {
-                    if (status === 'OK') {
-                        directionsRenderer.setDirections(response);
-                        const route = response.routes[0];
-                        let distance = route.legs.reduce((acc, leg) => acc + leg.distance.value, 0);
-                        let duration = route.legs.reduce((acc, leg) => acc + leg.duration.value, 0);
-                        setDistance(distance/1000)
-                        setDuration(duration/60)
-
-                    } else {
-                    window.alert("Directions request failed due to " + status);
-                    }
-                });
-                directionsRenderer.setMap(map);
-            }
-        })
-        .catch(error => {
-            console.error("Error loading Google Maps API:", error);
+            // Add event listener for dragging the map
+            mapInstance.addListener('dragend', handleMapDrag);
         });
-        // async function initMap() {
-        //     const { Map,InfoWindow } = await google.maps.importLibrary("maps");
-        //     const map = new Map(document.getElementById("map"), {
-        //         center: { lat: 13.7734, lng: 100.5202 },
-        //         zoom: 10,
-        //         mapId: "981d73a7e46f15d2",
-        //         mapTypeControl: false,
-        //         disableDefaultUI: true,
-        //     });
-        //     const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
 
-        //     const card = document.getElementById("pac-card");
-        //     const input = document.getElementById("google-search");
-        //     const options = {
-        //         fields: ["formatted_address", "geometry", "name"],
-        //         strictBounds: false,
-        //     };
-        //     const infoWindow = new InfoWindow();
+    }, []);
 
-        //     map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(card);
-
-        //     const autocomplete = new window.google.maps.places.Autocomplete(
-        //         input,
-        //         options
-        //     );
-
-        //     autocomplete.bindTo("bounds", map);
-        //     autocomplete.addListener("place_changed", () => {
-
-        //         const place = autocomplete.getPlace();
-
-        //         if (!place.geometry || !place.geometry.location) {
-        //             window.alert(
-        //                 "No details available for input: '" + place.name + "'"
-        //         );
-        //             return;
-        //         }
-
-        //         if (place.geometry.viewport) {
-        //             map.fitBounds(place.geometry.viewport);
-        //         } else {
-        //             map.setCenter(place.geometry.location);
-        //             map.setZoom(17);
-        //         }
-
-
-        //         map.panTo(place.geometry.location);
-        //         map.setZoom(17);
-
-        //         const marker = new AdvancedMarkerElement({
-        //             map,
-        //             position: place.geometry.location,
-        //             title: "Hello from marker"
-        //         });
-        //         infoWindow.close();
-        //         infoWindow.setContent(marker.title);
-        //         infoWindow.open(marker.map, marker);
-        //     });
-
-        //     const directionsService = new google.maps.DirectionsService();
-        //     const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });
-        //     const filteredPathway = pathway.filter(point => point.lat !== null && point.lng !== null);
-        //     if (filteredPathway.length < 2) {
-        //         map.setCenter({ lat: 13.7734, lng: 100.5202 });
-        //         return;
-        //     } else{
-        //         const start = { lat: filteredPathway[0].lat, lng: filteredPathway[0].lng };
-        //         const end = { lat: filteredPathway[filteredPathway.length - 1].lat, lng: filteredPathway[filteredPathway.length - 1].lng };
-        //         const waypoints = [];
-
-        //         for (let i = 1; i < filteredPathway.length - 1; i++) {
-        //             waypoints.push({
-        //             location: new window.google.maps.LatLng(filteredPathway[i].lat, filteredPathway[i].lng),
-        //             stopover: true,
-        //             });
-        //         }
-        //         directionsService.route({
-        //             origin: new window.google.maps.LatLng(start.lat, start.lng),
-        //             destination: new window.google.maps.LatLng(end.lat, end.lng),
-        //             waypoints: waypoints,
-        //             optimizeWaypoints: true,
-        //             travelMode: window.google.maps.TravelMode.DRIVING,
-        //             }, (response, status) => {
-        //             if (status === 'OK') {
-        //                 directionsRenderer.setDirections(response);
-        //                 const route = response.routes[0];
-        //                 let distance = route.legs.reduce((acc, leg) => acc + leg.distance.value, 0);
-        //                 let duration = route.legs.reduce((acc, leg) => acc + leg.duration.value, 0);
-        //                 setDistance(distance/1000)
-        //                 setDuration(duration/60)
-
-        //             } else {
-        //             window.alert("Directions request failed due to " + status);
-        //             }
-        //         });
-        //         directionsRenderer.setMap(map);
-        //     }
+    const handleMapDrag = () => {
+        // if (mapLoaded && map !== null) {
+            const { lat, lng } = map.getCenter();
+            console.log('Map center changed:', lat(), lng());
+            // You can add markers dynamically here based on the map center
+            // Example: addMarker(lat(), lng());
         // }
-        // loadGoogleMapsScript(initMap);
-    }, [pathway]);
+    };
+
+    const addMarker = (lat, lng) => {
+        if (mapLoaded && map !== null) {
+            const marker = new window.google.maps.Marker({
+                position: { lat, lng },
+                map,
+            });
+            setMarkers(prevMarkers => [...prevMarkers, marker]);
+        }
+    };
 
     return (
         <div className="Map-container">
-            <div className="SearchArea">
-                <div className="google-searchBox">
-                    <label htmlFor="google-search" id="google-searchLabel">
-                        <input type="text"
-                                placeholder="ค้นหาใน google map"
-                                id="google-search"/>
-                        {/* <FontAwesomeIcon icon={searchICON} size="lg" style={{ color: 'var(--color-text)' }}/> */}
-                    </label>
-                </div>
-                <div className="FilterBTN-class">
-                    <GoogleFilterBTN text={"🏬 โรงแรม"} category="hotels" />
-                    <GoogleFilterBTN text={"⛽️ สถานีน้ำมัน"} category="gasStations" />
-                    <GoogleFilterBTN text={"🍽️ ร้านอาหาร"} category="restaurants" />
-                    <GoogleFilterBTN text={"☕️ ร้านกาแฟ"} category="coffeeShops" />
-                </div>
-            </div>
-
+            {/* Add a button or UI to allow adding markers */}
+            <button onClick={() => addMarker(40.7128, -74.0060)}>Add Marker</button>
             <div id="map" style={{ height: '100%', width: '100%' }}></div>
         </div>
     );
 }
 
-function GoogleFilterBTN({ text, category }) {
-    return(
-        <div>
-            <input
-                type="button"
-                className="GoogleFilterBTN"
-                value={text}
-                data-category={category}
-            />
-        </div>
-    )
-}
-
-export default Map;
+export default MapPlan;

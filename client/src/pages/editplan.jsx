@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import '../global.css';
 import '../pages/editplan.css'
-import Map from "../components/CreatePlan/Testerfile"
+import MapEdit from "../components/EditPlan/MapEdit";
 import EditForm from "../components/EditPlan/EditForm";
 import { auth } from "../DB/Firebase-Config";
 import { useParams } from "react-router-dom";
@@ -53,7 +53,7 @@ function EditPlan() {
                 {currentPlan != null && pathway != null ?(
                     <>
                         <EditForm currentPlan={currentPlan} pathway={pathway} setPathway={setPathway} duration={duration} distance={distance}/>
-                        <Map pathway={pathway} setDuration={setDuration} setDistance={setDistance}/>
+                        <MapEdit pathway={pathway} setDuration={setDuration} setDistance={setDistance}/>
                     </>
                 )
                 :
