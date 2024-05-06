@@ -2,18 +2,13 @@ import React, { useEffect, useState } from 'react';
 import '/src/global.css';
 import './map.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faPlus, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faPlus, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock, faInfo } from '@fortawesome/free-solid-svg-icons'
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Information({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
     const placeName = placePin?.name || "Unknown Place";
     let reviews = placePin.reviews
     let openTimes = placePin.opening_hours.weekday_text
-    const [selectedTab, setSelectedTab] = useState(tabs[0]);
-    const rating = placePin.rating || 0;
-    const stars = [];
-    const integerPart = Math.floor(rating);
-    const fractionalPart = rating - integerPart;
 
     let tabs = [
         {name: "ภาพรวม", content:
@@ -46,6 +41,11 @@ export function Information({placePin, placePhoto, setDetail, marker, pathway, s
                 ))}
             </div>}
         ]
+    const [selectedTab, setSelectedTab] = useState(tabs[0]);
+    const rating = placePin.rating || 0;
+    const stars = [];
+    const integerPart = Math.floor(rating);
+    const fractionalPart = rating - integerPart;
 
     for (let i = 0; i < integerPart; i++) {
     stars.push(<FontAwesomeIcon key={i} icon={faStar} size="sm" id="faStar"/>);
@@ -163,7 +163,10 @@ export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLen
                 <img src={placePhoto} alt="" className='Information-img' id='imgNotDrag'/>
             </div>
             <div className='placeList-contain'>
-                <p className='InformationName'>{placeName}</p>
+                <div className='contain-headInfo'>
+                    <p className='InformationName'>{placeName}</p>
+                    <FontAwesomeIcon icon={faInfo} size="xl" id="faInfo"/>
+                </div>
                 <div className='placeList-Information'>
                     <span className='placeRate'>
                         {rating}

@@ -129,6 +129,7 @@
     height: 100%;
 }
 .Information-img {
+    position: relative;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -325,6 +326,16 @@ main {
     color: var(--color-subtext);
     font-size: 0.9rem;
 }
+.bg-Information-pop{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 4;
+    background: linear-gradient(90deg, rgba(255, 0, 0, 0) 0%, rgba(224, 224, 224, 0.5) 100%);
+    height: 95vh;
+    width: 350px;
+}
 .AllInformation-detail{
     margin: 1rem 0;
     display: grid;
@@ -375,7 +386,7 @@ main {
     box-shadow: 0 0rem 1rem rgba(0, 0, 0, 0.3);
     border-radius: 15px;
     display: grid;
-    grid-template-rows: 50% auto;
+    grid-template-rows: 50% 50%;
     box-sizing: border-box;
 }
 
@@ -383,7 +394,7 @@ main {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: 55% 1fr;
+    grid-template-rows: 55% 45%;
     cursor: grab;
 }
 
@@ -436,6 +447,73 @@ main {
     font-size: 0.8rem;
     font-weight: 500;
     transform: translateY(-3px);
+}
+
+.contain-headInfo{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 8%;
+    overflow-y: scroll;
+}
+.contain-headInfo::-webkit-scrollbar {
+    display: none;
+}
+#faInfo {
+    color: var(--color-subtext);
+    position:absolute;
+    top: 2px;
+    right: 5px;
+    margin-top: 5px;
+    width: 15px;
+    height: 15px;
+    padding: 0.2rem 0.2rem;
+    border: solid;
+    border-radius: 50%;
+    border-width: 1px;
+    background-color: var(--color-bg);
+    box-shadow: 0 0rem 0.6rem rgba(37, 19, 1, 0.35);
+}
+
+#faInfo:hover{
+    cursor: pointer;
+    color: var(--color-bg);
+    background-color: var(--color-blue);
+}
+.close-placeList{
+    position: absolute;
+    z-index: 5;
+    bottom: 30vh;
+    right: 0px;
+    background-color: var(--color-bg);
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.25);
+    border-radius: 30px 0 0 30px;
+    border: none;
+    padding: 0.3rem 1rem;
+    color: var(--color-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: RaiseUp 1.5s;
+}
+
+.close-placeList p{
+    margin: 0 0;
+    font-size: 1rem;
+}
+.close-placeList:hover {
+    scale: 1.05;
+}
+
+.bg-placeList-pop{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 4;
+    background: linear-gradient(180deg, rgba(255, 0, 0, 0) 0%, rgba(91, 91, 91, 0.5) 100%);
+    height: 30vh;
+    width: 100%;
 }
 
 
