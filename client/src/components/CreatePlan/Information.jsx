@@ -7,9 +7,13 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export function Information({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
     const placeName = placePin?.name || "Unknown Place";
-    // const Photo = placePhoto?.name || "Unknown Place";
     let reviews = placePin.reviews
     let openTimes = placePin.opening_hours.weekday_text
+    const [selectedTab, setSelectedTab] = useState(tabs[0]);
+    const rating = placePin.rating || 0;
+    const stars = [];
+    const integerPart = Math.floor(rating);
+    const fractionalPart = rating - integerPart;
 
     let tabs = [
         {name: "ภาพรวม", content:
@@ -42,11 +46,6 @@ export function Information({placePin, placePhoto, setDetail, marker, pathway, s
                 ))}
             </div>}
         ]
-    const [selectedTab, setSelectedTab] = useState(tabs[0]);
-    const rating = placePin.rating;
-    const stars = [];
-    const integerPart = Math.floor(rating);
-    const fractionalPart = rating - integerPart;
 
     for (let i = 0; i < integerPart; i++) {
     stars.push(<FontAwesomeIcon key={i} icon={faStar} size="sm" id="faStar"/>);
@@ -132,7 +131,7 @@ export function Information({placePin, placePhoto, setDetail, marker, pathway, s
 
 export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLength, ListLength}){
     const placeName = placePin?.name || "Unknown Place";
-    const rating = placePin.rating;
+    const rating = placePin.rating || 0;
     const stars = [];
     const integerPart = Math.floor(rating);
     const fractionalPart = rating - integerPart;
@@ -169,8 +168,7 @@ export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLen
                     <span className='placeRate'>
                         {rating}
                         {stars}
-                        <span className='ratings_total'>({placePin.user_ratings_total})</span>
-                        <p className='placeList-placeType'>{placePin.types[0]}</p>
+                        <p className='placeList-placeType'>{placePin.user_ratings_total} คน มีส่วนร่วม</p>
                     </span>
                     <div className='placeList-AddPlaceInfo-contain'>
                         <button className='placeList-AddPlaceInfo' onClick={addPathDestination}>

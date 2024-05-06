@@ -382,8 +382,8 @@ main {
 .placeList-contain{
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 55% 1fr;
     cursor: grab;
 }
 

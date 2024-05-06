@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import '/src/global.css';
 import './map.css';
 import { Directions } from './DirectionSevice';
@@ -15,10 +15,15 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
     const [marker, setMarker] = useState(null)
     const [selectedFil, setSelectedFil] = useState(null)
     const [nearbyPlace, setNearbyPlace] = useState(null)
+    const mapRef = useRef(null);
 
     const handleFilterClick = (category) => {
         setSelectedFil(category === selectedFil ? null : category);
     };
+    useEffect(()=>{
+        setFilteredPathway(pathway.filter(point => point.lat !== null && point.lng !== null))
+        return;
+    },[pathway])
 
     const loader = new Loader({
         apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
@@ -26,27 +31,19 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
         language: "th",
     });
 
-    useEffect(()=>{
-        setFilteredPathway(pathway.filter(point => point.lat !== null && point.lng !== null))
-        return;
-    },[pathway])
-
     useEffect(() => {
         const inputSe = document.getElementById("googleSearch");
             inputSe.addEventListener("click", () => {
             inputSe.select();
         });
-        console.log('selectedFil =>',selectedFil)
         loader.load()
         .then(maps => {
             let map;
 
-            async function initMap() {
+            async function initMap( {mapRef} ) {
                 const { Map } = await google.maps.importLibrary("maps");
                 const { Place } = await google.maps.importLibrary("places");
                 const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-                // const position = { lat: 13.7734, lng: 100.5202 };
-                // const defaultCenter = { lat: 13.7734, lng: 100.5202 };
 
                 map = new Map(document.getElementById("map"), {
                     center: { lat: 13.7734, lng: 100.5202 },
@@ -105,9 +102,8 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                     setDetail(true)
                 });
 
-                // Near by search Here
-
                 Directions({map, filteredPathway, setDistance, setDuration})
+                // Near by search Here
                 let places;
                 let markers = [];
                 if (selectedFil != null) {
@@ -117,7 +113,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                             location: center ,
                             radius: 10000,
                             types: [selectedFil],
-                            minRating: 4,
+                            rating: 4,
                         };
                         console.log('search is => ',search)
                         places = new google.maps.places.PlacesService(map);
@@ -150,8 +146,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                     markers = [];
                 }
             }
-
-            initMap();
+            initMap(mapRef);
         })
         .catch(error => {
             console.error("Error loading Google Maps API:", error);
@@ -159,11 +154,9 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
     }, [filteredPathway, selectedFil]);
 
     const photoTest ='https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJYECdg62FdzOqPPgRI6fkg6vvTHwjNch8tilBtMLoSOik4koYowvdwcmCRUagGZW1saPQdnPkvODdC26q9VLlOkAtPB5BBjxEirCTm4onR5vri2L7RpwLd0ZHOPWciaY79WBDMUZUT5-zXmIS7pm3tYh5F1GdiORUZcJ1B_J7qiQzQe&3u1000&5m1&2e1&callback=none&r_url=http%3A%2F%2Flocalhost%3A5173%2FcreatePlan&key=AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE&token=47904'
-    const placeTest = {name : 'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี', rating: 4.5,user_ratings_total : 2354, types: ['shopping_mall']}
 
     useEffect(() => {
         console.log('useEffect Drag use')
-
         if (nearbyPlace != null) {
             const placeListsScroll = document.getElementById("horizon-wheel");
             let isDragging = false;
