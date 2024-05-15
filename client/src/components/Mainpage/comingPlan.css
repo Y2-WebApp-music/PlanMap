@@ -27,6 +27,8 @@
     margin-top: 0.5rem;
     font-size: 1.4rem;
     font-weight: 700;
+}.NowPlan-title::-webkit-scrollbar {
+    display: none;
 }
 
 .NowPlan .Date {
@@ -35,7 +37,7 @@
     justify-self: start;
     margin-left: 15px;
     max-height: 200px;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 .NowPlan p {

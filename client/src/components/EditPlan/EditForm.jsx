@@ -5,7 +5,7 @@ import PathList from "../CreatePlan/PathList";
 import { auth } from '/src/DB/Firebase-Config.js'
 import { useNavigate } from "react-router-dom";
 
-function EditForm({currentPlan, pathway, setPathway, duration, distance}){
+function EditForm({currentPlan, pathway, setPathway, duration, distance, setListLength, ListLength}){
     const navigate = useNavigate()
     const [userId, setUserId] = useState(null)
     const [documentId, setDocumentId] = useState(currentPlan._id)
@@ -98,7 +98,7 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance}){
                         <div className="sidebar-CreatePlan">
                             <div className="Pathway">
                                 <p>สถานที่ในการเดินทาง</p>
-                                < PathList setPathway={setPathway} pathway={pathway} duration={duration} distance={distance}/>
+                                < PathList setPathway={setPathway} pathway={pathway} duration={duration} distance={distance} setListLength={setListLength} ListLength={ListLength}/>
                             </div>
 
                             <label htmlFor="">

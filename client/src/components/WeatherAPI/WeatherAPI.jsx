@@ -3,78 +3,39 @@ import './weatherAPI.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot} from '@fortawesome/free-solid-svg-icons'
+import { formatThaiDate } from "../DateFormat";
 
 const api = {
     key: "f691e7c3239c23d19b0ee9ae9972f6b8",
-    base: "https://api.openweathermap.org/data/2.5/",
+    base: "https://api.openweathermap.org/data/2.5/forecast?",
 };
 
-function WeatherAPI({place}){
+function WeatherAPI({lat, lng}){
+    // https://api.openweathermap.org/data/2.5/forecast?lat=19.91917279999999&lon=99.884523&units=metric&APPID=f691e7c3239c23d19b0ee9ae9972f6b8
 
-    // const [weather, setWeather] = useState({});
+    const [weather, setWeather] = useState({});
+    const [city, setCity] = useState('')
 
-    // useEffect(() => {
-    //     fetchWeatherData();
-    // }, [place]);
+    useEffect(() => {
+        fetchWeatherData();
+    }, [lat,lng]);
 
-    // const fetchWeatherData = () => {
-    //     console.log("Searching weather for:", place);
-    //     fetch(`${api.base}weather?q=${place}&units=metric&APPID=${api.key}`)
-    //         .then(res => res.json())
-    //         .then(result => {
-    //             setWeather(result);
-    //         })
-    //         .catch(error => {
-    //             console.error("Error fetching weather data:", error);
-    //         });
-    // }
+    console.log('Weather get lat :', lat)
+    console.log('Weather get lng :', lng)
 
-    const [weather, setWeather] = useState({
-        "coord": {
-            "lon": 100.5167,
-            "lat": 13.75
-        },
-        "weather": [
-            {
-                "id": 800,
-                "main": "Clear",
-                "description": "clear sky",
-                "icon": "01d"
-            }
-        ],
-        "base": "stations",
-        "main": {
-            "temp": 34.44,
-            "feels_like": 41.44,
-            "temp_min": 33.28,
-            "temp_max": 39.39,
-            "pressure": 1009,
-            "humidity": 57,
-            "sea_level": 1009,
-            "grnd_level": 1008
-        },
-        "visibility": 10000,
-        "wind": {
-            "speed": 5.34,
-            "deg": 178,
-            "gust": 4.49
-        },
-        "clouds": {
-            "all": 3
-        },
-        "dt": 1710745025,
-        "sys": {
-            "type": 2,
-            "id": 2032756,
-            "country": "TH",
-            "sunrise": 1710717807,
-            "sunset": 1710761313
-        },
-        "timezone": 25200,
-        "id": 1609350,
-        "name": "Bangkok",
-        "cod": 200
-    });
+    const fetchWeatherData = () => {
+        fetch(`${api.base}lat=${lat}&lon=${lng}&units=metric&APPID=${api.key}`)
+            .then(res => res.json())
+            .then(result => {
+                setWeather(result.list[38]);
+                setCity(result.city.name)
+            })
+            .catch(error => {
+                console.error("Error fetching weather data:", error);
+            });
+    }
+
+    // console.log('weather : ',weather)
 
     return (
         <div className="weatherReport">
@@ -87,10 +48,10 @@ function WeatherAPI({place}){
                         <div>
                             <div className="WeatherPlace">
                                 <FontAwesomeIcon icon={faLocationDot} size="lg" style={{color : 'var(--color-red)'}}/>
-                                <h2>{place}</h2>
+                                <h2>{city}</h2>
                             </div>
                             <h1>{Math.round(weather.main.temp)} °C</h1>
-                            <p>วันที่ 23 มี.ค. 2567</p>
+                            <p>{formatThaiDate(weather.dt_txt)}</p>
                         </div>
                         <div>
                             <p>Weather : {weather.weather[0].main}</p>
@@ -114,6 +75,8 @@ function WeatherIcon({description}){
             case 'few clouds':
                 return '/public/icons/Partly-cloudy.png';
             case 'scattered clouds':
+            case 'clouds':
+            case 'overcast clouds':
             case 'broken clouds':
                 return '/public/icons/Cloudy.png';
             case 'shower rain':
