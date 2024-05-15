@@ -16,24 +16,24 @@ function WeatherAPI({lat, lng}){
     const [weather, setWeather] = useState({});
     const [city, setCity] = useState('')
 
-    // useEffect(() => {
-    //     fetchWeatherData();
-    // }, [lat,lng]);
+    useEffect(() => {
+        fetchWeatherData();
+    }, [lat,lng]);
 
-    // console.log('Weather get lat :', lat)
-    // console.log('Weather get lng :', lng)
+    console.log('Weather get lat :', lat)
+    console.log('Weather get lng :', lng)
 
-    // const fetchWeatherData = () => {
-    //     fetch(`${api.base}lat=${lat}&lon=${lng}&units=metric&APPID=${api.key}`)
-    //         .then(res => res.json())
-    //         .then(result => {
-    //             setWeather(result.list[1]);
-    //             setCity(result.city.name)
-    //         })
-    //         .catch(error => {
-    //             console.error("Error fetching weather data:", error);
-    //         });
-    // }
+    const fetchWeatherData = () => {
+        fetch(`${api.base}lat=${lat}&lon=${lng}&units=metric&APPID=${api.key}`)
+            .then(res => res.json())
+            .then(result => {
+                setWeather(result.list[38]);
+                setCity(result.city.name)
+            })
+            .catch(error => {
+                console.error("Error fetching weather data:", error);
+            });
+    }
 
     // console.log('weather : ',weather)
 
