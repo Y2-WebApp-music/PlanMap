@@ -29,13 +29,21 @@ function Mainpage(){
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async user => {
             if (user) {
-                setUserInformation({
-                    uid : user.uid,
-                    username: user.displayName,
-                    email: user.email,
-                    userPhoto: user.photoURL
-                });
-
+                if (user.photoURL === null){
+                    setUserInformation({
+                        uid : user.uid,
+                        username: user.displayName,
+                        email: user.email,
+                        userPhoto: '/public/images/user.png'
+                    });
+                } else {
+                    setUserInformation({
+                        uid : user.uid,
+                        username: user.displayName,
+                        email: user.email,
+                        userPhoto: user.photoURL
+                    });
+                }
                 let retryCount = 0;
                 const maxRetries = 3;
                 const fetchPlan = async () => {
@@ -119,7 +127,7 @@ function Mainpage(){
             <div className="mainPage">
                     <>
                         <div className="sideBar">
-                            { userInformation.userPhoto != null?(
+                            { userInformation.username != null?(
                                 <div className="personalInfo">
                                     <img src={userInformation.userPhoto} alt="Profile" />
                                     <h4>{userInformation.username}</h4>
