@@ -70,10 +70,10 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
 
                 autocomplete.addListener("place_changed", () => {
                     setDetail(false)
-                    console.log(detail)
                     marker.setVisible(false);
                     console.log(">>>> autocomplete <<<<")
                     const place = autocomplete.getPlace();
+                    console.log('search place:',place)
 
                     if (!place.geometry || !place.geometry.location) {
                         window.alert("No details available for input: '" + place.name + "'");
@@ -104,9 +104,9 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
 
                 Directions({map, filteredPathway, setDistance, setDuration})
                 // Near by search Here
-                let places;
                 let markers = [];
                 if (selectedFil != null) {
+                    let places;
                     const handleMapDrag = () => {
                         let center = map.getCenter();
                         const search = {
@@ -117,25 +117,45 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                         };
                         places = new google.maps.places.PlacesService(map);
                         places.nearbySearch(search, (results, status, pagination) => {
-                            let filterRe=[]
-                            let filterPhoto=[]
+                            let filterRe = [];
+                            let filterPhoto = [];
                             if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-                                clearMarkers()
-                                for (let i = 0; i < results.length; i++) {
-                                    if (results[i].photos){
-                                        markers[i] = new google.maps.Marker({
-                                            map,
-                                            anchorPoint: new google.maps.Point(0, -29),
-                                            position:results[i].geometry.location,
+                                clearMarkers();
+                                let promises = results.map(result => {
+                                    return new Promise((resolve, reject) => {
+                                        let request = {
+                                            placeId: result.place_id,
+                                            fields: ['name', 'formatted_address', 'geometry', 'rating', 'photos', 'opening_hours', 'reviews', 'formatted_phone_number', 'website','types','user_ratings_total'],
+                                        };
+                                        places.getDetails(request, (place, status) => {
+                                            if (status === google.maps.places.PlacesServiceStatus.OK && place.photos) {
+                                                let thumbnailPlace = place.photos[0].getUrl({ maxWidth: 1000 });
+                                                let marker = new google.maps.Marker({
+                                                    map,
+                                                    anchorPoint: new google.maps.Point(0, -29),
+                                                    position: place.geometry.location,
+                                                });
+                                                marker.placeResult = place;
+                                                markers.push(marker);
+                                                resolve({ place, thumbnailPlace });
+                                            } else {
+                                                resolve(null);
+                                            }
                                         });
-                                        markers[i].placeResult = results[i];
-                                        let thumbnailPlace = results[i].photos[0].getUrl({maxWidth:1000})
-                                        filterPhoto = [...filterPhoto,thumbnailPlace]
-                                        filterRe = [...filterRe,results[i]]
-                                    }
-                                }
-                                setNearbyPlace(filterRe)
-                                setNearbyPhoto(filterPhoto)
+                                    });
+                                });
+                                Promise.all(promises).then(results => {
+                                    results.forEach(result => {
+                                        if (result) {
+                                            filterRe.push(result.place);
+                                            filterPhoto.push(result.thumbnailPlace);
+                                        }
+                                    });
+                                    setNearbyPlace(filterRe);
+                                    setNearbyPhoto(filterPhoto);
+                                }).catch(error => {
+                                    console.error("Error fetching place details:", error);
+                                });
                             }
                         });
                     };
@@ -159,47 +179,14 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
         });
     }, [filteredPathway, selectedFil]);
 
-    const photoTest ='https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJYECdg62FdzOqPPgRI6fkg6vvTHwjNch8tilBtMLoSOik4koYowvdwcmCRUagGZW1saPQdnPkvODdC26q9VLlOkAtPB5BBjxEirCTm4onR5vri2L7RpwLd0ZHOPWciaY79WBDMUZUT5-zXmIS7pm3tYh5F1GdiORUZcJ1B_J7qiQzQe&3u1000&5m1&2e1&callback=none&r_url=http%3A%2F%2Flocalhost%3A5173%2FcreatePlan&key=AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE&token=47904'
-
-    useEffect(() => {
-        if (nearbyPlace.length != 0) {
-            const placeListsScroll = document.getElementById("horizon-wheel");
-            let isDragging = false;
-            let startPosition = 0;
-            let startScrollLeft = 0;
-
-            placeListsScroll.addEventListener("wheel", function (e) {
-                if (e.deltaY > 0) {
-                    placeListsScroll.scrollLeft += 100;
-                    e.preventDefault();
-                } else {
-                    placeListsScroll.scrollLeft -= 100;
-                    e.preventDefault();
-                }
-            });
-
-            placeListsScroll.addEventListener("mousedown", function(event) {
-                isDragging = true;
-                startPosition = event.clientX;
-                startScrollLeft = placeListsScroll.scrollLeft;
-                document.body.style.userSelect = "none";
-            });
-
-            document.addEventListener("mousemove", function(event) {
-                if (isDragging) {
-                    const deltaX = event.clientX - startPosition;
-                    placeListsScroll.scrollLeft = startScrollLeft - deltaX;
-                }
-            });
-
-            document.addEventListener("mouseup", function() {
-                isDragging = false;
-            });
-        } else { return;}
-    }, [nearbyPlace]);
-
     const ClosePlaceList = () => {
         setSelectedFil(null)
+    };
+
+    const clickMoreInfo = (placePin, placePhoto) => {
+        setPlacePin(placePin);
+        setPlacePhoto(placePhoto);
+        setDetail(true);
     };
 
     return (
@@ -231,7 +218,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                     <div className='placeList-scroll' id='horizon-wheel'>
                         <div className='placeList-contain-all'>
                             {nearbyPlace.map((item,index) =>(
-                                <PlaceList key={index} placePin={item} placePhoto={nearbyPhoto[index]} pathway={pathway} setPathway={setPathway} setListLength={setListLength} ListLength={ListLength}/>
+                                <PlaceList key={index} placePin={item} placePhoto={nearbyPhoto[index]} pathway={pathway} setPathway={setPathway} setListLength={setListLength} ListLength={ListLength} onSelectPlace={clickMoreInfo}/>
                             ))}
                         </div>
                     </div>

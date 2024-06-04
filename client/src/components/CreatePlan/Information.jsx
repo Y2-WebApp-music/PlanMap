@@ -7,8 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export function Information({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
     const placeName = placePin?.name || "Unknown Place";
-    let reviews = placePin.reviews
-    let openTimes = placePin.opening_hours.weekday_text
+    let reviews = placePin.reviews ?? "Don't have information"
+    let openTimes = placePin.opening_hours?.weekday_text ?? "Don't have information";
+
 
     let tabs = [
         {name: "ภาพรวม", content:
@@ -28,17 +29,25 @@ export function Information({placePin, placePhoto, setDetail, marker, pathway, s
                 <div className='AllInformation-detail'>
                     <FontAwesomeIcon icon={faClock} size="lg" id="faAllInformation" style={{ alignSelf: 'start' }}/>
                     <div>
-                        {openTimes.map((time, index) => (
-                            <p key={index}>{time}</p>
-                        ))}
+                        {Array.isArray(openTimes) ? (
+                            openTimes.map((time, index) => (
+                                <p key={index}>{time}</p>
+                            ))
+                        ) : (
+                            <p>{openTimes}</p>
+                        )}
                     </div>
                 </div>
             </div>},
         {name : "รีวิว", content:
             <div className='Review-contain'>
-                {reviews.map((review, index)=>(
-                    <Review key={index} name={review.author_name} url={review.profile_photo_url} rate={review.rating} text={review.text} time={review.relative_time_description}/>
-                ))}
+                {Array.isArray(reviews) ? (
+                    reviews.map((review, index)=>(
+                        <Review key={index} name={review.author_name} url={review.profile_photo_url} rate={review.rating} text={review.text} time={review.relative_time_description}/>
+                    ))
+                ) : (
+                    <p>{reviews}</p>
+                )}
             </div>}
         ]
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
@@ -129,7 +138,7 @@ export function Information({placePin, placePhoto, setDetail, marker, pathway, s
 
 
 
-export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLength, ListLength}){
+export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLength, ListLength, onSelectPlace}){
     const placeName = placePin?.name || "Unknown Place";
     const rating = placePin.rating || 0;
     const stars = [];
@@ -165,7 +174,7 @@ export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLen
             <div className='placeList-contain'>
                 <div className='contain-headInfo'>
                     <p className='InformationName'>{placeName}</p>
-                    <FontAwesomeIcon icon={faInfo} size="xl" id="faInfo"/>
+                    <FontAwesomeIcon icon={faInfo} onClick={()=>onSelectPlace(placePin, placePhoto)} size="xl" id="faInfo"/>
                 </div>
                 <div className='placeList-Information'>
                     <span className='placeRate'>
