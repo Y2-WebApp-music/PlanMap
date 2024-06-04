@@ -14,7 +14,8 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
     const [detail, setDetail] = useState(false)
     const [marker, setMarker] = useState(null)
     const [selectedFil, setSelectedFil] = useState(null)
-    const [nearbyPlace, setNearbyPlace] = useState(null)
+    const [nearbyPlace, setNearbyPlace] = useState([])
+    const [nearbyPhoto, setNearbyPhoto] = useState([])
 
     const handleFilterClick = (category) => {
         setSelectedFil(category === selectedFil ? null : category);
@@ -114,22 +115,28 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                             types: [selectedFil],
                             rating: 4,
                         };
-                        console.log('search is => ',search)
                         places = new google.maps.places.PlacesService(map);
                         places.nearbySearch(search, (results, status, pagination) => {
+                            let filterRe=[]
+                            let filterPhoto=[]
                             if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                                 clearMarkers()
                                 for (let i = 0; i < results.length; i++) {
-                                    markers[i] = new google.maps.Marker({
-                                        map,
-                                        anchorPoint: new google.maps.Point(0, -29),
-                                        position:results[i].geometry.location,
-                                    });
-                                    markers[i].placeResult = results[i];
+                                    if (results[i].photos){
+                                        markers[i] = new google.maps.Marker({
+                                            map,
+                                            anchorPoint: new google.maps.Point(0, -29),
+                                            position:results[i].geometry.location,
+                                        });
+                                        markers[i].placeResult = results[i];
+                                        let thumbnailPlace = results[i].photos[0].getUrl({maxWidth:1000})
+                                        filterPhoto = [...filterPhoto,thumbnailPlace]
+                                        filterRe = [...filterRe,results[i]]
+                                    }
                                 }
+                                setNearbyPlace(filterRe)
+                                setNearbyPhoto(filterPhoto)
                             }
-                            setNearbyPlace(results)
-                            console.log("results of NearBySearch is ==> ",results)
                         });
                     };
                     map.addListener('dragend', handleMapDrag);
@@ -152,10 +159,10 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
         });
     }, [filteredPathway, selectedFil]);
 
-    // const photoTest ='https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJYECdg62FdzOqPPgRI6fkg6vvTHwjNch8tilBtMLoSOik4koYowvdwcmCRUagGZW1saPQdnPkvODdC26q9VLlOkAtPB5BBjxEirCTm4onR5vri2L7RpwLd0ZHOPWciaY79WBDMUZUT5-zXmIS7pm3tYh5F1GdiORUZcJ1B_J7qiQzQe&3u1000&5m1&2e1&callback=none&r_url=http%3A%2F%2Flocalhost%3A5173%2FcreatePlan&key=AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE&token=47904'
+    const photoTest ='https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJYECdg62FdzOqPPgRI6fkg6vvTHwjNch8tilBtMLoSOik4koYowvdwcmCRUagGZW1saPQdnPkvODdC26q9VLlOkAtPB5BBjxEirCTm4onR5vri2L7RpwLd0ZHOPWciaY79WBDMUZUT5-zXmIS7pm3tYh5F1GdiORUZcJ1B_J7qiQzQe&3u1000&5m1&2e1&callback=none&r_url=http%3A%2F%2Flocalhost%3A5173%2FcreatePlan&key=AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE&token=47904'
 
     useEffect(() => {
-        if (nearbyPlace != null) {
+        if (nearbyPlace.length != 0) {
             const placeListsScroll = document.getElementById("horizon-wheel");
             let isDragging = false;
             let startPosition = 0;
@@ -218,13 +225,13 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                     <div className='bg-Information-pop'></div>
                 </>
             )}
-            {nearbyPlace != null && selectedFil != null ?  (
+            {nearbyPlace.length != 0 && selectedFil != null ?  (
                 <>
                     <button className='close-placeList' onClick={ClosePlaceList}><FontAwesomeIcon icon={faXmark} size="sm" id="faXmark"/> <p>ปิดหน้าต่างนี้</p> </button>
                     <div className='placeList-scroll' id='horizon-wheel'>
                         <div className='placeList-contain-all'>
                             {nearbyPlace.map((item,index) =>(
-                                <PlaceList key={index} placePin={item} placePhoto={photoTest} pathway={pathway} setPathway={setPathway} setListLength={setListLength} ListLength={ListLength}/>
+                                <PlaceList key={index} placePin={item} placePhoto={nearbyPhoto[index]} pathway={pathway} setPathway={setPathway} setListLength={setListLength} ListLength={ListLength}/>
                             ))}
                         </div>
                     </div>
