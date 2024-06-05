@@ -18,10 +18,8 @@ function WeatherAPI({lat, lng}){
 
     useEffect(() => {
         fetchWeatherData();
+        console.log('Weather get lat:', lat,' lng:',lng)
     }, [lat,lng]);
-
-    console.log('Weather get lat :', lat)
-    console.log('Weather get lng :', lng)
 
     const fetchWeatherData = () => {
         fetch(`${api.base}lat=${lat}&lon=${lng}&units=metric&APPID=${api.key}`)

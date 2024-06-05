@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '/src/global.css';
 import './map.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faPlus, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock, faInfo } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faPlus, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock } from '@fortawesome/free-solid-svg-icons'
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Information({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
     const placeName = placePin?.name || "Unknown Place";
-    let reviews = placePin.reviews
-    let openTimes = placePin.opening_hours.weekday_text
-
+    let reviews = placePin.reviews ?? "Don't have information"
+    let openTimes = placePin.opening_hours?.weekday_text ?? "Don't have information";
     let tabs = [
         {name: "ภาพรวม", content:
             <div className='AllInformation-contain'>
@@ -28,17 +27,25 @@ export function Information({placePin, placePhoto, setDetail, marker, pathway, s
                 <div className='AllInformation-detail'>
                     <FontAwesomeIcon icon={faClock} size="lg" id="faAllInformation" style={{ alignSelf: 'start' }}/>
                     <div>
-                        {openTimes.map((time, index) => (
-                            <p key={index}>{time}</p>
-                        ))}
+                        {Array.isArray(openTimes) ? (
+                            openTimes.map((time, index) => (
+                                <p key={index}>{time}</p>
+                            ))
+                        ) : (
+                            <p>{openTimes}</p>
+                        )}
                     </div>
                 </div>
             </div>},
         {name : "รีวิว", content:
             <div className='Review-contain'>
-                {reviews.map((review, index)=>(
-                    <Review key={index} name={review.author_name} url={review.profile_photo_url} rate={review.rating} text={review.text} time={review.relative_time_description}/>
-                ))}
+                {Array.isArray(reviews) ? (
+                    reviews.map((review, index)=>(
+                        <Review key={index} name={review.author_name} url={review.profile_photo_url} rate={review.rating} text={review.text} time={review.relative_time_description}/>
+                    ))
+                ) : (
+                    <p>{reviews}</p>
+                )}
             </div>}
         ]
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
@@ -122,64 +129,6 @@ export function Information({placePin, placePhoto, setDetail, marker, pathway, s
                     <FontAwesomeIcon icon={faPlus} size="lg" id="faPlus"/>
                     <p>เพิ่มสถานที่นี้</p>
                 </button>
-            </div>
-        </div>
-    </>)
-}
-
-
-
-export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLength, ListLength}){
-    const placeName = placePin?.name || "Unknown Place";
-    const rating = placePin.rating || 0;
-    const stars = [];
-    const integerPart = Math.floor(rating);
-    const fractionalPart = rating - integerPart;
-
-    for (let i = 0; i < integerPart; i++) {
-    stars.push(<FontAwesomeIcon key={i} icon={faStar} size="sm" id="faStar"/>);
-    }
-
-    if (fractionalPart >= 0.25 && fractionalPart <= 0.75) {
-    stars.push(<FontAwesomeIcon key="half" icon={faStarHalf} size="sm" id="faStar"/>);
-    }
-
-    const remainingStars = 5 - stars.length;
-    for (let i = 0; i < remainingStars; i++) {
-    stars.push(<FontAwesomeIcon key={`empty${i}`} icon={faStar} size="sm" id="faStar" style={{ color: 'transparent' }} />);
-    }
-
-    const addPathDestination = () => {
-        const newId = ListLength + 1;
-        const newPoint = { id: newId, displayName: placeName, lat: placePin.geometry.location.lat(), lng: placePin.geometry.location.lng() };
-        setPathway([...pathway, newPoint]);
-        setListLength(newId)
-        handleClose()
-    };
-
-    return(<>
-        <div className='placeList'>
-            <div className='img-contain'>
-                <img src={placePhoto} alt="" className='Information-img' id='imgNotDrag'/>
-            </div>
-            <div className='placeList-contain'>
-                <div className='contain-headInfo'>
-                    <p className='InformationName'>{placeName}</p>
-                    <FontAwesomeIcon icon={faInfo} size="xl" id="faInfo"/>
-                </div>
-                <div className='placeList-Information'>
-                    <span className='placeRate'>
-                        {rating}
-                        {stars}
-                        <p className='placeList-placeType'>{placePin.user_ratings_total} คน มีส่วนร่วม</p>
-                    </span>
-                    <div className='placeList-AddPlaceInfo-contain'>
-                        <button className='placeList-AddPlaceInfo' onClick={addPathDestination}>
-                            <FontAwesomeIcon icon={faPlus} size="lg" id="faPlus"/>
-                            <p>เพิ่มสถานที่นี้</p>
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </>)

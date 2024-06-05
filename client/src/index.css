@@ -22,3 +22,8 @@ body {
 button{
   font-family: Anuphan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
+  button:focus,
+button:focus-visible {
+  outline: none;
+  box-shadow: none;
+}

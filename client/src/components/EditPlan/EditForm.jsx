@@ -19,7 +19,6 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance, setList
             Route: pathway
         }
     )
-    console.log('currentPlan._id',currentPlan._id)
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import '/src/global.css';
 import './map.css';
-import { Directions } from './DirectionSevice';
+import { Directions } from './MapService/DirectionSevice';
 import { Loader } from "@googlemaps/js-api-loader"
 import {Information, PlaceList} from './Information';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,9 +12,8 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
     const [placePin, setPlacePin] = useState([])
     const [placePhoto, setPlacePhoto] = useState(null)
     const [detail, setDetail] = useState(false)
-    const [marker, setMarker] = useState(null)
     const [selectedFil, setSelectedFil] = useState(null)
-    const [nearbyPlace, setNearbyPlace] = useState(null)
+    const [nearbyPlace, setNearbyPlace] = useState([])
     const mapRef = useRef(null);
 
     const handleFilterClick = (category) => {
@@ -26,19 +25,16 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
     },[pathway])
 
     const loader = new Loader({
-        apiKey: "AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE",
+        apiKey: "AIzaSyC7UkiV3QbtcQdklInc_osWD0arPm8cQVA",
         version: "weekly",
         language: "th",
     });
 
     useEffect(() => {
-        const inputSe = document.getElementById("googleSearch");
-            inputSe.addEventListener("click", () => {
-            inputSe.select();
-        });
         loader.load()
         .then(maps => {
             let map;
+            let activeMarker = null;
 
             async function initMap( {mapRef} ) {
                 const { Map } = await google.maps.importLibrary("maps");
@@ -52,145 +48,45 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                     mapTypeControl: false,
                     disableDefaultUI: true,
                 });
-
-                const trafficLayer = new google.maps.TrafficLayer();
-                trafficLayer.setMap(map);
-
-                const input = document.getElementById("googleSearch");
-                const options = {
-                    strictBounds: false,
-                };
-                const autocomplete = new google.maps.places.Autocomplete(input, options);
-                autocomplete.bindTo("bounds", map);
-
-                const marker = new google.maps.Marker({
-                    map,
-                    anchorPoint: new google.maps.Point(0, -29),
+                map.addListener("click", (event) => {
+                    if (activeMarker) {
+                        activeMarker.setMap(null);
+                    }
+                    addMarker(event.latLng, map);
                 });
-
-                autocomplete.addListener("place_changed", () => {
-                    setDetail(false)
-                    console.log(detail)
-                    marker.setVisible(false);
-                    console.log(">>>> autocomplete <<<<")
-                    const place = autocomplete.getPlace();
-
-                    if (!place.geometry || !place.geometry.location) {
-                        window.alert("No details available for input: '" + place.name + "'");
-                        return;
-                    }
-                    marker.setPosition(place.geometry.location);
-                    marker.setVisible(true);
-                    marker.setAnimation(google.maps.Animation.BOUNCE);
-                    setTimeout(() => {
-                        marker.setAnimation(null);
-                    }, 700);
-                    setMarker(marker)
-
-                    const photoUrl = place.photos[0].getUrl({maxWidth:1000})
-                    const passPlace = place;
-                    if (place.geometry.viewport) {
-                        map.fitBounds(place.geometry.viewport);
-                    } else {
-                        map.setCenter(place.geometry.location);
-                        map.setZoom(17);
-                    }
-
-                    console.log('passPlace ==> ',passPlace)
-                    setPlacePin(passPlace)
-                    setPlacePhoto(photoUrl)
-                    setDetail(true)
-                });
-
-                Directions({map, filteredPathway, setDistance, setDuration})
-                // Near by search Here
-                let places;
-                let markers = [];
-                if (selectedFil != null) {
-                    const handleMapDrag = () => {
-                        let center = map.getCenter();
-                        const search = {
-                            location: center ,
-                            radius: 10000,
-                            types: [selectedFil],
-                            rating: 4,
-                        };
-                        console.log('search is => ',search)
-                        places = new google.maps.places.PlacesService(map);
-                        places.nearbySearch(search, (results, status, pagination) => {
-                            if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-                                clearMarkers()
-                                for (let i = 0; i < results.length; i++) {
-                                    markers[i] = new google.maps.Marker({
-                                        map,
-                                        anchorPoint: new google.maps.Point(0, -29),
-                                        position:results[i].geometry.location,
-                                    });
-                                    markers[i].placeResult = results[i];
-                                }
-                            }
-                            setNearbyPlace(results)
-                            console.log("results of NearBySearch is ==> ",results)
-                        });
-                    };
-                    map.addListener('dragend', handleMapDrag);
-                } else {
-                    return;
-                }
-                function clearMarkers() {
-                    for (let i = 0; i < markers.length; i++) {
-                        if (markers[i]) {
-                            markers[i].setMap(null);
-                        }
-                    }
-                    markers = [];
-                }
             }
             initMap(mapRef);
+            function addMarker(location, map) {
+                activeMarker = new google.maps.Marker({
+                    map: map,
+                });
+                activeMarker.setVisible(false);
+                activeMarker.setPosition(location);
+                activeMarker.setVisible(true);
+                getPlaceDetails(location, map);
+            }
+            function getPlaceDetails(location, map) {
+                const service = new google.maps.places.PlacesService(map);
+                service.nearbySearch({
+                    location: location,
+                    radius: 20,
+                }, (results, status) => {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        const place = results[0];
+                        // for (let i = 0; i < results.length; i++) {
+                        //     addMarker(results[i].geometry.location,map)
+                        // }
+                        console.log("Place details:", results);
+                    } else {
+                        console.error("Error fetching place details:", status);
+                    }
+                });
+            }
         })
         .catch(error => {
             console.error("Error loading Google Maps API:", error);
         });
     }, [filteredPathway, selectedFil]);
-
-    const photoTest ='https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJYECdg62FdzOqPPgRI6fkg6vvTHwjNch8tilBtMLoSOik4koYowvdwcmCRUagGZW1saPQdnPkvODdC26q9VLlOkAtPB5BBjxEirCTm4onR5vri2L7RpwLd0ZHOPWciaY79WBDMUZUT5-zXmIS7pm3tYh5F1GdiORUZcJ1B_J7qiQzQe&3u1000&5m1&2e1&callback=none&r_url=http%3A%2F%2Flocalhost%3A5173%2FcreatePlan&key=AIzaSyDP0EreKWtxm9UVmjd9APR5RsKTqGs_JBE&token=47904'
-
-    useEffect(() => {
-        if (nearbyPlace != null) {
-            const placeListsScroll = document.getElementById("horizon-wheel");
-            let isDragging = false;
-            let startPosition = 0;
-            let startScrollLeft = 0;
-
-            placeListsScroll.addEventListener("wheel", function (e) {
-                if (e.deltaY > 0) {
-                    placeListsScroll.scrollLeft += 100;
-                    e.preventDefault();
-                } else {
-                    placeListsScroll.scrollLeft -= 100;
-                    e.preventDefault();
-                }
-            });
-
-            placeListsScroll.addEventListener("mousedown", function(event) {
-                isDragging = true;
-                startPosition = event.clientX;
-                startScrollLeft = placeListsScroll.scrollLeft;
-                document.body.style.userSelect = "none";
-            });
-
-            document.addEventListener("mousemove", function(event) {
-                if (isDragging) {
-                    const deltaX = event.clientX - startPosition;
-                    placeListsScroll.scrollLeft = startScrollLeft - deltaX;
-                }
-            });
-
-            document.addEventListener("mouseup", function() {
-                isDragging = false;
-            });
-        } else { return;}
-    }, []);
 
     return (
         <div className="Map-container">

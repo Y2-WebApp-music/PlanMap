@@ -13,8 +13,6 @@ function ComingPlan({comingPlan, ListLength, route }){
     const navigate = useNavigate()
     const start = formatThaiDate(comingPlan.StartDate);
     const end = formatThaiDate(comingPlan.EndDate);
-    console.log('comingPlan DATA : ',comingPlan.Route[0].lat)
-    console.log('comingPlan DATA : ',comingPlan.Route[0].lng)
     return(
         <div className="NowPlan">
             <div className="NowPlan-title"> <h2>{comingPlan.title}</h2> </div>

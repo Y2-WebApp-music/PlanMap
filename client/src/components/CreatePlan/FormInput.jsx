@@ -53,29 +53,33 @@ function FormInput({pathway, setPathway, duration, distance, setListLength, List
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
-        try {
-            await fetch(`http://localhost:3000/addPlan?uid=${userId}&document=${formData}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            }).then (
-                console.log(" ===> Document added"),
-                setFormData({
-                    title: '',
-                    StartDate: '',
-                    EndDate: '',
-                    Addition: '',
-                    uid: null,
-                    Route: [],
-                    CreateAt : new Date()
-                }),
-                navigate("/mainpage")
-            )
-        } catch (error) {
-            console.error("Error send post:", error);
-            throw error;
+        if (formData.title == '' || formData.StartDate == ''|| formData.EndDate == ''|| formData.Route == [] ){
+            window.alert(' Please Done in blank input ')
+        } else {
+            try {
+                await fetch(`http://localhost:3000/addPlan?uid=${userId}&document=${formData}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                }).then (
+                    console.log(" ===> Document added"),
+                    setFormData({
+                        title: '',
+                        StartDate: '',
+                        EndDate: '',
+                        Addition: '',
+                        uid: null,
+                        Route: [],
+                        CreateAt : new Date()
+                    }),
+                    navigate("/mainpage")
+                )
+            } catch (error) {
+                console.error("Error send post:", error);
+                throw error;
+            }
         }
     };
 
