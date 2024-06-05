@@ -24,6 +24,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
         setSelectedFil(category === selectedFil ? null : category);
     };
     useEffect(()=>{
+        console.log('pathway = >',pathway)
         setFilteredPathway(pathway.filter(point => point.lat !== null && point.lng !== null))
         return;
     },[pathway])
@@ -56,7 +57,9 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                 const trafficLayer = new google.maps.TrafficLayer();
                 trafficLayer.setMap(map);
 
-                Autocomplete({map, setMarker, setPlacePin, setPlacePhoto, setDetail})
+                inputSe.addEventListener("click", () => {
+                    Autocomplete({map, setMarker, setPlacePin, setPlacePhoto, setDetail})
+                })
                 Directions({map, filteredPathway, setDistance, setDuration})
                 NearbyPlace({ map, selectedFil, setNearbyPlace, setNearbyPhoto })
             }

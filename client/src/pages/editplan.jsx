@@ -13,13 +13,10 @@ function EditPlan() {
     const [pathway, setPathway] = useState([])
     const [duration,setDuration] = useState(null)
     const [distance,setDistance] = useState(null)
-    console.log('pathway',pathway)
     useEffect(()=>{
         setListLength(pathway.length)
     },[pathway])
     const [ListLength, setListLength] = useState(pathway.length)
-    console.log('currentPlan',currentPlan)
-    console.log('Current ListLength:',ListLength)
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
