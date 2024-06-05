@@ -7,7 +7,7 @@ import FormInput from "../components/CreatePlan/FormInput";
 
 function CreatePlan() {
     const [pathway, setPathway] = useState([
-        { id: 1, displayName: '', lat: null, lng: null }
+        { id: 1, displayName: '', lat: null, lng: null, place_id: null }
     ])
     const [duration,setDuration] = useState(null)
     const [distance,setDistance] = useState(null)

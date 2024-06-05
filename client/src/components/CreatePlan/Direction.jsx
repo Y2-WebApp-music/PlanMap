@@ -16,7 +16,7 @@ async function SearchPlace(id, setPlaceName, pathway, setPathway) {
     const [{ Map }] = await Promise.all([google.maps.importLibrary("places")]);
     const input = document.getElementById(`pathpoint-input-${id}`);
     const autocomplete = new google.maps.places.Autocomplete(input, {
-        fields: ["formatted_address", "geometry", "name"],
+        fields: ["formatted_address", "geometry", "name","place_id"],
         strictBounds: false,
     });
     autocomplete.addListener("place_changed", () => {
@@ -26,8 +26,9 @@ async function SearchPlace(id, setPlaceName, pathway, setPathway) {
             let newLng = place.geometry.location.lng();
             setPlaceName(place.name);
             let updatedPathway = pathway.map(item =>
-                item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng } : item
+                item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng , place_id: place.place_id} : item
             );
+            console.log('updatedPathway ',updatedPathway)
             setPathway(updatedPathway);
         }
     });

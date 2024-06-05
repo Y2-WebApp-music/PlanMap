@@ -13,8 +13,6 @@ function PlanView() {
     const [pathway, setPathway] = useState([])
     const [duration,setDuration] = useState(null)
     const [distance,setDistance] = useState(null)
-    console.log('currentPlan',currentPlan)
-    console.log('pathway',pathway)
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -59,7 +57,6 @@ function PlanView() {
                 :
                 (<PlanSkeleton/>)
                 }
-                {/* <PlanSkeleton/> */}
             </div>
         </>
     )

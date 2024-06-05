@@ -13,7 +13,7 @@ export default function PathList({pathway, setPathway, duration, distance, setLi
 
     const addPathDestination = () => {
         const newId = ListLength + 1;
-        const newPoint = { id: newId, displayName: '', lat: null, lng: null };
+        const newPoint = { id: newId, displayName: '', lat: null, lng: null , place_id: null };
         setPathway([...pathway, newPoint]);
         setListLength(newId)
     };

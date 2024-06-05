@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import '/src/global.css';
-import './map.css';
+// import './map.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faPlus, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock } from '@fortawesome/free-solid-svg-icons'
 import { motion, AnimatePresence } from "framer-motion";
 
-export function DetailCard({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
+export function DetailPlace({placePin, placePhoto, setDetail}){
     const placeName = placePin?.name || "Unknown Place";
     let reviews = placePin.reviews ?? "Don't have information"
     let openTimes = placePin.opening_hours?.weekday_text ?? "Don't have information";
@@ -67,25 +67,12 @@ export function DetailCard({placePin, placePhoto, setDetail, marker, pathway, se
     stars.push(<FontAwesomeIcon key={`empty${i}`} icon={faStar} size="sm" id="faStar" style={{ color: 'transparent' }} />);
     }
 
-    const handleClose = () => {
-        setDetail(false);
-        marker.setVisible(false);
-    };
-
-    const addPathDestination = () => {
-        const newId = ListLength + 1;
-        const newPoint = { id: newId, displayName: placeName, lat: placePin.geometry.location.lat(), lng: placePin.geometry.location.lng(), place_id: placePin.place_id};
-        setPathway([...pathway, newPoint]);
-        setListLength(newId)
-        handleClose()
-    };
-
     return(<>
         <div className='Information'>
             <div className='img-contain'>
                 <img src={placePhoto} alt="" className='Information-img'/>
             </div>
-            <button className='close-Information' onClick={handleClose}>
+            <button className='close-Information' onClick={()=>setDetail(false)}>
                 <FontAwesomeIcon icon={faXmark} size="lg" id="faXmark"/>
                 </button>
             <div className='InformationName-contain'>
@@ -123,12 +110,6 @@ export function DetailCard({placePin, placePhoto, setDetail, marker, pathway, se
                         </AnimatePresence>
                     </main>
                 </div>
-            </div>
-            <div className='AddPlaceInfo-contain'>
-                <button className='AddPlaceInfo' onClick={addPathDestination}>
-                    <FontAwesomeIcon icon={faPlus} size="lg" id="faPlus"/>
-                    <p>เพิ่มสถานที่นี้</p>
-                </button>
             </div>
         </div>
     </>)

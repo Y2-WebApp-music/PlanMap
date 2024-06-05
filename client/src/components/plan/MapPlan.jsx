@@ -3,10 +3,18 @@ import '/src/global.css';
 import '/src/components/GoogleMap/map.css';
 
 import { Loader } from "@googlemaps/js-api-loader"
+import { Directions } from '../GoogleMap/MapService/DirectionSevice';
+import { BusinessDetail } from '../GoogleMap/MapService/BusinessDetail';
+import {PlaceView} from './PlaceView'
+import {DetailPlace} from './DetailPlace'
 
 function MapPlan({pathway, setDuration, setDistance}) {
-    console.log('Map Get Pathway From Parent => ',pathway)
     const [filteredPathway,setFilteredPathway] = useState([])
+    const [placeInfo, setPlaceInfo] = useState([])
+    const [placeInfoPhoto, setPlaceInfoPhoto] = useState([])
+    const [placePin, setPlacePin] = useState([])
+    const [placePhoto, setPlacePhoto] = useState(null)
+    const [detail, setDetail] = useState(false)
     useEffect(()=>{
         setFilteredPathway(pathway.filter(point => point.lat !== null && point.lng !== null))
         return;
@@ -19,16 +27,15 @@ function MapPlan({pathway, setDuration, setDistance}) {
     });
 
     useEffect(() => {
-        console.log(' >>> Map use <<< ')
         if (filteredPathway.length === 0) {
             return;
         }
         loader.load()
         .then(maps => {
             let map;
-
             async function initMap() {
                 const { Map } = await google.maps.importLibrary("maps");
+                const { Place } = await google.maps.importLibrary("places");
 
                 map = new Map(document.getElementById("map"), {
                     center: { lat: 13.7734, lng: 100.5202 },
@@ -38,51 +45,10 @@ function MapPlan({pathway, setDuration, setDistance}) {
                     disableDefaultUI: true,
                 });
                 const trafficLayer = new google.maps.TrafficLayer();
-
                 trafficLayer.setMap(map);
-
-                const directionsService = new google.maps.DirectionsService();
-                const directionsRenderer = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: '#2E6FED',strokeWeight: 6 } });
-                if (filteredPathway.length < 2) {
-                    map.setCenter({ lat: 13.7734, lng: 100.5202 });
-                    return;
-                } else{
-                    const start = { lat: filteredPathway[0].lat, lng: filteredPathway[0].lng };
-                    const end = { lat: filteredPathway[filteredPathway.length - 1].lat, lng: filteredPathway[filteredPathway.length - 1].lng };
-                    const waypoints = [];
-                    console.log('waypoints',start)
-                    console.log('end',end)
-
-                    for (let i = 1; i < filteredPathway.length - 1; i++) {
-                        waypoints.push({
-                        location: new window.google.maps.LatLng(filteredPathway[i].lat, filteredPathway[i].lng),
-                        stopover: true,
-                        });
-                    }
-                    console.log('waypoints',waypoints)
-                    directionsService.route({
-                        origin: new window.google.maps.LatLng(start.lat, start.lng),
-                        destination: new window.google.maps.LatLng(end.lat, end.lng),
-                        waypoints: waypoints,
-                        optimizeWaypoints: true,
-                        travelMode: window.google.maps.TravelMode.DRIVING,
-                        }, (response, status) => {
-                        if (status === 'OK') {
-                            directionsRenderer.setDirections(response);
-                            const route = response.routes[0];
-                            let distance = route.legs.reduce((acc, leg) => acc + leg.distance.value, 0);
-                            let duration = route.legs.reduce((acc, leg) => acc + leg.duration.value, 0);
-                            setDistance(distance/1000)
-                            setDuration(duration/60)
-
-                        } else {
-                        window.alert("Directions request failed due to " + status);
-                        }
-                    });
-                    directionsRenderer.setMap(map);
-                }
+                Directions({map, filteredPathway, setDistance, setDuration})
+                BusinessDetail({ map, filteredPathway, setPlaceInfo, setPlaceInfoPhoto})
             }
-
             initMap();
         })
         .catch(error => {
@@ -90,8 +56,39 @@ function MapPlan({pathway, setDuration, setDistance}) {
         });
     }, [filteredPathway]);
 
+    const clickMoreInfo = (Pin, Photo) => {
+        setPlacePin(Pin);
+        setPlacePhoto(Photo);
+        setDetail(true);
+    };
+
     return (
         <div className="Map-container">
+            {detail && (
+                <>
+                    <DetailPlace
+                        placePin={placePin}
+                        placePhoto={placePhoto}
+                        setDetail={setDetail}
+                    />
+                    <div className='bg-Information-pop'></div>
+                </>
+            )}
+            <div className='placeList-scroll' id='horizon-wheel'>
+                <div className='placeList-contain-all'>
+                    {placeInfo.length != 0? (
+                        placeInfo.map((placeL,index)=>(
+                            <PlaceView
+                                key={index}
+                                place={placeL}
+                                placePhoto={placeInfoPhoto[index]}
+                                onSelectPlace={clickMoreInfo}
+                            />
+                        ))
+                        ) : (<></>)
+                    }
+                </div>
+            </div>
             <div id="map" style={{ height: '100%', width: '100%' }}></div>
         </div>
     );

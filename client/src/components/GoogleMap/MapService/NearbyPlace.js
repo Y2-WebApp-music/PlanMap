@@ -21,7 +21,19 @@ export function NearbyPlace({ map, selectedFil, setNearbyPlace, setNearbyPhoto }
                         return new Promise((resolve, reject) => {
                             let request = {
                                 placeId: result.place_id,
-                                fields: ['name', 'formatted_address', 'geometry', 'rating', 'photos', 'opening_hours', 'reviews', 'formatted_phone_number', 'website','types','user_ratings_total'],
+                                fields: ['name',
+                                        'formatted_address',
+                                        'geometry',
+                                        'rating',
+                                        'photos',
+                                        'opening_hours',
+                                        'reviews',
+                                        'formatted_phone_number',
+                                        'website',
+                                        'types',
+                                        'user_ratings_total',
+                                        'place_id',
+                                    ],
                             };
                             places.getDetails(request, (place, status) => {
                                 if (status === google.maps.places.PlacesServiceStatus.OK && place.photos) {

@@ -11,14 +11,8 @@ function FormInput({currentPlan, pathway, duration, distance}){
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
     const navigate = useNavigate()
-    console.log(currentPlan.StartDate)
     const start = formatThaiDate(currentPlan.StartDate);
     const end = formatThaiDate(currentPlan.EndDate);
-
-    console.log('')
-    console.log('PlanDetail currentPlan ===>',currentPlan)
-    console.log('PlanDetail pathway ===>',pathway)
-    console.log('')
 
     return(
         <>

@@ -1,12 +1,13 @@
 import React from 'react';
 import '/src/global.css';
-import './map.css';
+import '/src/components/GoogleMap/map.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faStar, faStarHalf, faInfo } from '@fortawesome/free-solid-svg-icons'
+import { faStar, faStarHalf, faInfo } from '@fortawesome/free-solid-svg-icons'
 
-export function NearbyList({placePin, placePhoto, pathway, setPathway, setListLength, ListLength, onSelectPlace}){
-    const placeName = placePin?.name || "Unknown Place";
-    const rating = placePin.rating || 0;
+export function PlaceView({place, placePhoto, onSelectPlace}){
+    const placeName = place?.name || "Unknown Place";
+    console.log('====== > PlaceView < ========',placeName)
+    const rating = place.rating || 0;
     const stars = [];
     const integerPart = Math.floor(rating);
     const fractionalPart = rating - integerPart;
@@ -24,12 +25,6 @@ export function NearbyList({placePin, placePhoto, pathway, setPathway, setListLe
     stars.push(<FontAwesomeIcon key={`empty${i}`} icon={faStar} size="sm" id="faStar" style={{ color: 'transparent' }} />);
     }
 
-    const addPathDestination = () => {
-        const newId = ListLength + 1;
-        const newPoint = { id: newId, displayName: placeName, lat: placePin.geometry.location.lat(), lng: placePin.geometry.location.lng(), place_id: placePin.place_id };
-        setPathway([...pathway, newPoint]);
-        setListLength(newId)
-    };
 
     return(<>
         <div className='placeList'>
@@ -39,20 +34,14 @@ export function NearbyList({placePin, placePhoto, pathway, setPathway, setListLe
             <div className='placeList-contain'>
                 <div className='contain-headInfo'>
                     <p className='InformationName'>{placeName}</p>
-                    <FontAwesomeIcon icon={faInfo} onClick={()=>onSelectPlace(placePin, placePhoto)} size="xl" id="faInfo"/>
+                    <FontAwesomeIcon icon={faInfo} onClick={()=>onSelectPlace(place, placePhoto)} size="xl" id="faInfo"/>
                 </div>
                 <div className='placeList-Information'>
                     <span className='placeRate'>
                         {rating}
                         {stars}
-                        <p className='placeList-placeType'>{placePin.user_ratings_total} คน มีส่วนร่วม</p>
+                        <p className='placeList-placeType'>{place.user_ratings_total} คน มีส่วนร่วม</p>
                     </span>
-                    <div className='placeList-AddPlaceInfo-contain'>
-                        <button className='placeList-AddPlaceInfo' onClick={addPathDestination}>
-                            <FontAwesomeIcon icon={faPlus} size="lg" id="faPlus"/>
-                            <p>เพิ่มสถานที่นี้</p>
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
