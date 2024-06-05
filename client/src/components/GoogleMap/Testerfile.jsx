@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
-import '/src/global.css';
-import './map.css';
+import React, { useEffect, useState } from 'react';
+import { faGasPump, faHotel, faMugHot, faUtensils, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Loader } from "@googlemaps/js-api-loader";
+import { DetailCard } from './DetailCard';
+import { NearbyList } from './NearbyList';
+import { Autocomplete } from './MapService/Autocomplete';
 import { Directions } from './MapService/DirectionSevice';
 import { NearbyPlace } from './MapService/NearbyPlace';
-import { Autocomplete } from './MapService/Autocomplete';
-import { Loader } from "@googlemaps/js-api-loader"
-import {Information} from './Information';
-import { PlaceList } from './PlaceList';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faHotel, faUtensils, faGasPump, faMugHot } from '@fortawesome/free-solid-svg-icons'
+import './map.css';
+import '/src/global.css';
 
 function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, ListLength}) {
     const [filteredPathway,setFilteredPathway] = useState([])
@@ -92,7 +92,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
             </div>
             {detail && (
                 <>
-                    <Information
+                    <DetailCard
                         placePin={placePin}
                         placePhoto={placePhoto}
                         setDetail={setDetail}
@@ -111,7 +111,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                     <div className='placeList-scroll' id='horizon-wheel'>
                         <div className='placeList-contain-all'>
                             {nearbyPlace.map((item,index) =>(
-                                <PlaceList
+                                <NearbyList
                                     key={index}
                                     placePin={item}
                                     placePhoto={nearbyPhoto[index]}

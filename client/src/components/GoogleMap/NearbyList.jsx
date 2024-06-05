@@ -4,7 +4,7 @@ import './map.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faStar, faStarHalf, faInfo } from '@fortawesome/free-solid-svg-icons'
 
-export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLength, ListLength, onSelectPlace}){
+export function NearbyList({placePin, placePhoto, pathway, setPathway, setListLength, ListLength, onSelectPlace}){
     const placeName = placePin?.name || "Unknown Place";
     const rating = placePin.rating || 0;
     const stars = [];

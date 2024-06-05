@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faPlus, faStar, faStarHalf, faLocationDot, faPhone, faGlobe, faClock } from '@fortawesome/free-solid-svg-icons'
 import { motion, AnimatePresence } from "framer-motion";
 
-export function Information({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
+export function DetailCard({placePin, placePhoto, setDetail, marker, pathway, setPathway, setListLength, ListLength}){
     const placeName = placePin?.name || "Unknown Place";
     let reviews = placePin.reviews ?? "Don't have information"
     let openTimes = placePin.opening_hours?.weekday_text ?? "Don't have information";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import '../global.css';
 import '../pages/editplan.css'
-import Map from "../components/CreatePlan/Testerfile"
+import Map from "../components/GoogleMap/Testerfile"
 import EditForm from "../components/EditPlan/EditForm";
 import { auth } from "../DB/Firebase-Config";
 import { useParams } from "react-router-dom";

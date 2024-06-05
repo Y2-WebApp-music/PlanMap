@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Reorder } from "framer-motion";
-import { PathPoint, PathDestination } from "../CreatePlan/Direction";
+import { PathPoint, PathDestination } from "./Direction.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import '/src/global.css';

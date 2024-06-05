@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import '/src/global.css';
-import '/src/components/CreatePlan/map.css';
+import '/src/components/GoogleMap/map.css';
 
 import { Loader } from "@googlemaps/js-api-loader"
 

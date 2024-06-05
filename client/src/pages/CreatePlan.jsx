@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import '../global.css';
 import './createplan.css'
-import Map from "../components/CreatePlan/Testerfile"
+import Map from "../components/GoogleMap/Testerfile.jsx"
 import FormInput from "../components/CreatePlan/FormInput";
 
 
