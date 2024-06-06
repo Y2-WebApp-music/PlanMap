@@ -16,7 +16,7 @@ async function SearchPlace(id, setPlaceName, pathway, setPathway) {
     const [{ Map }] = await Promise.all([google.maps.importLibrary("places")]);
     const input = document.getElementById(`pathpoint-input-${id}`);
     const autocomplete = new google.maps.places.Autocomplete(input, {
-        fields: ["formatted_address", "geometry", "name"],
+        fields: ["formatted_address", "geometry", "name","place_id"],
         strictBounds: false,
     });
     autocomplete.addListener("place_changed", () => {
@@ -26,8 +26,9 @@ async function SearchPlace(id, setPlaceName, pathway, setPathway) {
             let newLng = place.geometry.location.lng();
             setPlaceName(place.name);
             let updatedPathway = pathway.map(item =>
-                item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng } : item
+                item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng , place_id: place.place_id} : item
             );
+            console.log('updatedPathway ',updatedPathway)
             setPathway(updatedPathway);
         }
     });
@@ -44,6 +45,11 @@ export function PathPoint({id, displayName, pathway, setPathway, setListLength, 
         const updatedPathway = pathway.filter(item => item.id !== id);
         setPathway(updatedPathway);
         setListLength(ListLength-1)
+    };
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
     };
 
     return(
@@ -63,6 +69,7 @@ export function PathPoint({id, displayName, pathway, setPathway, setListLength, 
                 name="PathPoint"
                 id={`pathpoint-input-${id}`}
                 onChange={(e) => setPlaceName(e.target.value)}
+                onKeyDown={handleKeyDown}
             />
             <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark" onClick={handleDelete}/>
         </div>
@@ -80,6 +87,11 @@ export function PathDestination({id, displayName, pathway, setPathway, setListLe
         setPathway(updatedPathway);
         setListLength(ListLength-1)
     };
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    };
 
     return(
         <div className="Path-Destination" >
@@ -91,6 +103,7 @@ export function PathDestination({id, displayName, pathway, setPathway, setListLe
                 name="PathPoint"
                 id={`pathpoint-input-${id}`}
                 onChange={(e) => setPlaceName(e.target.value)}
+                onKeyDown={handleKeyDown}
             />
             <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark" onClick={handleDelete}/>
         </div>

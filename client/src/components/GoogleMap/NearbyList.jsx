@@ -4,7 +4,7 @@ import './map.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faStar, faStarHalf, faInfo } from '@fortawesome/free-solid-svg-icons'
 
-export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLength, ListLength, onSelectPlace}){
+export function NearbyList({placePin, placePhoto, pathway, setPathway, setListLength, ListLength, onSelectPlace}){
     const placeName = placePin?.name || "Unknown Place";
     const rating = placePin.rating || 0;
     const stars = [];
@@ -26,20 +26,19 @@ export function PlaceList({placePin, placePhoto, pathway, setPathway, setListLen
 
     const addPathDestination = () => {
         const newId = ListLength + 1;
-        const newPoint = { id: newId, displayName: placeName, lat: placePin.geometry.location.lat(), lng: placePin.geometry.location.lng() };
+        const newPoint = { id: newId, displayName: placeName, lat: placePin.geometry.location.lat(), lng: placePin.geometry.location.lng(), place_id: placePin.place_id };
         setPathway([...pathway, newPoint]);
         setListLength(newId)
-        handleClose()
     };
 
     return(<>
-        <div className='placeList'>
+        <div className='placeList non-selectable'>
             <div className='img-contain'>
-                <img src={placePhoto} alt="" className='Information-img' id='imgNotDrag'/>
+                <img src={placePhoto} alt="" className='Information-img' onMouseDown={(e)=>e.preventDefault()}/>
             </div>
-            <div className='placeList-contain'>
+            <div className='placeList-contain '>
                 <div className='contain-headInfo'>
-                    <p className='InformationName'>{placeName}</p>
+                    <p className='InformationName '>{placeName}</p>
                     <FontAwesomeIcon icon={faInfo} onClick={()=>onSelectPlace(placePin, placePhoto)} size="xl" id="faInfo"/>
                 </div>
                 <div className='placeList-Information'>

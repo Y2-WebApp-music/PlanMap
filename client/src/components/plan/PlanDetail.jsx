@@ -11,14 +11,8 @@ function FormInput({currentPlan, pathway, duration, distance}){
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
     const navigate = useNavigate()
-    console.log(currentPlan.StartDate)
     const start = formatThaiDate(currentPlan.StartDate);
     const end = formatThaiDate(currentPlan.EndDate);
-
-    console.log('')
-    console.log('PlanDetail currentPlan ===>',currentPlan)
-    console.log('PlanDetail pathway ===>',pathway)
-    console.log('')
 
     return(
         <>
@@ -62,10 +56,12 @@ function FormInput({currentPlan, pathway, duration, distance}){
                                         ))}
                                 </div>
                             </div>
-                            <div className="addition-view">
-                                <p>บันทึกเพิ่มเติม</p>
-                                <div dangerouslySetInnerHTML={{ __html: `${currentPlan.Addition}`.replace(/\n/g, '<br>') }} id="addition"/>
-                            </div>
+                            {currentPlan.Addition == ''?(<></>):(
+                                <div className="addition-view">
+                                    <p>บันทึกเพิ่มเติม</p>
+                                    <div dangerouslySetInnerHTML={{ __html: `${currentPlan.Addition}`.replace(/\n/g, '<br>') }} id="addition"/>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

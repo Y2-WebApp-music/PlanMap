@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
-import '/src/global.css';
-import './map.css';
+import { faGasPump, faHotel, faMugHot, faUtensils, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Loader } from "@googlemaps/js-api-loader";
+import { DetailCard } from './DetailCard';
+import { NearbyList } from './NearbyList';
+import { Autocomplete } from './MapService/Autocomplete';
 import { Directions } from './MapService/DirectionSevice';
 import { NearbyPlace } from './MapService/NearbyPlace';
-import { Autocomplete } from './MapService/Autocomplete';
-import { Loader } from "@googlemaps/js-api-loader"
-import {Information} from './Information';
-import { PlaceList } from './PlaceList';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faHotel, faUtensils, faGasPump, faMugHot } from '@fortawesome/free-solid-svg-icons'
+import './map.css';
+import '/src/global.css';
 
 function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, ListLength}) {
     const [filteredPathway,setFilteredPathway] = useState([])
@@ -24,6 +24,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
         setSelectedFil(category === selectedFil ? null : category);
     };
     useEffect(()=>{
+        console.log('pathway = >',pathway)
         setFilteredPathway(pathway.filter(point => point.lat !== null && point.lng !== null))
         return;
     },[pathway])
@@ -56,7 +57,9 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                 const trafficLayer = new google.maps.TrafficLayer();
                 trafficLayer.setMap(map);
 
-                Autocomplete({map, setMarker, setPlacePin, setPlacePhoto, setDetail})
+                inputSe.addEventListener("click", () => {
+                    Autocomplete({map, setMarker, setPlacePin, setPlacePhoto, setDetail})
+                })
                 Directions({map, filteredPathway, setDistance, setDuration})
                 NearbyPlace({ map, selectedFil, setNearbyPlace, setNearbyPhoto })
             }
@@ -71,6 +74,33 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
         setPlacePin(placePin);
         setPlacePhoto(placePhoto);
         setDetail(true);
+    };
+
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
+    const scrollRef = useRef(null);
+
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setStartX(e.pageX - scrollRef.current.offsetLeft);
+        setScrollLeft(scrollRef.current.scrollLeft);
+    };
+
+    const handleMouseLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - scrollRef.current.offsetLeft;
+        const walk = (x - startX) * 2;
+        scrollRef.current.scrollLeft = scrollLeft - walk;
     };
 
     return (
@@ -92,7 +122,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
             </div>
             {detail && (
                 <>
-                    <Information
+                    <DetailCard
                         placePin={placePin}
                         placePhoto={placePhoto}
                         setDetail={setDetail}
@@ -108,10 +138,17 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
             {nearbyPlace.length != 0 && selectedFil != null ?  (
                 <>
                     <button className='close-placeList' onClick={()=>setSelectedFil(null)}><FontAwesomeIcon icon={faXmark} size="sm" id="faXmark"/> <p>ปิดหน้าต่างนี้</p> </button>
-                    <div className='placeList-scroll' id='horizon-wheel'>
+                    <div className='placeList-scroll'
+                        ref={scrollRef}
+                        onMouseDown={handleMouseDown}
+                        onMouseLeave={handleMouseLeave}
+                        onMouseUp={handleMouseUp}
+                        onMouseMove={handleMouseMove}
+                        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+                    >
                         <div className='placeList-contain-all'>
                             {nearbyPlace.map((item,index) =>(
-                                <PlaceList
+                                <NearbyList
                                     key={index}
                                     placePin={item}
                                     placePhoto={nearbyPhoto[index]}

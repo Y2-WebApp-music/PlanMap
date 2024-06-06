@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import '../global.css';
 import '../pages/editplan.css'
-import Map from "../components/CreatePlan/Testerfile"
+import Map from "../components/GoogleMap/Testerfile"
 import EditForm from "../components/EditPlan/EditForm";
 import { auth } from "../DB/Firebase-Config";
 import { useParams } from "react-router-dom";
@@ -13,13 +13,10 @@ function EditPlan() {
     const [pathway, setPathway] = useState([])
     const [duration,setDuration] = useState(null)
     const [distance,setDistance] = useState(null)
-    console.log('pathway',pathway)
     useEffect(()=>{
         setListLength(pathway.length)
     },[pathway])
     const [ListLength, setListLength] = useState(pathway.length)
-    console.log('currentPlan',currentPlan)
-    console.log('Current ListLength:',ListLength)
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {

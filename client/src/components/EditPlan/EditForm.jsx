@@ -46,6 +46,12 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance, setList
         });
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
@@ -80,16 +86,15 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance, setList
                 <form className="FormInput" onSubmit={handleSubmit}>
                     <label htmlFor="titlePlan">
                         <p>ชื่อแพลน</p>
-                        <input type="text" name="title" id="titlePlan" placeholder="ชื่อแพลน" value={formData.title} onChange={handleChange}/>
+                        <input type="text" name="title" id="titlePlan" placeholder="ชื่อแพลน" value={formData.title} onChange={handleChange} onKeyDown={handleKeyDown}/>
                     </label>
 
                     <div className="PlanDate">
                         <p>วันที่เดินทาง</p>
                         <div className="calendar-Custom">
-                            <input type="date" id="startDate" name="StartDate" value={formData.StartDate} placeholder="เริ่มการเดินทาง" onChange={handleChange} />
+                            <input type="date" id="startDate" name="StartDate" value={formData.StartDate} placeholder="เริ่มการเดินทาง" onChange={handleChange} onKeyDown={handleKeyDown}/>
                             <p>-</p>
-                            <input type="date" id="endDate" name="EndDate" value={formData.EndDate} placeholder="สิ้นสุดการเดินทาง" onChange={handleChange}
-                            />
+                            <input type="date" id="endDate" name="EndDate" value={formData.EndDate} placeholder="สิ้นสุดการเดินทาง" onChange={handleChange} onKeyDown={handleKeyDown}/>
                         </div>
                     </div>
 

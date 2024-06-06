@@ -12,6 +12,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.non-selectable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 body {
   margin: 0;
   place-items: center;
