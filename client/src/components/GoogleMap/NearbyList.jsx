@@ -32,13 +32,13 @@ export function NearbyList({placePin, placePhoto, pathway, setPathway, setListLe
     };
 
     return(<>
-        <div className='placeList'>
+        <div className='placeList non-selectable'>
             <div className='img-contain'>
-                <img src={placePhoto} alt="" className='Information-img' id='imgNotDrag'/>
+                <img src={placePhoto} alt="" className='Information-img' onMouseDown={(e)=>e.preventDefault()}/>
             </div>
-            <div className='placeList-contain'>
+            <div className='placeList-contain '>
                 <div className='contain-headInfo'>
-                    <p className='InformationName'>{placeName}</p>
+                    <p className='InformationName '>{placeName}</p>
                     <FontAwesomeIcon icon={faInfo} onClick={()=>onSelectPlace(placePin, placePhoto)} size="xl" id="faInfo"/>
                 </div>
                 <div className='placeList-Information'>

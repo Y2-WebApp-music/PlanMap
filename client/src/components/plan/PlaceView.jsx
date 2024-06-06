@@ -27,9 +27,9 @@ export function PlaceView({place, placePhoto, onSelectPlace}){
 
 
     return(<>
-        <div className='placeList'>
+        <div className='placeList non-selectable'>
             <div className='img-contain'>
-                <img src={placePhoto} alt="" className='Information-img' id='imgNotDrag'/>
+                <img src={placePhoto} alt="" className='Information-img' onMouseDown={(e)=>e.preventDefault()}/>
             </div>
             <div className='placeList-contain'>
                 <div className='contain-headInfo'>

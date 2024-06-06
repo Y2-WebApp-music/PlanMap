@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { faGasPump, faHotel, faMugHot, faUtensils, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from "@googlemaps/js-api-loader";
@@ -76,6 +76,33 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
         setDetail(true);
     };
 
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
+    const scrollRef = useRef(null);
+
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setStartX(e.pageX - scrollRef.current.offsetLeft);
+        setScrollLeft(scrollRef.current.scrollLeft);
+    };
+
+    const handleMouseLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - scrollRef.current.offsetLeft;
+        const walk = (x - startX) * 2;
+        scrollRef.current.scrollLeft = scrollLeft - walk;
+    };
+
     return (
         <div className="Map-container">
             <div className="SearchArea">
@@ -111,7 +138,14 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
             {nearbyPlace.length != 0 && selectedFil != null ?  (
                 <>
                     <button className='close-placeList' onClick={()=>setSelectedFil(null)}><FontAwesomeIcon icon={faXmark} size="sm" id="faXmark"/> <p>ปิดหน้าต่างนี้</p> </button>
-                    <div className='placeList-scroll' id='horizon-wheel'>
+                    <div className='placeList-scroll'
+                        ref={scrollRef}
+                        onMouseDown={handleMouseDown}
+                        onMouseLeave={handleMouseLeave}
+                        onMouseUp={handleMouseUp}
+                        onMouseMove={handleMouseMove}
+                        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+                    >
                         <div className='placeList-contain-all'>
                             {nearbyPlace.map((item,index) =>(
                                 <NearbyList

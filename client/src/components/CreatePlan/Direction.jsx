@@ -46,6 +46,11 @@ export function PathPoint({id, displayName, pathway, setPathway, setListLength, 
         setPathway(updatedPathway);
         setListLength(ListLength-1)
     };
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    };
 
     return(
         <div className="Path-Point" >
@@ -64,6 +69,7 @@ export function PathPoint({id, displayName, pathway, setPathway, setListLength, 
                 name="PathPoint"
                 id={`pathpoint-input-${id}`}
                 onChange={(e) => setPlaceName(e.target.value)}
+                onKeyDown={handleKeyDown}
             />
             <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark" onClick={handleDelete}/>
         </div>
@@ -81,6 +87,11 @@ export function PathDestination({id, displayName, pathway, setPathway, setListLe
         setPathway(updatedPathway);
         setListLength(ListLength-1)
     };
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    };
 
     return(
         <div className="Path-Destination" >
@@ -92,6 +103,7 @@ export function PathDestination({id, displayName, pathway, setPathway, setListLe
                 name="PathPoint"
                 id={`pathpoint-input-${id}`}
                 onChange={(e) => setPlaceName(e.target.value)}
+                onKeyDown={handleKeyDown}
             />
             <FontAwesomeIcon icon={faCircleXmark} size="lg" id="faCircleXmark" onClick={handleDelete}/>
         </div>

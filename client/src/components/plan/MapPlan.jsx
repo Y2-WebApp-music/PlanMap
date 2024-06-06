@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import '/src/global.css';
 import '/src/components/GoogleMap/map.css';
 
@@ -61,6 +61,41 @@ function MapPlan({pathway, setDuration, setDistance}) {
         setPlacePhoto(Photo);
         setDetail(true);
     };
+    const [isTranslated, setIsTranslated] = useState(false);
+
+    const handleToggleTranslate = () => {
+        setIsTranslated(!isTranslated);
+    };
+    const containerStyle = {
+        transform: isTranslated ? 'translateY(0)' : 'translateY(28.5vh)',
+        transition: 'transform 0.3s ease-in-out'
+    };
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
+    const scrollRef = useRef(null);
+
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setStartX(e.pageX - scrollRef.current.offsetLeft);
+        setScrollLeft(scrollRef.current.scrollLeft);
+    };
+
+    const handleMouseLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - scrollRef.current.offsetLeft;
+        const walk = (x - startX) * 2;
+        scrollRef.current.scrollLeft = scrollLeft - walk;
+    };
 
     return (
         <div className="Map-container">
@@ -74,19 +109,31 @@ function MapPlan({pathway, setDuration, setDistance}) {
                     <div className='bg-Information-pop'></div>
                 </>
             )}
-            <div className='placeList-scroll' id='horizon-wheel'>
-                <div className='placeList-contain-all'>
-                    {placeInfo.length != 0? (
-                        placeInfo.map((placeL,index)=>(
-                            <PlaceView
-                                key={index}
-                                place={placeL}
-                                placePhoto={placeInfoPhoto[index]}
-                                onSelectPlace={clickMoreInfo}
-                            />
-                        ))
-                        ) : (<></>)
-                    }
+            <div className='SeeDetailOfPlace' style={containerStyle}>
+                <div className='DetailButton'>
+                    <button onClick={handleToggleTranslate}>ดูสถานที่ทั้งหมด</button>
+                </div>
+                <div className='placeInfo-scroll'
+                    ref={scrollRef}
+                    onMouseDown={handleMouseDown}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseUp={handleMouseUp}
+                    onMouseMove={handleMouseMove}
+                    style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+                >
+                    <div className='placeInfo-contain-all'>
+                        {placeInfo.length != 0? (
+                            placeInfo.map((placeL,index)=>(
+                                <PlaceView
+                                    key={index}
+                                    place={placeL}
+                                    placePhoto={placeInfoPhoto[index]}
+                                    onSelectPlace={clickMoreInfo}
+                                />
+                            ))
+                            ) : (<></>)
+                        }
+                    </div>
                 </div>
             </div>
             <div id="map" style={{ height: '100%', width: '100%' }}></div>

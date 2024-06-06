@@ -56,10 +56,12 @@ function FormInput({currentPlan, pathway, duration, distance}){
                                         ))}
                                 </div>
                             </div>
-                            <div className="addition-view">
-                                <p>บันทึกเพิ่มเติม</p>
-                                <div dangerouslySetInnerHTML={{ __html: `${currentPlan.Addition}`.replace(/\n/g, '<br>') }} id="addition"/>
-                            </div>
+                            {currentPlan.Addition == ''?(<></>):(
+                                <div className="addition-view">
+                                    <p>บันทึกเพิ่มเติม</p>
+                                    <div dangerouslySetInnerHTML={{ __html: `${currentPlan.Addition}`.replace(/\n/g, '<br>') }} id="addition"/>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

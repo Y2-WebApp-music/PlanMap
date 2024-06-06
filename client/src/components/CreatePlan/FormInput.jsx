@@ -50,6 +50,12 @@ function FormInput({pathway, setPathway, duration, distance, setListLength, List
         });
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
@@ -90,15 +96,15 @@ function FormInput({pathway, setPathway, duration, distance, setListLength, List
                 <form className="FormInput" onSubmit={handleSubmit}>
                     <label htmlFor="titlePlan">
                         <p>ชื่อแพลน</p>
-                        <input type="text" name="title" id="titlePlan" placeholder="ชื่อแพลน" value={title} onChange={handleChange} />
+                        <input type="text" name="title" id="titlePlan" placeholder="ชื่อแพลน" value={title} onChange={handleChange} onKeyDown={handleKeyDown}/>
                     </label>
 
                     <div className="PlanDate">
                         <p>วันที่เดินทาง</p>
                         <div className="calendar-Custom">
-                            <input type="date" id="startDate" name="StartDate" value={StartDate} placeholder="เริ่มการเดินทาง" onChange={handleChange} />
+                            <input type="date" id="startDate" name="StartDate" value={StartDate} placeholder="เริ่มการเดินทาง" onChange={handleChange} onKeyDown={handleKeyDown}/>
                             <p>-</p>
-                            <input type="date" id="endDate" name="EndDate" value={EndDate} placeholder="สิ้นสุดการเดินทาง" onChange={handleChange}/>
+                            <input type="date" id="endDate" name="EndDate" value={EndDate} placeholder="สิ้นสุดการเดินทาง" onChange={handleChange} onKeyDown={handleKeyDown}/>
                         </div>
                     </div>
 
@@ -106,13 +112,18 @@ function FormInput({pathway, setPathway, duration, distance, setListLength, List
                         <div className="sidebar-CreatePlan">
                             <div className="Pathway">
                                 <p>สถานที่ในการเดินทาง</p>
-                                < PathList setPathway={setPathway} pathway={pathway} duration={duration} distance={distance} setListLength={setListLength} ListLength={ListLength}/>
+                                <PathList setPathway={setPathway} pathway={pathway} duration={duration} distance={distance} setListLength={setListLength} ListLength={ListLength}/>
                             </div>
 
                             <label htmlFor="">
                                 <p>บันทึกเพิ่มเติม</p>
-                                <textarea name="Addition" id="addition" cols="30" rows="10" value={Addition} onChange={handleChange}
-                            />
+                                <textarea
+                                    name="Addition"
+                                    id="addition"
+                                    cols="30" rows="10"
+                                    value={Addition}
+                                    onChange={handleChange}
+                                />
                             </label>
                         </div>
                     </div>
