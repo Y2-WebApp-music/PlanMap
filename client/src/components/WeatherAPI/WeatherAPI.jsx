@@ -18,22 +18,20 @@ function WeatherAPI({lat, lng}){
 
     useEffect(() => {
         fetchWeatherData();
-        console.log('Weather get lat:', lat,' lng:',lng)
     }, [lat,lng]);
 
     const fetchWeatherData = () => {
         fetch(`${api.base}lat=${lat}&lon=${lng}&units=metric&APPID=${api.key}`)
             .then(res => res.json())
             .then(result => {
-                setWeather(result.list[38]);
+                console.log('Weather Result => ',result.list[5])
+                setWeather(result.list[5])
                 setCity(result.city.name)
             })
             .catch(error => {
                 console.error("Error fetching weather data:", error);
             });
     }
-
-    // console.log('weather : ',weather)
 
     return (
         <div className="weatherReport">
@@ -146,7 +144,7 @@ function WeatherIcon({description}){
 
     return(
         <div>
-            {iconUrl && <img src={iconUrl} alt={description} style={{ maxWidth: '100px' }} />}
+            {iconUrl && <img src={iconUrl} alt={description} className="weather-icon"/>}
         </div>
     )
 }
