@@ -110,3 +110,21 @@ export async function deleteDocument(uid, documentId) {
     throw error;
   }
 }
+
+export async function searchTitle(uid, searchString) {
+  try {
+    await connect();
+    const query = {
+      uid,
+      title: { $regex: searchString, $options: 'i' }
+    };
+    const documents = await collection.find(query).toArray();
+    console.log(" >> searchTitle <<");
+    return documents;
+  } catch (error) {
+    console.error("Error searching title:", error);
+    throw error;
+  } finally {
+    await close();
+  }
+}

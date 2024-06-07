@@ -1,6 +1,6 @@
 import express, { json } from 'express'
 import cors from 'cors'
-import { createDocument, readDocument, readAllDocuments, updateDocument, deleteDocument, findOneNearestToDate} from './plan.js'
+import { createDocument, readDocument, readAllDocuments, updateDocument, deleteDocument, findOneNearestToDate, searchTitle} from './plan.js'
 
 const app = express()
 app.use(cors())
@@ -53,6 +53,15 @@ app.post('/deletePlan', (req, res)=>{
     const id = req.query.id;
     console.log(" >> Delete Plan << ")
     deleteDocument(uid, id)
+    .catch(err => res.json(err))
+})
+
+app.post('/search', (req, res)=>{
+    const uid = req.query.uid;
+    const string = req.query.string;
+    console.log(" >> Search String << ")
+    searchTitle(uid, string)
+    .then(data => res.json(data))
     .catch(err => res.json(err))
 })
 

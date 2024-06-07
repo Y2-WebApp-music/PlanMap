@@ -24,7 +24,6 @@ function Mainpage(){
     const [clickedButton, setClickedButton] = useState("ล่าสุด");
     const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
     const [checkPlan, setCheckPlan] = useState(false)
-    const [reloadFlag, setReloadFlag] = useState(false);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async user => {
@@ -80,7 +79,6 @@ function Mainpage(){
         if (firstEffectCompleted) {
             const unsubscribe = auth.onAuthStateChanged(user => {
                 if (user) {
-                    console.log('http://localhost:3000/comingplan')
                     try {
                         fetch(`http://localhost:3000/comingplan?uid=${user.uid}`)
                         .then(response => {
@@ -149,7 +147,7 @@ function Mainpage(){
                         <div className="Thumbnail-container">
                             { checkPlan? (
                                 planList.length != 0 ?(
-                                    < Thumbnail handleOrderSelection={handleOrderSelection} planList={planList} clickedButton={clickedButton} uid={userInformation.uid}/>
+                                    < Thumbnail handleOrderSelection={handleOrderSelection} planList={planList} clickedButton={clickedButton} uid={userInformation.uid} setPlanList={setPlanList}/>
                                 ):(
                                     <div className="CheckEmptyCreatePlan">
                                         <p>เริ่มสร้างแพลนของคุณ</p>
