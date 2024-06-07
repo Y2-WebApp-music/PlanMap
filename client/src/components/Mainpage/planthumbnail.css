@@ -42,7 +42,7 @@
 }
 
 .searchBox #searchLabel:hover{
-    scale: 1.03;
+    scale: 1.01;
     transition: .25s;
 }
 
@@ -57,6 +57,20 @@
     text-decoration: none;
     outline: none;
     font-size: 1.3rem;
+}
+#searchIconPlan{
+    color: var(--color-text);
+    background-color: var(--color-bg2);
+    padding: 0.3rem 0.3rem;
+    border-radius: 50%;
+    transition: .2s;
+}
+#searchIconPlan:hover{
+    scale: 1.04;
+    color: var(--color-blue);
+    transition: .2s;
+    box-shadow: 0 0rem 0.4rem rgba(37, 19, 1, 0.25);
+    cursor: pointer;
 }
 
 .BtnZone{
