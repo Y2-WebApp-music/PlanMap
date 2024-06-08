@@ -11,7 +11,6 @@ const api = {
 };
 
 function WeatherAPI({lat, lng}){
-    // https://api.openweathermap.org/data/2.5/forecast?lat=19.91917279999999&lon=99.884523&units=metric&APPID=f691e7c3239c23d19b0ee9ae9972f6b8
 
     const [weather, setWeather] = useState({});
     const [city, setCity] = useState('')

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import '/src/global.css';
 import './planDetail.css'
+import WeatherAPI from '../WeatherAPI/WeatherAPI'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle as holdCircle} from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faCircle, faAngleLeft } from '@fortawesome/free-solid-svg-icons'
@@ -41,6 +42,13 @@ function FormInput({currentPlan, pathway, duration, distance}){
                     </div>
                     <div className="sidebar-CreatePlan-scroll-view">
                         <div className="sidebar-CreatePlan-view">
+                            <p>สภาพอากาศล่วงหน้า</p>
+                            <div className="Weather">
+                                <WeatherAPI
+                                    lat={pathway[0].lat}
+                                    lng={pathway[0].lng}
+                                />
+                            </div>
                             <div className="Pathway">
                                 <p>สถานที่ในการเดินทาง</p>
                                 <div className="Pathway-List-View">
