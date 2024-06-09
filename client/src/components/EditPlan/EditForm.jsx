@@ -4,6 +4,8 @@ import '../CreatePlan/FormInput.css'
 import PathList from "../CreatePlan/PathList";
 import { auth } from '/src/DB/Firebase-Config.js'
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 
 function EditForm({currentPlan, pathway, setPathway, duration, distance, setListLength, ListLength}){
     const navigate = useNavigate()
@@ -55,28 +57,32 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance, setList
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
-        try {
-            await fetch(`http://localhost:3000/updatePlan?uid=${userId}&documentId=${documentId}&update=${formData}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            }).then (
-                console.log(" ===> Document update"),
-                setFormData({
-                    title: '',
-                    StartDate: '',
-                    EndDate: '',
-                    Addition: '',
-                    uid: null,
-                    Route: []
-                }),
-                navigate("/mainpage")
-            )
-        } catch (error) {
-            console.error("Error send post:", error);
-            throw error;
+        if (formData.title == '' || formData.StartDate == ''|| formData.EndDate == ''|| formData.Route == [] ){
+            window.alert(' Please Done in blank input ')
+        }else{
+            try {
+                await fetch(`http://localhost:3000/updatePlan?uid=${userId}&documentId=${documentId}&update=${formData}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                }).then (
+                    console.log(" ===> Document update"),
+                    setFormData({
+                        title: '',
+                        StartDate: '',
+                        EndDate: '',
+                        Addition: '',
+                        uid: null,
+                        Route: []
+                    }),
+                    navigate("/mainpage")
+                )
+            } catch (error) {
+                console.error("Error send post:", error);
+                throw error;
+            }
         }
     };
 

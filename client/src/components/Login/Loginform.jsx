@@ -7,10 +7,14 @@ import { setSourceMapRange } from "typescript";
 import { useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-function loginform() {
+function LoginForm() {
 
     const [err, setErr] = useState(false)
     const navigate = useNavigate();
+
+    const handleInputChange = (e) => {
+        setErr(false);
+    }
 
     const handleSubmit = async(e)=>{
         e.preventDefault()
@@ -20,7 +24,9 @@ function loginform() {
         try{
             await signInWithEmailAndPassword(auth, email, password)
             navigate("/mainpage")
-        }catch(err){setSourceMapRange(true)}
+        }catch(err){
+            setErr('email or password is wrong please try again');
+        }
     }
 
     return(
@@ -29,12 +35,13 @@ function loginform() {
             <h2>ยินดีต้อนรับ</h2>
             <form className="form-login" onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="username"> ชื่อผู้ใช้</label>
+                    <label htmlFor="username"> อีเมล</label>
                     <a href="/register" id="register">ยังไม่มีบัญชี</a>
                 </div>
-                <input type="text" id="username" placeholder="email" name="email"/>
+                <input type="email" id="username" placeholder="email" name="email" onChange={handleInputChange}/>
                 <label htmlFor="password" > รหัสผ่าน </label>
-                <input type="password" id="password" placeholder="password" name="password"/>
+                <input type="password" id="password" placeholder="password" name="password" onChange={handleInputChange}/>
+                {err && <p className="error-message">{err}</p>}
                 <input type="submit" id="submit" value="เข้าสู่ระบบ"/>
             </form>
             <p>หรือ</p>
@@ -43,4 +50,4 @@ function loginform() {
         </>
     )
 }
-export default loginform;
+export default LoginForm;

@@ -89,7 +89,7 @@
 .googleLogin {
     background-color: var(--color-bg2);
     border: none;
-    width: 45%;
+    width: max-content;
     padding: 0.3rem 0.3rem;
     display: grid;
     grid-template-columns: 20% 1fr;

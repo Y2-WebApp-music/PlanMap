@@ -8,9 +8,13 @@ import { auth } from '/src/DB/Firebase-Config.js'
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from 'react-router-dom'
 
-function registerForm() {
+function RegisterForm() {
     const [err, setErr] = useState(false)
     const navigate = useNavigate();
+
+    const handleInputChange = (e) => {
+        setErr(false);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,8 +28,8 @@ function registerForm() {
             await updateProfile(res.user, { displayName,photoURL });
             navigate("/mainpage");
         } catch (error) {
-            console.error('Registration error:', error);
-            setErr(true);
+            const errorMessage = error.message.replace("Firebase: ", "");
+            setErr(errorMessage);
         }
     };
 
@@ -36,14 +40,14 @@ function registerForm() {
             <h2>สร้างบัญชีผู้ใช้</h2>
             <form className="form-register" onSubmit={handleSubmit}>
                 <label htmlFor="email"> อีเมล </label>
-                <input type="text" id="email" placeholder="email" name="email"/>
+                <input type="email" id="email" placeholder="email" name="email" onChange={handleInputChange}/>
                 <label htmlFor="username"> ชื่อผู้ใช้</label>
-                <input type="text" id="username" placeholder="username" name="username"/>
+                <input type="text" id="username" placeholder="username" name="username" onChange={handleInputChange}/>
                 <label htmlFor="password"> รหัสผ่าน </label>
-                <input type="password" id="password" placeholder="password" name="password"/>
+                <input type="password" id="password" placeholder="password" name="password" onChange={handleInputChange}/>
+                {err && <p className="error-message">{err}</p>}
                 <input type="submit" id="submit" value="ลงทะเบียน"/>
             </form>
-            {err && <span>Something wrong please try again</span>}
             <Auth />
         </div>
         </>
@@ -60,4 +64,4 @@ function BackBTN() {
         </>
     )
 }
-export default registerForm;
+export default RegisterForm;
