@@ -28,7 +28,6 @@ async function SearchPlace(id, setPlaceName, pathway, setPathway) {
             let updatedPathway = pathway.map(item =>
                 item.id === id ? { ...item, displayName: place.name, lat: newLat, lng: newLng , place_id: place.place_id} : item
             );
-            console.log('updatedPathway ',updatedPathway)
             setPathway(updatedPathway);
         }
     });

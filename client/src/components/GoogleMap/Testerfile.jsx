@@ -24,7 +24,6 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
         setSelectedFil(category === selectedFil ? null : category);
     };
     useEffect(()=>{
-        console.log('pathway = >',pathway)
         setFilteredPathway(pathway.filter(point => point.lat !== null && point.lng !== null))
         return;
     },[pathway])

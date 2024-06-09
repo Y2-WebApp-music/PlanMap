@@ -21,6 +21,7 @@ function Navbar(){
                 setEmail(user.email);
                 console.log(user.photoURL)
                 user.photoURL === null? setUserPhoto('/public/images/user.png'): setUserPhoto(user.photoURL);
+                setActiveLink(window.location.pathname)
             } else {
                 setUsername(null);
                 setEmail(null);

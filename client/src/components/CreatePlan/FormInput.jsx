@@ -58,7 +58,6 @@ function FormInput({pathway, setPathway, duration, distance, setListLength, List
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
         if (formData.title == '' || formData.StartDate == ''|| formData.EndDate == ''|| formData.Route == [] ){
             window.alert(' Please Done in blank input ')
         } else {
@@ -70,7 +69,6 @@ function FormInput({pathway, setPathway, duration, distance, setListLength, List
                     },
                     body: JSON.stringify(formData)
                 }).then (
-                    console.log(" ===> Document added"),
                     setFormData({
                         title: '',
                         StartDate: '',
