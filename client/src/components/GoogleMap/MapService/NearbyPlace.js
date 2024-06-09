@@ -1,7 +1,6 @@
 export function NearbyPlace({ map, selectedFil, setNearbyPlace, setNearbyPhoto }){
     let markers = [];
     if (selectedFil != null) {
-        console.log(selectedFil)
         let places;
         const handleMapDrag = () => {
         let center = map.getCenter();

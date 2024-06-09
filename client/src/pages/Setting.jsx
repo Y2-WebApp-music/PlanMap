@@ -38,7 +38,6 @@ function Setting(){
         }
     }
 
-    console.log(currentUser)
     return(
         <>
             <div className="Setting-Container">

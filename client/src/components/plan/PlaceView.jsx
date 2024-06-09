@@ -6,7 +6,6 @@ import { faStar, faStarHalf, faInfo } from '@fortawesome/free-solid-svg-icons'
 
 export function PlaceView({place, placePhoto, onSelectPlace}){
     const placeName = place?.name || "Unknown Place";
-    console.log('====== > PlaceView < ========',placeName)
     const rating = place.rating || 0;
     const stars = [];
     const integerPart = Math.floor(rating);

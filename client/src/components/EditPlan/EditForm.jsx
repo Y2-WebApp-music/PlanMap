@@ -37,7 +37,7 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance, setList
             ...formData,
             Route: pathway
         });
-        return console.log('formData ==> ',formData);
+        return ;
     }, [pathway]);
 
     const handleChange = (e) => {
@@ -56,7 +56,6 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance, setList
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
         if (formData.title == '' || formData.StartDate == ''|| formData.EndDate == ''|| formData.Route == [] ){
             window.alert(' Please Done in blank input ')
         }else{
@@ -68,7 +67,6 @@ function EditForm({currentPlan, pathway, setPathway, duration, distance, setList
                     },
                     body: JSON.stringify(formData)
                 }).then (
-                    console.log(" ===> Document update"),
                     setFormData({
                         title: '',
                         StartDate: '',

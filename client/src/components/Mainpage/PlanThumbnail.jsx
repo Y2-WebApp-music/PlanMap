@@ -46,7 +46,6 @@ function Thumbnail({uid, handleOrderSelection, planList, clickedButton, setPlanL
             const response = await fetch(`http://localhost:3000/mainpage?uid=${uid}&planOrder=-1`);
             const plan = await response.json();
             if (Object.keys(plan).length === 0 && plan.constructor === Object) {
-                console.log("Plan is empty. Retrying...");
                 retryCount++;
                 if (retryCount <= maxRetries) {
                     setTimeout(fetchPlan, 1000);
@@ -161,7 +160,6 @@ function PlanSetting({id, showPopup, setShowPopup, setDeletePlan}){
 
 function DeletePopUp({ uid ,id, setDeletePlan }){
     const DeletePlan = async ()=>{
-        console.log("DeletePlan : ", {id})
         try {
             await fetch(`http://localhost:3000/deletePlan?uid=${uid}&id=${id}`, {
                 method: 'POST'

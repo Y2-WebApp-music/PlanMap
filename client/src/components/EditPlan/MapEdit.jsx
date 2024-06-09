@@ -104,8 +104,6 @@ function MapEdit({pathway, setDuration, setDistance}) {
                     const start = { lat: filteredPathway[0].lat, lng: filteredPathway[0].lng };
                     const end = { lat: filteredPathway[filteredPathway.length - 1].lat, lng: filteredPathway[filteredPathway.length - 1].lng };
                     const waypoints = [];
-                    console.log('waypoints',start)
-                    console.log('end',end)
 
                     for (let i = 1; i < filteredPathway.length - 1; i++) {
                         waypoints.push({
@@ -113,7 +111,6 @@ function MapEdit({pathway, setDuration, setDistance}) {
                         stopover: true,
                         });
                     }
-                    console.log('waypoints',waypoints)
                     directionsService.route({
                         origin: new window.google.maps.LatLng(start.lat, start.lng),
                         destination: new window.google.maps.LatLng(end.lat, end.lng),

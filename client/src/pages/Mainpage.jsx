@@ -50,7 +50,6 @@ function Mainpage(){
                         const response = await fetch(`http://localhost:3000/mainpage?uid=${user.uid}&planOrder=${planOrder}`);
                         const plan = await response.json();
                         if (Object.keys(plan).length === 0 && plan.constructor === Object) {
-                            console.log("Plan is empty. Retrying...");
                             retryCount++;
                             if (retryCount <= maxRetries) {
                                 setTimeout(fetchPlan, 1000);
