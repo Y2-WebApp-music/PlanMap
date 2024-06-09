@@ -19,7 +19,8 @@ function Navbar(){
             if (user) {
                 setUsername(user.displayName);
                 setEmail(user.email);
-                setUserPhoto(user.photoURL);
+                console.log(user.photoURL)
+                user.photoURL === null? setUserPhoto('/public/images/user.png'): setUserPhoto(user.photoURL);
             } else {
                 setUsername(null);
                 setEmail(null);
@@ -59,7 +60,7 @@ function Navbar(){
                 </div>
                 <LoginChecker togglePopUp={togglePopUp} username={username} userPhoto={userPhoto} />
             </div>
-            {isPopUpOpen && <PopUPSetting username={username} email={email}/>}
+            {isPopUpOpen && <PopUPSetting username={username} email={email} setPopUpOpen={setPopUpOpen}/>}
         </div>
     )
 }
@@ -82,7 +83,11 @@ function LoginChecker({togglePopUp, username, userPhoto }){
     return checkLogin();
 }
 
-function PopUPSetting({username , email}) {
+function PopUPSetting({username , email, setPopUpOpen}) {
+    const handleLogout = ()=>{
+        setPopUpOpen(false)
+        signOut(auth)
+    }
 
     return(
         <>
@@ -90,11 +95,11 @@ function PopUPSetting({username , email}) {
             <p className="p-userName">{username}</p>
             <p className="p-email">{email}</p>
             <hr />
-            <a className="PopUp-btn" href="/setting">
+            {/* <a className="PopUp-btn" href="/setting">
                 <FontAwesomeIcon icon={faGear} size="lg" id="faGear" />
                 <p> การตั้งค่า </p>
-            </a>
-            <div className="PopUp-btn" onClick={()=>signOut(auth)}>
+            </a> */}
+            <div className="PopUp-btn" onClick={handleLogout}>
                 <FontAwesomeIcon icon={faRightFromBracket} size="lg" id="faRightFromBracket" />
                 <p> ออกจากระบบ </p>
             </div>

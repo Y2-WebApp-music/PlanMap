@@ -1,6 +1,8 @@
 import { MongoClient, ObjectId } from 'mongodb';
+import { configDotenv } from 'dotenv';
+configDotenv({ path: './.env' });
 
-const url = "mongodb+srv://Guynut:Guynut123@clusterplanmap.uwy5s2x.mongodb.net/?retryWrites=true&w=majority&appName=ClusterPlanMap";
+const url = process.env.DB_URL
 
 const client = new MongoClient(url);
 

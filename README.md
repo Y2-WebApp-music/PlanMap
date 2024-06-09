@@ -46,6 +46,7 @@ npm install @googlemaps/js-api-loader
 npm i firebase
 npm i @firebase/firestore
 npm i mongodb
+npm install dotenv
 ```
 ### Example of Weather API call
 Free plan can forecast 5 Days

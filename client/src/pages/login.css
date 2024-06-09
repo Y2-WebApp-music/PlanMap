@@ -40,3 +40,7 @@
     background-color: rgba(0, 0, 0, 0.037);
     z-index: -1;
 }
+.error-message{
+    color: var(--color-red);
+    margin:  0 0 ;
+}
