@@ -21,7 +21,7 @@ function MapPlan({pathway, setDuration, setDistance}) {
     },[pathway])
 
     const loader = new Loader({
-        apiKey: "AIzaSyC7UkiV3QbtcQdklInc_osWD0arPm8cQVA",
+        apiKey: "",
         version: "weekly",
         language: "th",
     });

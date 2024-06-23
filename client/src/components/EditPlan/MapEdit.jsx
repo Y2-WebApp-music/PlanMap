@@ -15,7 +15,7 @@ function MapEdit({pathway, setDuration, setDistance}) {
     console.log('filteredPathway From Parent => ',filteredPathway)
 
     const loader = new Loader({
-        apiKey: "AIzaSyC7UkiV3QbtcQdklInc_osWD0arPm8cQVA",
+        apiKey: "",
         version: "weekly",
         language: "th",
     });
