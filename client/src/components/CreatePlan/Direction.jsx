@@ -7,7 +7,7 @@ import { faLocationDot, faCircle, faCircleXmark } from '@fortawesome/free-solid-
 import { Loader } from "@googlemaps/js-api-loader"
 
 const loader = new Loader({
-    apiKey: "AIzaSyC7UkiV3QbtcQdklInc_osWD0arPm8cQVA",
+    apiKey: import.meta.env.VITE_APP_MapAPI,
     version: "weekly",
     language: "th",
 });

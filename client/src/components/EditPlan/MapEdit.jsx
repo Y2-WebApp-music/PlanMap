@@ -15,7 +15,7 @@ function MapEdit({pathway, setDuration, setDistance}) {
     console.log('filteredPathway From Parent => ',filteredPathway)
 
     const loader = new Loader({
-        apiKey: "",
+        apiKey: import.meta.env.VITE_APP_MapAPI,
         version: "weekly",
         language: "th",
     });

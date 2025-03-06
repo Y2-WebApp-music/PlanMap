@@ -29,7 +29,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
     },[pathway])
 
     const loader = new Loader({
-        apiKey: "",
+        apiKey: import.meta.env.VITE_APP_MapAPI,
         version: "weekly",
         language: "th",
     });
@@ -49,7 +49,7 @@ function MapPlan({pathway, setDuration, setDistance, setPathway, setListLength, 
                 map = new Map(document.getElementById("map"), {
                     center: { lat: 13.7734, lng: 100.5202 },
                     zoom: 12,
-                    mapId: "981d73a7e46f15d2",
+                    mapId: "ceebfb0fc3e92d71",
                     mapTypeControl: false,
                     disableDefaultUI: true,
                 });
